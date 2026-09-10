@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 function Dashboard() {
+  const navigate = useNavigate();
+
   return (
     <div>
       <h1>🐄 Smart Dairy</h1>
@@ -8,43 +12,53 @@ function Dashboard() {
 
       <hr />
 
-      <h3>Today's Overview</h3>
+     
 
-      <div>
-        <h4>🐄 Total Cows</h4>
-        <p>12</p>
-      </div>
+      
 
-      <div>
-        <h4>🥛 Today's Milk</h4>
-        <p>85 Litres</p>
-      </div>
+      {/* Dairy Module */}
+      <h3>🥛 Dairy Module</h3>
 
-      <div>
-        <h4>🌾 Today's Feed</h4>
-        <p>42 Kg</p>
-      </div>
+      <button onClick={() => navigate("/farmer/milkcollection")}>
+        Milk Collection
+      </button>
 
-      <div>
-        <h4>💰 This Month Income</h4>
-        <p>₹42,500</p>
-      </div>
-
-      <div>
-        <h4>💸 This Month Expense</h4>
-        <p>₹18,200</p>
-      </div>
+      <button onClick={() => navigate("/farmer/payments")}>
+        Payments
+      </button>
 
       <hr />
 
-      <h3>Quick Actions</h3>
+      {/* Farm Module */}
+      <h3>🐄 Farm Module</h3>
 
-      <button>Add Cow</button>
-      <button>Add Milk Record</button>
-      <button>Add Feed Record</button>
-      <button>Add Expense</button>
+      <button onClick={() => navigate("/farmer/cows")}>
+       🐄 Cow Management
+      </button>
+
+      <button onClick={() => navigate("/farmer/Feed")}>
+       🌾 Feed Management
+      </button>
+
+      <button onClick={() => navigate("/farmer/financial")}>
+  💰 Financial Management
+</button>
+<button onClick={() => navigate("/farmer/reports")}>
+  📊 Reports
+</button>
+     
+      <hr />
+
+      {/* AI Module */}
+      
+      <h3>🤖 AI Insights</h3>
+
+      <p>Milk Forecast: Coming Soon</p>
+      <p>Expense Analysis: Coming Soon</p>
+      <p>Profit Analysis: Coming Soon</p>
+      <p>Unusual Milk Reading Alert: Coming Soon</p>
     </div>
   );
 }
 
-export default Dashboard;;
+export default Dashboard;

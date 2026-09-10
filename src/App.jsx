@@ -2,9 +2,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/farmer/Dashboard";
-import Cows from "./pages/farmer/Cows";
-import MilkCollection from "./pages/farmer/MilkCollection";
-import Payments from "./pages/farmer/Payments";
+import Cows from "./pages/farmer/cows";
+import MilkCollection from "./pages/farmer/milkcollection";
+import Payments from "./pages/farmer/payments";
+import Feed from "./pages/farmer/Feed";
+import Financial from "./pages/farmer/Financial";
+import Reports from "./pages/farmer/Reports";
 
 function App() {
   return (
@@ -24,7 +27,7 @@ function App() {
         />
 
         <Route
-          path="/farmer/milk"
+          path="/farmer/milkcollection"
           element={<MilkCollection />}
         />
 
@@ -32,6 +35,19 @@ function App() {
           path="/farmer/payments"
           element={<Payments />}
         />
+
+        <Route
+          path="/farmer/Feed"
+          element={<Feed />}
+        />
+        <Route
+  path="/farmer/financial"
+  element={<Financial />}
+/>
+<Route
+  path="/farmer/reports"
+  element={<Reports />}
+/>
 
       </Routes>
     </BrowserRouter>
