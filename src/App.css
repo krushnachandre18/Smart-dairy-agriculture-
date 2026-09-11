@@ -1,184 +1,427 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+/* ========================================
+   GLOBAL
+======================================== */
 
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+* {
+  box-sizing: border-box;
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7f4;
+  color: #222;
 }
 
-#center {
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+
+/* ========================================
+   LOGIN
+======================================== */
+
+.login-page {
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
-}
-
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
-}
-
-.ticks {
-  position: relative;
+.login-card {
   width: 100%;
+  max-width: 420px;
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
+.login-card h1 {
+  margin-bottom: 5px;
+}
+
+.login-card h2 {
+  margin-top: 5px;
+  color: #555;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.login-card button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #222;
+  color: white;
+  font-weight: bold;
+}
+
+
+/* ========================================
+   COMMON PAGE
+======================================== */
+
+.dashboard,
+.cows-page,
+.milk-page,
+.payments-page {
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
+  padding: 25px;
+}
+
+.dashboard h1,
+.cows-page h1,
+.milk-page h1,
+.payments-page h1 {
+  margin-top: 0;
+}
+
+
+/* ========================================
+   COMMON FORM
+======================================== */
+
+.cows-page label,
+.milk-page label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.cows-page input,
+.cows-page select,
+.cows-page textarea,
+.milk-page input,
+.milk-page select,
+.milk-page textarea {
+  width: 100%;
+  max-width: 450px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: white;
+  font-size: 15px;
+  outline: none;
+}
+
+.cows-page input:focus,
+.cows-page select:focus,
+.cows-page textarea:focus,
+.milk-page input:focus,
+.milk-page select:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.12);
+}
+
+.cows-page textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+
+/* ========================================
+   COMMON BUTTON
+======================================== */
+
+.cows-page button,
+.milk-page button,
+.payments-page button {
+  padding: 11px 18px;
+  margin: 5px 5px 5px 0;
+  border: none;
+  border-radius: 8px;
+  background: #222;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cows-page button:hover,
+.milk-page button:hover,
+.payments-page button:hover {
+  opacity: 0.85;
+}
+
+
+/* ========================================
+   DASHBOARD
+======================================== */
+
+.dashboard-header {
+  padding: 10px 0;
+}
+
+.dashboard-header p {
+  margin-top: 0;
+  color: #666;
+}
+
+.welcome {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  margin: 20px 0;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.welcome h2 {
+  margin-top: 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card span {
+  font-size: 28px;
+}
+
+.stat-card h3 {
+  margin-bottom: 8px;
+}
+
+.stat-card strong {
+  font-size: 24px;
+}
+
+.quick-actions {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  margin-top: 20px;
+}
+
+.quick-actions button {
+  background: #222;
+  color: white;
+}
+
+
+/* ========================================
+   COWS
+======================================== */
+
+.cows-page {
+  min-height: 100vh;
+}
+
+.cows-page > h1 {
+  font-size: 30px;
+}
+
+.cows-page h2,
+.cows-page h3 {
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+
+
+/* ========================================
+   MILK COLLECTION
+======================================== */
+
+.milk-page {
+  min-height: 100vh;
+}
+
+.milk-page h3 {
+  margin-top: 25px;
+}
+
+.milk-calculation {
+  background: white;
+  max-width: 450px;
+  margin: 20px 0;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.milk-calculation p {
+  margin: 8px 0;
+}
+
+.milk-rate {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.milk-total {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+
+/* ========================================
+   TABLES
+======================================== */
+
+.cows-page table,
+.milk-page table,
+.payments-page table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  margin-top: 15px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.cows-page th,
+.milk-page th,
+.payments-page th {
+  background: #222;
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.cows-page td,
+.milk-page td,
+.payments-page td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e5e5;
+  font-size: 14px;
+}
+
+.cows-page tbody tr:hover,
+.milk-page tbody tr:hover,
+.payments-page tbody tr:hover {
+  background: #f8f8f8;
+}
+
+
+/* ========================================
+   PAYMENTS
+======================================== */
+
+.payment-card {
+  background: white;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.payment-card h3 {
+  margin-top: 0;
+}
+
+.payment-amount {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+
+/* ========================================
+   HR
+======================================== */
+
+.cows-page hr,
+.milk-page hr,
+.payments-page hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 30px 0;
+}
+
+
+/* ========================================
+   MOBILE RESPONSIVE
+======================================== */
+
+@media (max-width: 700px) {
+
+  .dashboard,
+  .cows-page,
+  .milk-page,
+  .payments-page {
+    padding: 15px;
   }
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
   }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
+
+  .cows-page table,
+  .milk-page table,
+  .payments-page table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .cows-page input,
+  .cows-page select,
+  .cows-page textarea,
+  .milk-page input,
+  .milk-page select,
+  .milk-page textarea {
+    max-width: 100%;
+  }
+}
+
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media (max-width: 450px) {
+
+  .dashboard,
+  .cows-page,
+  .milk-page,
+  .payments-page {
+    padding: 12px;
+  }
+
+  .cows-page > h1,
+  .milk-page > h1,
+  .payments-page > h1 {
+    font-size: 23px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cows-page button,
+  .milk-page button,
+  .payments-page button {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .stat-card {
+    padding: 16px;
   }
 }
