@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-/* ================================
-   LOGIN PAGE
-================================ */
-
-.login-container {
-=======
 /* ========================================
    GLOBAL
 ======================================== */
@@ -31,68 +24,105 @@ button {
   cursor: pointer;
 }
 
-
 /* ========================================
-   LOGIN
+   LOGIN PAGE
 ======================================== */
 
-.login-page {
->>>>>>> b676fffa17251cdf933c8941d1edd6fb24669dcb
+.login-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
-<<<<<<< HEAD
   background: #f1f5f9;
-=======
->>>>>>> b676fffa17251cdf933c8941d1edd6fb24669dcb
 }
 
 .login-card {
   width: 100%;
   max-width: 420px;
-<<<<<<< HEAD
   padding: 40px;
   text-align: center;
   background: white;
   border: 1px solid #e2e8f0;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-=======
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+}
+
+.login-logo {
+  width: 75px;
+  height: 75px;
+  margin: 0 auto 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #dcfce7;
+  font-size: 38px;
 }
 
 .login-card h1 {
-  margin-bottom: 5px;
+  margin: 10px 0 5px;
+  font-size: 28px;
+  color: #166534;
+}
+
+.login-subtitle {
+  margin-top: 0;
+  color: #64748b;
+  font-size: 15px;
 }
 
 .login-card h2 {
-  margin-top: 5px;
-  color: #555;
+  margin: 30px 0 20px;
+  font-size: 22px;
 }
 
-.login-card input {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+.login-form {
+  text-align: left;
 }
 
-.login-card button {
+.login-form label {
+  display: block;
+  margin: 15px 0 7px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.login-form input {
   width: 100%;
-  padding: 12px;
+  padding: 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+}
+
+.login-form input:focus {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+}
+
+.login-form button {
+  width: 100%;
+  margin-top: 25px;
+  padding: 13px;
   border: none;
-  border-radius: 8px;
-  background: #222;
+  border-radius: 10px;
+  background: #16a34a;
   color: white;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 600;
 }
 
+.login-form button:hover {
+  background: #15803d;
+}
+
+.login-footer {
+  margin-top: 25px;
+  font-size: 13px;
+  color: #64748b;
+}
 
 /* ========================================
    COMMON PAGE
@@ -114,7 +144,6 @@ button {
 .payments-page h1 {
   margin-top: 0;
 }
-
 
 /* ========================================
    COMMON FORM
@@ -147,7 +176,8 @@ button {
 .cows-page select:focus,
 .cows-page textarea:focus,
 .milk-page input:focus,
-.milk-page select:focus {
+.milk-page select:focus,
+.milk-page textarea:focus {
   border-color: #4caf50;
   box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.12);
 }
@@ -156,7 +186,6 @@ button {
   min-height: 90px;
   resize: vertical;
 }
-
 
 /* ========================================
    COMMON BUTTON
@@ -180,7 +209,6 @@ button {
 .payments-page button:hover {
   opacity: 0.85;
 }
-
 
 /* ========================================
    DASHBOARD
@@ -244,7 +272,6 @@ button {
   color: white;
 }
 
-
 /* ========================================
    COWS
 ======================================== */
@@ -262,7 +289,6 @@ button {
   margin-top: 25px;
   margin-bottom: 15px;
 }
-
 
 /* ========================================
    MILK COLLECTION
@@ -298,7 +324,6 @@ button {
   font-size: 22px;
   font-weight: bold;
 }
-
 
 /* ========================================
    TABLES
@@ -339,7 +364,6 @@ button {
   background: #f8f8f8;
 }
 
-
 /* ========================================
    PAYMENTS
 ======================================== */
@@ -361,7 +385,6 @@ button {
   font-weight: bold;
 }
 
-
 /* ========================================
    HR
 ======================================== */
@@ -374,13 +397,11 @@ button {
   margin: 30px 0;
 }
 
-
 /* ========================================
    MOBILE RESPONSIVE
 ======================================== */
 
 @media (max-width: 700px) {
-
   .dashboard,
   .cows-page,
   .milk-page,
@@ -410,13 +431,11 @@ button {
   }
 }
 
-
 /* ========================================
    SMALL MOBILE
 ======================================== */
 
 @media (max-width: 450px) {
-
   .dashboard,
   .cows-page,
   .milk-page,
@@ -444,93 +463,7 @@ button {
   .stat-card {
     padding: 16px;
   }
->>>>>>> b676fffa17251cdf933c8941d1edd6fb24669dcb
-}
 
-.login-logo {
-  width: 75px;
-  height: 75px;
-  margin: 0 auto 15px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-  background: #dcfce7;
-  font-size: 38px;
-}
-
-.login-card h1 {
-  margin: 10px 0 5px;
-  font-size: 28px;
-  color: #166534;
-}
-
-.login-subtitle {
-  margin-top: 0;
-  color: #64748b;
-  font-size: 15px;
-}
-
-.login-card h2 {
-  margin: 30px 0 20px;
-  font-size: 22px;
-}
-
-.login-form {
-  text-align: left;
-}
-
-.login-form label {
-  display: block;
-  margin: 15px 0 7px;
-  font-weight: 600;
-  color: #334155;
-}
-
-.login-form input {
-  width: 100%;
-  padding: 13px;
-
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-
-  font-size: 15px;
-  outline: none;
-}
-
-.login-form input:focus {
-  border-color: #16a34a;
-  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
-}
-
-.login-form button {
-  width: 100%;
-  margin-top: 25px;
-  padding: 13px;
-
-  border: none;
-  border-radius: 10px;
-
-  background: #16a34a;
-  color: white;
-
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.login-form button:hover {
-  background: #15803d;
-}
-
-.login-footer {
-  margin-top: 25px;
-  font-size: 13px;
-  color: #64748b;
-}
-
-@media (max-width: 500px) {
   .login-card {
     padding: 30px 20px;
   }
