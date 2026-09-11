@@ -1,5 +1,9 @@
 import { useState } from "react";
+<<<<<<< HEAD
 import "./cows.css";
+=======
+
+>>>>>>> b676fffa17251cdf933c8941d1edd6fb24669dcb
 
 function Cows() {
   // =========================
