@@ -755,3 +755,45 @@
 .pregnancy-history-card td {
   vertical-align: middle;
 }
+/* Cow Management Text Color Fix */
+
+.cows-page {
+  color: #1f2937;
+}
+
+.cows-page h1,
+.cows-page h2,
+.cows-page h3 {
+  color: #111827;
+}
+
+.cows-page p {
+  color: #4b5563;
+}
+
+
+/* =========================
+   COW MENU COLOR FIX
+========================= */
+
+.cows-page .cow-menu-card {
+  background: #ffffff !important;
+  color: #1e293b !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.cows-page .cow-menu-card strong {
+  color: #1e293b !important;
+}
+
+.cows-page .cow-menu-card small {
+  color: #64748b !important;
+}
+
+.cows-page .cow-menu-card span {
+  color: inherit !important;
+}
+
+.cows-page .cow-menu-card:hover {
+  background: #ffffff !important;
+}
