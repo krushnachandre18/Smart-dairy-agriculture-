@@ -8,10 +8,7 @@ import Payments from "./pages/farmer/payments";
 import Feed from "./pages/farmer/Feed";
 import Financial from "./pages/farmer/Financial";
 import Reports from "./pages/farmer/Reports";
-import AIForecast from "./pages/farmer/AIForecast";
-import AIExpenseAnalysis from "./pages/farmer/AIExpenseAnalysis";
-import AIProfitAnalysis from "./pages/farmer/AIProfitAnalysis";
-import AIAnomalyAlert from "./pages/farmer/AIAnomalyAlert";
+import AIChatbot from "./pages/farmer/AIChatbot";
 
 function App() {
   return (
@@ -52,21 +49,10 @@ function App() {
   path="/farmer/reports"
   element={<Reports />}
 />
+
 <Route
-  path="/farmer/ai-forecast"
-  element={<AIForecast />}
-/>
-<Route
-  path="/farmer/ai-expense-analysis"
-  element={<AIExpenseAnalysis />}
-/>
-<Route
-  path="/farmer/ai-profit-analysis"
-  element={<AIProfitAnalysis />}
-/>
-<Route
-  path="/farmer/ai-anomaly-alert"
-  element={<AIAnomalyAlert />}
+  path="/farmer/ai-chatbot"
+  element={<AIChatbot />}
 />
       </Routes>
     </BrowserRouter>

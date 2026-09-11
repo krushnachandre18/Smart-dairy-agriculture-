@@ -53,23 +53,11 @@ function Dashboard() {
       
       <h3>🤖 AI Insights</h3>
       
-      
+      <button onClick={() => navigate("/farmer/ai-chatbot")}>
+  🤖 AI Assistant
+</button>
 
-      <p><button onClick={() => navigate("/farmer/ai-forecast")}>
-  🤖 Milk Forecast
-</button></p>
-      <p><button onClick={() => navigate("/farmer/ai-expense-analysis")}>
-  🤖 Expense Analysis
-</button></p>
-      <p><button
-  onClick={() => navigate("/farmer/ai-profit-analysis")}>
-  🤖 Profit Analysis
-</button></p>
-      <p><button
-  onClick={() => navigate("/farmer/ai-anomaly-alert")}
->
-  ⚠️ Unusual Milk Alert
-</button></p>
+     
     </div>
   );
 }
