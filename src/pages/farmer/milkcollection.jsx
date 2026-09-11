@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-function MilkCollection() {
-  const [session, setSession] = useState("Morning");
+function MilkCollection() {const [session, setSession] = useState("Morning");
   const [quantity, setQuantity] = useState("");
   const [fat, setFat] = useState("");
   const [snf, setSnf] = useState("");
