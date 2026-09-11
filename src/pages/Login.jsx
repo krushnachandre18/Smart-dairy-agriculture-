@@ -9,7 +9,7 @@ function Login() {
 
   return (
     <div>
-      <h1>Smart Dairy</h1>
+      <h1>🐄 Smart Dairy & Farm</h1>
       <h2>Farmer Login</h2>
 
       <input

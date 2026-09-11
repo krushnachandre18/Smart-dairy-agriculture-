@@ -5,7 +5,7 @@ function Dashboard() {
 
   return (
     <div>
-      <h1>🐄 Smart Dairy</h1>
+      <h1>🐄 Smart Dairy & Farm</h1>
       <h2>Farmer Dashboard</h2>
 
       <p>Welcome, Farmer!</p>
@@ -52,11 +52,24 @@ function Dashboard() {
       {/* AI Module */}
       
       <h3>🤖 AI Insights</h3>
+      
+      
 
-      <p>Milk Forecast: Coming Soon</p>
-      <p>Expense Analysis: Coming Soon</p>
-      <p>Profit Analysis: Coming Soon</p>
-      <p>Unusual Milk Reading Alert: Coming Soon</p>
+      <p><button onClick={() => navigate("/farmer/ai-forecast")}>
+  🤖 Milk Forecast
+</button></p>
+      <p><button onClick={() => navigate("/farmer/ai-expense-analysis")}>
+  🤖 Expense Analysis
+</button></p>
+      <p><button
+  onClick={() => navigate("/farmer/ai-profit-analysis")}>
+  🤖 Profit Analysis
+</button></p>
+      <p><button
+  onClick={() => navigate("/farmer/ai-anomaly-alert")}
+>
+  ⚠️ Unusual Milk Alert
+</button></p>
     </div>
   );
 }
