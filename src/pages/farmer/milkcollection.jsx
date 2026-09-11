@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./MilkCollection.css";
 
 function MilkCollection() {
   const [session, setSession] = useState("Morning");
@@ -82,151 +83,232 @@ function MilkCollection() {
   };
 
   return (
-    <div>
-      <h1>🥛 Milk Collection</h1>
+  <div className="milk-page">
 
-      <h3>Milk Entry</h3>
+    {/* Header */}
+    <div className="milk-header">
+      <div>
+        <span className="milk-badge">🥛 DAIRY MANAGEMENT</span>
+        <h1>Milk Collection</h1>
+        <p>Record and manage daily milk collection details.</p>
+      </div>
 
-      <label>Collection Time</label>
-      <br />
+      <div className="milk-header-icon">🥛</div>
+    </div>
 
-      <select
-        value={session}
-        onChange={(e) => setSession(e.target.value)}
+    {/* Milk Entry */}
+    <div className="milk-card">
+
+      <div className="milk-card-heading">
+        <div>
+          <h2>📝 Milk Entry</h2>
+          <p>Enter today's milk collection details.</p>
+        </div>
+      </div>
+
+      <div className="milk-form-grid">
+
+        <div className="milk-form-group">
+          <label>Collection Time</label>
+          <select
+            value={session}
+            onChange={(e) => setSession(e.target.value)}
+          >
+            <option value="Morning">Morning</option>
+            <option value="Evening">Evening</option>
+          </select>
+        </div>
+
+        <div className="milk-form-group">
+          <label>Milk Quantity (Litres)</label>
+          <input
+            type="number"
+            placeholder="Enter quantity"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+          />
+        </div>
+
+        <div className="milk-form-group">
+          <label>Fat (%)</label>
+          <input
+            type="number"
+            step="0.1"
+            placeholder="Enter fat"
+            value={fat}
+            onChange={(e) => setFat(e.target.value)}
+          />
+        </div>
+
+        <div className="milk-form-group">
+          <label>SNF (%)</label>
+          <input
+            type="number"
+            step="0.1"
+            placeholder="Enter SNF"
+            value={snf}
+            onChange={(e) => setSnf(e.target.value)}
+          />
+        </div>
+
+      </div>
+
+      {/* Calculation */}
+      <div className="milk-calculation">
+
+        <div className="calculation-box">
+          <span>💰 Calculated Rate</span>
+          <strong>₹{calculatedRate.toFixed(2)}</strong>
+          <small>per litre</small>
+        </div>
+
+        <div className="calculation-box amount-box">
+          <span>💵 Total Amount</span>
+          <strong>₹{totalAmount.toFixed(2)}</strong>
+          <small>estimated payment</small>
+        </div>
+
+      </div>
+
+      <button
+        className="add-milk-button"
+        onClick={handleAddMilk}
       >
-        <option value="Morning">Morning</option>
-        <option value="Evening">Evening</option>
-      </select>
-
-      <br />
-      <br />
-
-      <label>Milk Quantity (Litres)</label>
-      <br />
-
-      <input
-        type="number"
-        placeholder="Enter quantity"
-        value={quantity}
-        onChange={(e) => setQuantity(e.target.value)}
-      />
-
-      <br />
-      <br />
-
-      <label>Fat (%)</label>
-      <br />
-
-      <input
-        type="number"
-        step="0.1"
-        placeholder="Enter fat"
-        value={fat}
-        onChange={(e) => setFat(e.target.value)}
-      />
-
-      <br />
-      <br />
-
-      <label>SNF (%)</label>
-      <br />
-
-      <input
-        type="number"
-        step="0.1"
-        placeholder="Enter SNF"
-        value={snf}
-        onChange={(e) => setSnf(e.target.value)}
-      />
-
-      <br />
-      <br />
-
-      {/* Calculated Rate */}
-      <p>
-        <strong>Calculated Rate:</strong> ₹
-        {calculatedRate.toFixed(2)} per litre
-      </p>
-
-      {/* Total Amount */}
-      <p>
-        <strong>Total Amount:</strong> ₹
-        {totalAmount.toFixed(2)}
-      </p>
-
-      <br />
-
-      <button onClick={handleAddMilk}>
-        Add Milk
+        + Add Milk Record
       </button>
 
-      <p>{message}</p>
+      {message && (
+        <div className="milk-message">
+          {message}
+        </div>
+      )}
 
-      <hr />
+    </div>
 
-      <h3>📋 Milk Records</h3>
+    {/* Records */}
+    <div className="milk-card">
+
+      <div className="milk-card-heading">
+        <div>
+          <h2>📋 Milk Records</h2>
+          <p>View and verify your milk collection records.</p>
+        </div>
+
+        <div className="record-count">
+          {records.length} Records
+        </div>
+      </div>
 
       {records.length === 0 ? (
-        <p>No milk records available.</p>
+
+        <div className="milk-empty">
+          <div>🥛</div>
+          <h3>No Milk Records</h3>
+          <p>
+            Add your first milk collection record using the form above.
+          </p>
+        </div>
+
       ) : (
-        <table border="1" cellPadding="8">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Session</th>
-              <th>Quantity</th>
-              <th>Fat</th>
-              <th>SNF</th>
-              <th>Rate</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
 
-          <tbody>
-            {records.map((record) => (
-              <tr key={record.id}>
-                <td>{record.date}</td>
+        <div className="milk-table-container">
+          <table className="milk-table">
 
-                <td>{record.session}</td>
-
-                <td>{record.quantity} L</td>
-
-                <td>{record.fat}%</td>
-
-                <td>{record.snf}%</td>
-
-                <td>
-                  ₹{record.rate.toFixed(2)}
-                </td>
-
-                <td>
-                  ₹{record.amount.toFixed(2)}
-                </td>
-
-                <td>{record.status}</td>
-
-                <td>
-                  {record.status === "Pending" ? (
-                    <button
-                      onClick={() =>
-                        handleVerify(record.id)
-                      }
-                    >
-                      Verify
-                    </button>
-                  ) : (
-                    "✅ Verified"
-                  )}
-                </td>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Session</th>
+                <th>Quantity</th>
+                <th>Fat</th>
+                <th>SNF</th>
+                <th>Rate</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {records.map((record) => (
+
+                <tr key={record.id}>
+
+                  <td>{record.date}</td>
+
+                  <td>
+                    <span className="session-badge">
+                      {record.session === "Morning"
+                        ? "🌅 Morning"
+                        : "🌙 Evening"}
+                    </span>
+                  </td>
+
+                  <td>
+                    <strong>{record.quantity} L</strong>
+                  </td>
+
+                  <td>{record.fat}%</td>
+
+                  <td>{record.snf}%</td>
+
+                  <td>
+                    ₹{record.rate.toFixed(2)}
+                  </td>
+
+                  <td>
+                    <strong>
+                      ₹{record.amount.toFixed(2)}
+                    </strong>
+                  </td>
+
+                  <td>
+                    {record.status === "Pending" ? (
+                      <span className="status-pending">
+                        Pending
+                      </span>
+                    ) : (
+                      <span className="status-verified">
+                        ✓ Verified
+                      </span>
+                    )}
+                  </td>
+
+                  <td>
+                    {record.status === "Pending" ? (
+                      <button
+                        className="verify-button"
+                        onClick={() =>
+                          handleVerify(record.id)
+                        }
+                      >
+                        Verify
+                      </button>
+                    ) : (
+                      <span className="verified-text">
+                        ✅ Verified
+                      </span>
+                    )}
+                  </td>
+
+                </tr>
+
+              ))}
+            </tbody>
+
+          </table>
+        </div>
+
       )}
+
     </div>
-  );
+
+    {/* Footer */}
+    <div className="milk-footer">
+      🐄 Smart Dairy & Farmer Farm Management System
+    </div>
+
+  </div>
+);
 }
 
 export default MilkCollection;

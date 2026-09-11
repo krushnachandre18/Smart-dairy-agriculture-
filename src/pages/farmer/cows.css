@@ -4,117 +4,267 @@
 
 .cows-page {
   min-height: 100vh;
-  padding: 25px;
-  background: #f5f7f4;
-  color: #222;
+  padding: 30px;
+  background: #f8fafc;
+  color: #1e293b;
   font-family: Arial, sans-serif;
 }
 
-/* Main Heading */
-.cows-page > h1 {
-  margin-bottom: 10px;
-  font-size: 30px;
+/* =========================
+   MAIN MENU
+========================= */
+
+.cows-menu {
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-/* Section headings */
-.cows-page h2,
-.cows-page h3 {
-  margin-top: 25px;
-  margin-bottom: 15px;
+.cows-header {
+  text-align: center;
+  padding: 35px 25px;
+  margin-bottom: 30px;
+  background: #ecfdf5;
+  border: 1px solid #d1fae5;
+  border-radius: 20px;
 }
 
-/* Labels */
-.cows-page label {
-  display: inline-block;
-  margin-bottom: 6px;
-  font-weight: 600;
+.cows-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 50%;
+  font-size: 42px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
 }
 
-/* Inputs */
-.cows-page input,
-.cows-page select,
-.cows-page textarea {
-  width: 100%;
-  max-width: 450px;
-  padding: 12px;
-  border: 1px solid #d5d5d5;
-  border-radius: 8px;
-  font-size: 15px;
-  background: white;
-  outline: none;
+.cows-header h1 {
+  margin: 10px 0;
+  font-size: 32px;
 }
 
-/* Focus effect */
-.cows-page input:focus,
-.cows-page select:focus,
-.cows-page textarea:focus {
-  border-color: #4caf50;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.12);
-}
-
-/* Textarea */
-.cows-page textarea {
-  min-height: 90px;
-  resize: vertical;
-}
-
-/* Buttons */
-.cows-page button {
-  padding: 11px 18px;
-  border: none;
-  border-radius: 8px;
-  background: #222;
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  margin: 5px 5px 5px 0;
-}
-
-.cows-page button:hover {
-  opacity: 0.85;
-}
-
-/* Message */
-.cows-page > p {
-  font-weight: 600;
-}
-
-/* Horizontal lines */
-.cows-page hr {
-  border: none;
-  border-top: 1px solid #ddd;
-  margin: 30px 0;
+.cows-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 16px;
 }
 
 /* =========================
-   TABLES
+   MENU GRID
+========================= */
+
+.cow-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.cow-menu-card {
+  padding: 25px;
+  min-height: 150px;
+  text-align: left;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.cow-menu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.09);
+  border-color: #a7f3d0;
+}
+
+.cow-menu-card span {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.cow-menu-card strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 7px;
+  color: #1e293b;
+}
+
+.cow-menu-card small {
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* =========================
+   INNER PAGES
+========================= */
+
+.cows-page > h1,
+.cows-page > h2,
+.cows-page > h3,
+.cows-page > label,
+.cows-page > input,
+.cows-page > select,
+.cows-page > textarea,
+.cows-page > button,
+.cows-page > p,
+.cows-page > table,
+.cows-page > hr {
+  max-width: 1100px;
+}
+
+/* Page headings */
+
+.cows-page > h1 {
+  margin: 0 auto 15px;
+  font-size: 30px;
+}
+
+.cows-page > h2 {
+  margin: 25px auto 15px;
+}
+
+.cows-page > h3 {
+  margin: 25px auto 15px;
+}
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.cows-page > button {
+  display: block;
+  margin: 0 auto 20px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 9px;
+  background: #e2e8f0;
+  color: #1e293b;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cows-page > button:hover {
+  background: #cbd5e1;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.cows-page > label {
+  display: block;
+  margin: 14px auto 7px;
+  font-weight: 600;
+}
+
+.cows-page > input,
+.cows-page > select,
+.cows-page > textarea {
+  display: block;
+  width: calc(100% - 60px);
+  margin: 0 auto;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  font-size: 15px;
+  background: #ffffff;
+  outline: none;
+}
+
+.cows-page > input:focus,
+.cows-page > select:focus,
+.cows-page > textarea:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+}
+
+.cows-page > textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* =========================
+   ACTION BUTTON
+========================= */
+
+.cows-page > button:not(:first-of-type) {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.cows-page > button:not(:first-of-type):hover {
+  background: #059669;
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+.cows-page > p {
+  margin: 15px auto;
+  color: #475569;
+}
+
+/* =========================
+   TABLE
 ========================= */
 
 .cows-page table {
-  width: 100%;
+  width: calc(100% - 60px);
+  margin: 20px auto;
   border-collapse: collapse;
-  background: white;
-  margin-top: 15px;
+  background: #ffffff;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .cows-page th {
-  background: #222;
-  color: white;
-  padding: 12px;
+  padding: 14px;
+  background: #ecfdf5;
+  color: #065f46;
   text-align: left;
   font-size: 14px;
 }
 
 .cows-page td {
-  padding: 12px;
-  border-bottom: 1px solid #e5e5e5;
+  padding: 13px;
+  border-top: 1px solid #e2e8f0;
   font-size: 14px;
 }
 
-.cows-page tr:hover td {
-  background: #f8f8f8;
+.cows-page tr:hover {
+  background: #f8fafc;
+}
+
+/* Table buttons */
+
+.cows-page td button {
+  padding: 7px 12px;
+  border: none;
+  border-radius: 7px;
+  background: #fee2e2;
+  color: #b91c1c;
+  cursor: pointer;
+}
+
+.cows-page td button:hover {
+  background: #fecaca;
+}
+
+/* =========================
+   HORIZONTAL LINE
+========================= */
+
+.cows-page hr {
+  width: calc(100% - 60px);
+  margin: 25px auto;
+  border: none;
+  border-top: 1px solid #e2e8f0;
 }
 
 /* =========================
@@ -126,8 +276,24 @@
     padding: 15px;
   }
 
-  .cows-page > h1 {
-    font-size: 24px;
+  .cows-header {
+    padding: 25px 15px;
+  }
+
+  .cows-header h1 {
+    font-size: 26px;
+  }
+
+  .cow-menu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cows-page > input,
+  .cows-page > select,
+  .cows-page > textarea,
+  .cows-page table,
+  .cows-page hr {
+    width: 100%;
   }
 
   .cows-page table {
@@ -135,39 +301,457 @@
     overflow-x: auto;
     white-space: nowrap;
   }
+}
+/* =========================
+   ADD COW PROFESSIONAL DESIGN
+========================= */
 
-  .cows-page th,
-  .cows-page td {
-    padding: 9px;
+.cow-section {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Top Header */
+.section-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.section-top h1 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.section-top p {
+  margin-top: 6px;
+  color: #666;
+}
+
+/* Back Button */
+.back-button {
+  background: white !important;
+  color: #222 !important;
+  border: 1px solid #ddd !important;
+  padding: 10px 18px !important;
+}
+
+.back-button:hover {
+  background: #f5f5f5 !important;
+}
+
+/* Form Card */
+.cow-form-card {
+  background: white;
+  border: 1px solid #e2e2e2;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+/* Form Title */
+.form-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.form-title > span {
+  font-size: 28px;
+}
+
+.form-title h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.form-title p {
+  margin: 5px 0 0;
+  color: #777;
+  font-size: 14px;
+}
+
+/* Form Grid */
+.cow-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+/* Form Group */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid #d8d8d8;
+  border-radius: 9px;
+  font-size: 15px;
+  background: #fafafa;
+}
+
+/* Input Focus */
+.form-group input:focus,
+.form-group select:focus {
+  background: white;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+/* Add Cow Button */
+.add-cow-button {
+  margin-top: 28px !important;
+  padding: 13px 25px !important;
+  background: #222 !important;
+  color: white !important;
+  font-size: 15px !important;
+}
+
+.add-cow-button:hover {
+  background: #333 !important;
+  opacity: 1 !important;
+}
+
+/* Success / Error Message */
+.cow-message {
+  margin-top: 18px;
+  padding: 12px 15px;
+  border-radius: 8px;
+  background: #f1f8f3;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+  .section-top {
+    align-items: flex-start;
+    gap: 15px;
   }
 
-  .cows-page input,
-  .cows-page select,
-  .cows-page textarea {
-    max-width: 100%;
+  .section-top h1 {
+    font-size: 24px;
+  }
+
+  .section-top p {
+    font-size: 14px;
+  }
+
+  .cow-form-card {
+    padding: 20px;
+  }
+
+  .cow-form-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .back-button {
+    width: auto !important;
   }
 }
 
-/* Small mobile */
 @media (max-width: 450px) {
-  .cows-page {
-    padding: 12px;
+
+  .section-top {
+    flex-direction: column;
   }
 
-  .cows-page > h1 {
-    font-size: 21px;
+  .back-button {
+    width: 100% !important;
   }
 
-  .cows-page h2 {
+  .cow-form-card {
+    padding: 16px;
+  }
+
+  .form-title h2 {
+    font-size: 19px;
+  }
+
+  .add-cow-button {
+    width: 100% !important;
+  }
+}
+/* =========================
+   MY COWS
+========================= */
+
+.cow-list-card {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.list-header {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.list-header h2 {
+  margin: 0 0 8px;
+}
+
+.list-header p {
+  margin: 0;
+  color: #64748b;
+}
+
+.cow-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.cow-list-card table {
+  margin-top: 0;
+  min-width: 750px;
+}
+
+.cow-list-card th {
+  background: #1e293b;
+}
+
+.cow-list-card td {
+  vertical-align: middle;
+}
+
+.cow-status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f1f5f9;
+}
+
+.cow-status.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.cow-status.pregnant {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.cow-status.sold {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.cow-status.inactive {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.delete-cow-button {
+  background: #fee2e2 !important;
+  color: #b91c1c !important;
+  padding: 8px 12px !important;
+  font-size: 13px !important;
+}
+
+.delete-cow-button:hover {
+  background: #fecaca !important;
+  opacity: 1 !important;
+}
+
+.empty-cows {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.empty-cows > div {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.empty-cows h3 {
+  margin: 10px 0;
+}
+
+.empty-cows p {
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+.empty-cows .add-cow-button {
+  width: auto;
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+  .cow-list-card {
+    padding: 18px;
+  }
+
+  .cow-list-card table {
+    min-width: 700px;
+  }
+}
+
+@media (max-width: 450px) {
+  .empty-cows .add-cow-button {
+    width: 100%;
+  }
+}
+/* =========================
+   MILK PRODUCTION
+========================= */
+
+.milk-history-card {
+  margin-top: 25px;
+}
+
+.milk-total-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+}
+
+.milk-total-box span {
+  font-weight: 600;
+  color: #334155;
+}
+
+.milk-total-box strong {
+  font-size: 22px;
+  color: #2563eb;
+}
+
+.session-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .milk-total-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .milk-total-box strong {
     font-size: 20px;
   }
+}
+/* =========================
+   HEALTH & VACCINATION
+========================= */
 
-  .cows-page h3 {
-    font-size: 17px;
-  }
+.full-width {
+  grid-column: 1 / -1;
+}
 
-  .cows-page button {
-    width: 100%;
-    margin-right: 0;
+.health-history-card {
+  margin-top: 25px;
+}
+
+.health-status {
+  display: inline-block;
+  padding: 5px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.health-status.healthy {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.health-status.sick {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.health-status.under-treatment {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.health-history-card td {
+  vertical-align: middle;
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+  .full-width {
+    grid-column: auto;
   }
+}
+/* =========================
+   PREGNANCY & CALVING
+========================= */
+
+.pregnancy-history-card {
+  margin-top: 25px;
+}
+
+.pregnancy-status {
+  display: inline-block;
+  padding: 5px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.pregnancy-status.pregnant {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.pregnancy-status.not-pregnant {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.pregnancy-status.delivered {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.pregnancy-history-card td {
+  vertical-align: middle;
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Cows.css";
+import "./cows.css";
 
 function Cows() {
   // =========================
@@ -311,11 +311,220 @@ function Cows() {
       {/* =========================
           MAIN MENU
       ========================= */}
-      {activeSection === "menu" && (
-        <>
-          <h1>🐄 Cow Management</h1>
+     {activeSection === "menu" && (
+  <div className="cows-menu">
+
+    <div className="cows-header">
+      <div className="cows-icon">🐄</div>
+      <h1>Cow Management</h1>
+      <p>Manage your cows, health, milk production and pregnancy records.</p>
+    </div>
+
+    <div className="cow-menu-grid">
+
+      <button
+        className="cow-menu-card"
+        onClick={() => {
+          setActiveSection("addCow");
+          setMessage("");
+        }}
+      >
+        <span>➕</span>
+        <strong>Add New Cow</strong>
+        <small>Register a new cow</small>
+      </button>
+
+      <button
+        className="cow-menu-card"
+        onClick={() => {
+          setActiveSection("myCows");
+          setMessage("");
+        }}
+      >
+        <span>🐄</span>
+        <strong>My Cows</strong>
+        <small>View registered cows</small>
+      </button>
+
+      <button
+        className="cow-menu-card"
+        onClick={() => {
+          setActiveSection("milkProduction");
+          setMessage("");
+        }}
+      >
+        <span>🥛</span>
+        <strong>Milk Production</strong>
+        <small>Track cow milk production</small>
+      </button>
+
+      <button
+        className="cow-menu-card"
+        onClick={() => {
+          setActiveSection("health");
+          setMessage("");
+        }}
+      >
+        <span>❤️</span>
+        <strong>Health & Vaccination</strong>
+        <small>Manage cow health records</small>
+      </button>
+
+      <button
+        className="cow-menu-card"
+        onClick={() => {
+          setActiveSection("pregnancy");
+          setMessage("");
+        }}
+      >
+        <span>🤰</span>
+        <strong>Pregnancy & Calving</strong>
+        <small>Track pregnancy and calving</small>
+      </button>
+
+    </div>
+
+  </div>
+)}
+{activeSection === "addCow" && (
+  <div className="cow-section">
+
+    <div className="section-top">
+      <div>
+        <h1>🐄 Cow Management</h1>
+        <p>Add and manage your cow information.</p>
+      </div>
+
+      <button
+        className="back-button"
+        onClick={() => {
+          setActiveSection("menu");
+          setMessage("");
+        }}
+      >
+        ← Back
+      </button>
+    </div>
+
+    <div className="cow-form-card">
+
+      <div className="form-title">
+        <span>➕</span>
+        <div>
+          <h2>Add New Cow</h2>
+          <p>Enter the basic information of your cow.</p>
+        </div>
+      </div>
+
+      <div className="cow-form-grid">
+
+        <div className="form-group">
+          <label>Cow Tag Number</label>
+          <input
+            type="text"
+            placeholder="Example: COW001"
+            value={tagNumber}
+            onChange={(e) => setTagNumber(e.target.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Breed</label>
+          <input
+            type="text"
+            placeholder="Example: Gir"
+            value={breed}
+            onChange={(e) => setBreed(e.target.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Age (Years)</label>
+          <input
+            type="number"
+            placeholder="Enter age"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Purchase Date</label>
+          <input
+            type="date"
+            value={purchaseDate}
+            onChange={(e) => setPurchaseDate(e.target.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Status</label>
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option value="Active">Active</option>
+            <option value="Pregnant">Pregnant</option>
+            <option value="Sold">Sold</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+
+      </div>
+
+      <button
+        className="add-cow-button"
+        onClick={handleAddCow}
+      >
+        ➕ Add Cow
+      </button>
+
+      {message && (
+        <p className="cow-message">{message}</p>
+      )}
+
+    </div>
+
+  </div>
+)}
+
+     {activeSection === "myCows" && (
+  <div className="cow-section">
+
+    <div className="section-top">
+      <div>
+        <h1>🐄 My Cows</h1>
+        <p>View and manage all your registered cows.</p>
+      </div>
+
+      <button
+        className="back-button"
+        onClick={() => {
+          setActiveSection("menu");
+          setMessage("");
+        }}
+      >
+        ← Back
+      </button>
+    </div>
+
+    <div className="cow-list-card">
+
+      <div className="list-header">
+        <div>
+          <h2>🐄 Registered Cows</h2>
+          <p>Total Cows: <strong>{cows.length}</strong></p>
+        </div>
+      </div>
+
+      {cows.length === 0 ? (
+        <div className="empty-cows">
+          <div>🐄</div>
+          <h3>No cows added yet</h3>
+          <p>Add your first cow to start managing your farm.</p>
 
           <button
+            className="add-cow-button"
             onClick={() => {
               setActiveSection("addCow");
               setMessage("");
@@ -323,252 +532,106 @@ function Cows() {
           >
             ➕ Add New Cow
           </button>
+        </div>
+      ) : (
+        <div className="cow-table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Tag Number</th>
+                <th>Breed</th>
+                <th>Age</th>
+                <th>Purchase Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
 
-          <br />
-          <br />
+            <tbody>
+              {cows.map((cow) => (
+                <tr key={cow.id}>
 
-          <button
-            onClick={() => {
-              setActiveSection("myCows");
-              setMessage("");
-            }}
-          >
-            🐄 My Cows
-          </button>
+                  <td>
+                    <strong>{cow.tagNumber}</strong>
+                  </td>
 
-          <br />
-          <br />
+                  <td>{cow.breed}</td>
 
-          <button
-            onClick={() => {
-              setActiveSection("milkProduction");
-              setMessage("");
-            }}
-          >
-            🥛 Milk Production
-          </button>
+                  <td>{cow.age} Years</td>
 
-          <br />
-          <br />
+                  <td>{cow.purchaseDate}</td>
 
-          <button
-            onClick={() => {
-              setActiveSection("health");
-              setMessage("");
-            }}
-          >
-            ❤️ Health & Vaccination
-          </button>
+                  <td>
+                    <span
+                      className={`cow-status ${cow.status
+                        .toLowerCase()
+                        .replace(" ", "-")}`}
+                    >
+                      {cow.status}
+                    </span>
+                  </td>
 
-          <br />
-          <br />
+                  <td>
+                    <button
+                      className="delete-cow-button"
+                      onClick={() =>
+                        handleDeleteCow(cow.id)
+                      }
+                    >
+                      🗑️ Delete
+                    </button>
+                  </td>
 
-          <button
-            onClick={() => {
-              setActiveSection("pregnancy");
-              setMessage("");
-            }}
-          >
-            🤰 Pregnancy & Calving
-          </button>
-        </>
-      )}
-
-      {/* =========================
-          ADD NEW COW
-      ========================= */}
-      {activeSection === "addCow" && (
-        <>
-          <h1>🐄 Cow Management</h1>
-          <button
-            onClick={() => {
-              setActiveSection("menu");
-              setMessage("");
-            }}
-          >
-            ← Back
-          </button>
-          <hr />
-
-          <h2>➕ Add New Cow</h2>
-
-          <label>Cow Tag Number</label>
-          <br />
-
-          <input
-            type="text"
-            placeholder="Example: COW001"
-            value={tagNumber}
-            onChange={(e) =>
-              setTagNumber(e.target.value)
-            }
-          />
-
-          <br />
-          <br />
-
-          <label>Breed</label>
-          <br />
-
-          <input
-            type="text"
-            placeholder="Example: Gir"
-            value={breed}
-            onChange={(e) =>
-              setBreed(e.target.value)
-            }
-          />
-
-          <br />
-          <br />
-
-          <label>Age (Years)</label>
-          <br />
-
-          <input
-            type="number"
-            placeholder="Enter age"
-            value={age}
-            onChange={(e) =>
-              setAge(e.target.value)
-            }
-          />
-
-          <br />
-          <br />
-
-          <label>Purchase Date</label>
-          <br />
-
-          <input
-            type="date"
-            value={purchaseDate}
-            onChange={(e) =>
-              setPurchaseDate(e.target.value)
-            }
-          />
-
-          <br />
-          <br />
-
-          <label>Status</label>
-          <br />
-
-          <select
-            value={status}
-            onChange={(e) =>
-              setStatus(e.target.value)
-            }
-          >
-            <option value="Active">Active</option>
-            <option value="Pregnant">Pregnant</option>
-            <option value="Sold">Sold</option>
-            <option value="Inactive">Inactive</option>
-          </select>
-
-          <br />
-          <br />
-
-          <button onClick={handleAddCow}>
-            Add Cow
-          </button>
-
-          <p>{message}</p>
-
-          <br />
-
-          
-        </>
-      )}
-
-      {/* =========================
-          MY COWS
-      ========================= */}
-      {activeSection === "myCows" && (
-        <>
-          <h1>🐄 My Cows</h1>
-          <button
-            onClick={() => {
-              setActiveSection("menu");
-              setMessage("");
-            }}
-          >
-            ← Back
-          </button>
-          <hr />
-
-          {cows.length === 0 ? (
-            <p>No cows added yet.</p>
-          ) : (
-            <table border="1" cellPadding="8">
-              <thead>
-                <tr>
-                  <th>Tag Number</th>
-                  <th>Breed</th>
-                  <th>Age</th>
-                  <th>Purchase Date</th>
-                  <th>Status</th>
-                  <th>Action</th>
                 </tr>
-              </thead>
-
-              <tbody>
-                {cows.map((cow) => (
-                  <tr key={cow.id}>
-                    <td>{cow.tagNumber}</td>
-                    <td>{cow.breed}</td>
-                    <td>{cow.age} Years</td>
-                    <td>{cow.purchaseDate}</td>
-                    <td>{cow.status}</td>
-
-                    <td>
-                      <button
-                        onClick={() =>
-                          handleDeleteCow(cow.id)
-                        }
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-
-          <br />
-          <br />
-
-         
-        </>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
-      {/* =========================
-          MILK PRODUCTION
-      ========================= */}
-      {activeSection === "milkProduction" && (
-        <>
-          <h1>🥛 Milk Production</h1>
-          <button
-            onClick={() => {
-              setActiveSection("menu");
-              setMessage("");
-            }}
-          >
-            ← Back
-          </button>
-          <hr />
+    </div>
 
-          <h3>🥛 Add Milk Production</h3>
+  </div>
+)}
 
+    {activeSection === "milkProduction" && (
+  <div className="cow-section">
+
+    <div className="section-top">
+      <div>
+        <h1>🥛 Milk Production</h1>
+        <p>Track daily milk production for each cow.</p>
+      </div>
+
+      <button
+        className="back-button"
+        onClick={() => {
+          setActiveSection("menu");
+          setMessage("");
+        }}
+      >
+        ← Back
+      </button>
+    </div>
+
+    <div className="cow-form-card">
+
+      <div className="form-title">
+        <span>🥛</span>
+        <div>
+          <h2>Add Milk Production</h2>
+          <p>Enter the daily milk production details.</p>
+        </div>
+      </div>
+
+      <div className="cow-form-grid">
+
+        <div className="form-group">
           <label>Select Cow</label>
-          <br />
 
           <select
             value={selectedCow}
-            onChange={(e) =>
-              setSelectedCow(e.target.value)
-            }
+            onChange={(e) => setSelectedCow(e.target.value)}
           >
             <option value="">Select Cow</option>
 
@@ -581,12 +644,10 @@ function Cows() {
               </option>
             ))}
           </select>
+        </div>
 
-          <br />
-          <br />
-
+        <div className="form-group">
           <label>Date</label>
-          <br />
 
           <input
             type="date"
@@ -595,12 +656,10 @@ function Cows() {
               setProductionDate(e.target.value)
             }
           />
+        </div>
 
-          <br />
-          <br />
-
+        <div className="form-group">
           <label>Session</label>
-          <br />
 
           <select
             value={productionSession}
@@ -611,12 +670,10 @@ function Cows() {
             <option value="Morning">Morning</option>
             <option value="Evening">Evening</option>
           </select>
+        </div>
 
-          <br />
-          <br />
-
+        <div className="form-group">
           <label>Milk Quantity (Litres)</label>
-          <br />
 
           <input
             type="number"
@@ -626,96 +683,136 @@ function Cows() {
               setMilkQuantity(e.target.value)
             }
           />
+        </div>
 
-          <br />
-          <br />
+      </div>
 
-          <button onClick={handleAddProduction}>
-            Add Milk Production
-          </button>
+      <button
+        className="add-cow-button"
+        onClick={handleAddProduction}
+      >
+        ➕ Add Milk Production
+      </button>
 
-          <p>{message}</p>
-
-          <hr />
-
-          <h3>📊 Cow Milk Production History</h3>
-
-          {selectedCow ? (
-            <>
-              <p>
-                <strong>Total Milk:</strong>{" "}
-                {totalMilk} Litres
-              </p>
-
-              {selectedCowProduction.length === 0 ? (
-                <p>
-                  No production records for this cow.
-                </p>
-              ) : (
-                <table border="1" cellPadding="8">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Session</th>
-                      <th>Quantity</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {selectedCowProduction.map(
-                      (production) => (
-                        <tr key={production.id}>
-                          <td>
-                            {production.date}
-                          </td>
-
-                          <td>
-                            {production.session}
-                          </td>
-
-                          <td>
-                            {production.quantity} L
-                          </td>
-                        </tr>
-                      )
-                    )}
-                  </tbody>
-                </table>
-              )}
-            </>
-          ) : (
-            <p>
-              Select a cow to view milk production
-              history.
-            </p>
-          )}
-
-          <br />
-
-          
-        </>
+      {message && (
+        <p className="cow-message">{message}</p>
       )}
 
-      {/* =========================
-          HEALTH & VACCINATION
-      ========================= */}
-      {activeSection === "health" && (
+    </div>
+
+    <div className="cow-list-card milk-history-card">
+
+      <div className="list-header">
+        <div>
+          <h2>📊 Cow Milk Production History</h2>
+          <p>
+            Select a cow to view its production history.
+          </p>
+        </div>
+      </div>
+
+      {selectedCow ? (
         <>
-          <h1>❤️ Health & Vaccination</h1>
-          <button
-            onClick={() => {
-              setActiveSection("menu");
-              setMessage("");
-            }}
-          >
-            ← Back
-          </button>
-          <hr />
+          <div className="milk-total-box">
+            <span>🥛 Total Milk Production</span>
+            <strong>{totalMilk} Litres</strong>
+          </div>
 
-          <h3>🩺 Add Health Record</h3>
+          {selectedCowProduction.length === 0 ? (
+            <div className="empty-cows">
+              <div>🥛</div>
+              <h3>No production records</h3>
+              <p>
+                No milk production records found for this cow.
+              </p>
+            </div>
+          ) : (
+            <div className="cow-table-container">
+              <table>
 
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Session</th>
+                    <th>Quantity</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {selectedCowProduction.map((production) => (
+                    <tr key={production.id}>
+
+                      <td>{production.date}</td>
+
+                      <td>
+                        <span className="session-badge">
+                          {production.session}
+                        </span>
+                      </td>
+
+                      <td>
+                        <strong>
+                          {production.quantity} L
+                        </strong>
+                      </td>
+
+                    </tr>
+                  ))}
+                </tbody>
+
+              </table>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="empty-cows">
+          <div>🐄</div>
+          <h3>Select a Cow</h3>
+          <p>
+            Select a cow from the form above to view its
+            milk production history.
+          </p>
+        </div>
+      )}
+
+    </div>
+
+  </div>
+)}
+     {activeSection === "health" && (
+  <div className="cow-section">
+
+    <div className="section-top">
+      <div>
+        <h1>❤️ Health & Vaccination</h1>
+        <p>Track cow health and vaccination records.</p>
+      </div>
+
+      <button
+        className="back-button"
+        onClick={() => {
+          setActiveSection("menu");
+          setMessage("");
+        }}
+      >
+        ← Back
+      </button>
+    </div>
+
+    <div className="cow-form-card">
+
+      <div className="form-title">
+        <span>🩺</span>
+        <div>
+          <h2>Add Health Record</h2>
+          <p>Enter vaccination and health information.</p>
+        </div>
+      </div>
+
+      <div className="cow-form-grid">
+
+        <div className="form-group">
           <label>Select Cow</label>
-          <br />
 
           <select
             value={healthCow}
@@ -734,12 +831,10 @@ function Cows() {
               </option>
             ))}
           </select>
+        </div>
 
-          <br />
-          <br />
-
+        <div className="form-group">
           <label>Vaccine Name</label>
-          <br />
 
           <input
             type="text"
@@ -749,12 +844,10 @@ function Cows() {
               setVaccineName(e.target.value)
             }
           />
+        </div>
 
-          <br />
-          <br />
-
+        <div className="form-group">
           <label>Vaccination Date</label>
-          <br />
 
           <input
             type="date"
@@ -763,12 +856,10 @@ function Cows() {
               setVaccinationDate(e.target.value)
             }
           />
+        </div>
 
-          <br />
-          <br />
-
+        <div className="form-group">
           <label>Next Due Date</label>
-          <br />
 
           <input
             type="date"
@@ -777,12 +868,10 @@ function Cows() {
               setNextDueDate(e.target.value)
             }
           />
+        </div>
 
-          <br />
-          <br />
-
+        <div className="form-group">
           <label>Health Status</label>
-          <br />
 
           <select
             value={healthStatus}
@@ -790,24 +879,16 @@ function Cows() {
               setHealthStatus(e.target.value)
             }
           >
-            <option value="Healthy">
-              Healthy
-            </option>
-
-            <option value="Sick">
-              Sick
-            </option>
-
+            <option value="Healthy">Healthy</option>
+            <option value="Sick">Sick</option>
             <option value="Under Treatment">
               Under Treatment
             </option>
           </select>
+        </div>
 
-          <br />
-          <br />
-
+        <div className="form-group full-width">
           <label>Health Notes</label>
-          <br />
 
           <textarea
             placeholder="Enter health notes"
@@ -816,106 +897,138 @@ function Cows() {
               setHealthNotes(e.target.value)
             }
           />
+        </div>
 
-          <br />
-          <br />
+      </div>
 
-          <button onClick={handleAddHealth}>
-            Add Health Record
-          </button>
+      <button
+        className="add-cow-button"
+        onClick={handleAddHealth}
+      >
+        ➕ Add Health Record
+      </button>
 
-          <p>{message}</p>
-
-          <hr />
-
-          <h3>
-            📋 Health & Vaccination History
-          </h3>
-
-          {healthRecords.length === 0 ? (
-            <p>
-              No health records available.
-            </p>
-          ) : (
-            <table border="1" cellPadding="8">
-              <thead>
-                <tr>
-                  <th>Cow</th>
-                  <th>Vaccine</th>
-                  <th>Vaccination Date</th>
-                  <th>Next Due Date</th>
-                  <th>Health Status</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {healthRecords.map((record) => {
-                  const cow = cows.find(
-                    (cow) =>
-                      cow.id === record.cowId
-                  );
-
-                  return (
-                    <tr key={record.id}>
-                      <td>
-                        {cow
-                          ? cow.tagNumber
-                          : "Unknown"}
-                      </td>
-
-                      <td>
-                        {record.vaccine}
-                      </td>
-
-                      <td>
-                        {record.vaccinationDate}
-                      </td>
-
-                      <td>
-                        {record.nextDueDate}
-                      </td>
-
-                      <td>
-                        {record.healthStatus}
-                      </td>
-
-                      <td>
-                        {record.notes || "-"}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          )}
-
-          <br />
-
-          
-        </>
+      {message && (
+        <p className="cow-message">{message}</p>
       )}
 
-      {/* =========================
-          PREGNANCY & CALVING
-      ========================= */}
-      {activeSection === "pregnancy" && (
-        <>
-          <h1>
-            🤰 Pregnancy & Calving Management
-          </h1>
-<button
-            onClick={() => {
-              setActiveSection("menu");
-              setMessage("");
-            }}
-          >
-            ← Back
-          </button>
-          <hr />
+    </div>
 
-          <label>Select Cow:</label>
-          <br />
+    <div className="cow-list-card health-history-card">
+
+      <div className="list-header">
+        <div>
+          <h2>📋 Health & Vaccination History</h2>
+          <p>View all recorded health information.</p>
+        </div>
+      </div>
+
+      {healthRecords.length === 0 ? (
+        <div className="empty-cows">
+          <div>🩺</div>
+          <h3>No health records available</h3>
+          <p>
+            Add a health record to start tracking cow health.
+          </p>
+        </div>
+      ) : (
+        <div className="cow-table-container">
+          <table>
+
+            <thead>
+              <tr>
+                <th>Cow</th>
+                <th>Vaccine</th>
+                <th>Vaccination Date</th>
+                <th>Next Due Date</th>
+                <th>Health Status</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {healthRecords.map((record) => {
+
+                const cow = cows.find(
+                  (cow) => cow.id === record.cowId
+                );
+
+                return (
+                  <tr key={record.id}>
+
+                    <td>
+                      <strong>
+                        {cow ? cow.tagNumber : "Unknown"}
+                      </strong>
+                    </td>
+
+                    <td>{record.vaccine}</td>
+
+                    <td>{record.vaccinationDate}</td>
+
+                    <td>{record.nextDueDate}</td>
+
+                    <td>
+                      <span
+                        className={`health-status ${record.healthStatus
+                          .toLowerCase()
+                          .replaceAll(" ", "-")}`}
+                      >
+                        {record.healthStatus}
+                      </span>
+                    </td>
+
+                    <td>
+                      {record.notes || "-"}
+                    </td>
+
+                  </tr>
+                );
+              })}
+            </tbody>
+
+          </table>
+        </div>
+      )}
+
+    </div>
+
+  </div>
+)}
+      {activeSection === "pregnancy" && (
+  <div className="cow-section">
+
+    <div className="section-top">
+      <div>
+        <h1>🤰 Pregnancy & Calving Management</h1>
+        <p>Track pregnancy and calving information for your cows.</p>
+      </div>
+
+      <button
+        className="back-button"
+        onClick={() => {
+          setActiveSection("menu");
+          setMessage("");
+        }}
+      >
+        ← Back
+      </button>
+    </div>
+
+    <div className="cow-form-card">
+
+      <div className="form-title">
+        <span>🤰</span>
+        <div>
+          <h2>Add Pregnancy Record</h2>
+          <p>Enter pregnancy and calving details.</p>
+        </div>
+      </div>
+
+      <div className="cow-form-grid">
+
+        <div className="form-group">
+          <label>Select Cow</label>
 
           <select
             value={pregnancyCow}
@@ -923,9 +1036,7 @@ function Cows() {
               setPregnancyCow(e.target.value)
             }
           >
-            <option value="">
-              Select Cow
-            </option>
+            <option value="">Select Cow</option>
 
             {cows.map((cow) => (
               <option
@@ -936,12 +1047,10 @@ function Cows() {
               </option>
             ))}
           </select>
+        </div>
 
-          <br />
-          <br />
-
-          <label>Pregnancy Status:</label>
-          <br />
+        <div className="form-group">
+          <label>Pregnancy Status</label>
 
           <select
             value={pregnancyStatus}
@@ -961,44 +1070,34 @@ function Cows() {
               Delivered
             </option>
           </select>
+        </div>
 
-          <br />
-          <br />
-
-          <label>Pregnancy Start Date:</label>
-          <br />
+        <div className="form-group">
+          <label>Pregnancy Start Date</label>
 
           <input
             type="date"
             value={pregnancyStartDate}
             onChange={(e) =>
-              setPregnancyStartDate(
-                e.target.value
-              )
+              setPregnancyStartDate(e.target.value)
             }
           />
+        </div>
 
-          <br />
-          <br />
-
-          <label>Expected Calving Date:</label>
-          <br />
+        <div className="form-group">
+          <label>Expected Calving Date</label>
 
           <input
             type="date"
             value={expectedCalvingDate}
             onChange={(e) =>
-              setExpectedCalvingDate(
-                e.target.value
-              )
+              setExpectedCalvingDate(e.target.value)
             }
           />
+        </div>
 
-          <br />
-          <br />
-
-          <label>Calving Date:</label>
-          <br />
+        <div className="form-group">
+          <label>Calving Date</label>
 
           <input
             type="date"
@@ -1007,12 +1106,10 @@ function Cows() {
               setCalvingDate(e.target.value)
             }
           />
+        </div>
 
-          <br />
-          <br />
-
-          <label>Calf Gender:</label>
-          <br />
+        <div className="form-group">
+          <label>Calf Gender</label>
 
           <select
             value={calfGender}
@@ -1020,120 +1117,138 @@ function Cows() {
               setCalfGender(e.target.value)
             }
           >
-            <option value="">
-              Select Gender
-            </option>
-
-            <option value="Male">
-              Male
-            </option>
-
-            <option value="Female">
-              Female
-            </option>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
           </select>
+        </div>
 
-          <br />
-          <br />
-
-          <label>Notes:</label>
-          <br />
+        <div className="form-group full-width">
+          <label>Notes</label>
 
           <textarea
             value={pregnancyNotes}
             onChange={(e) =>
-              setPregnancyNotes(
-                e.target.value
-              )
+              setPregnancyNotes(e.target.value)
             }
             placeholder="Enter pregnancy/calving notes"
           />
+        </div>
 
-          <br />
-          <br />
+      </div>
 
-          <button onClick={handleAddPregnancy}>
-            🤰 Add Pregnancy Record
-          </button>
+      <button
+        className="add-cow-button"
+        onClick={handleAddPregnancy}
+      >
+        🤰 Add Pregnancy Record
+      </button>
 
-          <p>{message}</p>
+      {message && (
+        <p className="cow-message">{message}</p>
+      )}
 
-          <hr />
+    </div>
 
-          <h3>
-            📋 Pregnancy & Calving History
-          </h3>
+    <div className="cow-list-card pregnancy-history-card">
 
-          {pregnancyRecords.length === 0 ? (
-            <p>
-              No pregnancy records available.
-            </p>
-          ) : (
-            <table border="1" cellPadding="8">
-              <thead>
-                <tr>
-                  <th>Cow</th>
-                  <th>Status</th>
-                  <th>Pregnancy Start</th>
-                  <th>Expected Calving</th>
-                  <th>Calving Date</th>
-                  <th>Calf Gender</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
+      <div className="list-header">
+        <div>
+          <h2>📋 Pregnancy & Calving History</h2>
+          <p>View all pregnancy and calving records.</p>
+        </div>
+      </div>
 
-              <tbody>
-                {pregnancyRecords.map((record) => {
-                  const cow = cows.find(
-                    (cow) =>
-                      cow.id === record.cowId
-                  );
+      {pregnancyRecords.length === 0 ? (
+        <div className="empty-cows">
+          <div>🤰</div>
 
-                  return (
-                    <tr key={record.id}>
-                      <td>
+          <h3>No pregnancy records available</h3>
+
+          <p>
+            Add a pregnancy record to start tracking
+            pregnancy and calving information.
+          </p>
+        </div>
+      ) : (
+        <div className="cow-table-container">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Cow</th>
+                <th>Status</th>
+                <th>Pregnancy Start</th>
+                <th>Expected Calving</th>
+                <th>Calving Date</th>
+                <th>Calf Gender</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {pregnancyRecords.map((record) => {
+
+                const cow = cows.find(
+                  (cow) => cow.id === record.cowId
+                );
+
+                return (
+                  <tr key={record.id}>
+
+                    <td>
+                      <strong>
                         {cow
                           ? cow.tagNumber
                           : "Unknown"}
-                      </td>
+                      </strong>
+                    </td>
 
-                      <td>
+                    <td>
+                      <span
+                        className={`pregnancy-status ${record.status
+                          .toLowerCase()
+                          .replaceAll(" ", "-")}`}
+                      >
                         {record.status}
-                      </td>
+                      </span>
+                    </td>
 
-                      <td>
-                        {record.pregnancyStartDate ||
-                          "-"}
-                      </td>
+                    <td>
+                      {record.pregnancyStartDate || "-"}
+                    </td>
 
-                      <td>
-                        {record.expectedCalvingDate ||
-                          "-"}
-                      </td>
+                    <td>
+                      {record.expectedCalvingDate || "-"}
+                    </td>
 
-                      <td>
-                        {record.calvingDate || "-"}
-                      </td>
+                    <td>
+                      {record.calvingDate || "-"}
+                    </td>
 
-                      <td>
-                        {record.calfGender || "-"}
-                      </td>
+                    <td>
+                      {record.calfGender || "-"}
+                    </td>
 
-                      <td>
-                        {record.notes || "-"}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          )}
+                    <td>
+                      {record.notes || "-"}
+                    </td>
 
-          <br />
+                  </tr>
+                );
+              })}
+            </tbody>
 
-          
-        </>
+          </table>
+
+        </div>
       )}
+
+    </div>
+
+  </div>
+)}
     </div>
   );
 }

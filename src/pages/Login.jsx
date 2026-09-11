@@ -8,29 +8,44 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>🐄 Smart Dairy & Farm</h1>
-      <h2>Farmer Login</h2>
+    <div className="login-container">
+      <div className="login-card">
 
-      <input
-        type="text"
-        placeholder="Mobile Number"
-      />
+        <div className="login-logo">
+          🐄
+        </div>
 
-      <br />
-      <br />
+        <h1>Smart Dairy & Farm</h1>
 
-      <input
-        type="password"
-        placeholder="Password"
-      />
+        <p className="login-subtitle">
+          Farmer Management System
+        </p>
 
-      <br />
-      <br />
+        <h2>Farmer Login</h2>
 
-      <button onClick={handleLogin}>
-        Login
-      </button>
+        <div className="login-form">
+          <label>Mobile Number</label>
+          <input
+            type="text"
+            placeholder="Enter mobile number"
+          />
+
+          <label>Password</label>
+          <input
+            type="password"
+            placeholder="Enter password"
+          />
+
+          <button onClick={handleLogin}>
+            Login
+          </button>
+        </div>
+
+        <p className="login-footer">
+          Manage your farm smarter with Smart Dairy
+        </p>
+
+      </div>
     </div>
   );
 }

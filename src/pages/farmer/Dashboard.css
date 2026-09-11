@@ -1,0 +1,483 @@
+.dashboard-page {
+  min-height: 100vh;
+  background: #f5f7fb;
+  color: #263238;
+  font-family: Arial, sans-serif;
+}
+
+/* ================= NAVBAR ================= */
+
+.dashboard-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 70px;
+  padding: 12px 30px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.dashboard-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #2e7d32;
+  font-size: 21px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.dashboard-nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.dashboard-nav-links button {
+  padding: 9px 13px;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #37474f;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.dashboard-nav-links button:hover {
+  background: #f1f5f9;
+  border-color: #2e7d32;
+  transform: translateY(-2px);
+}
+
+.dashboard-nav-links .nav-ai-button {
+  background: #2e7d32;
+  color: #ffffff;
+  border-color: #2e7d32;
+  font-weight: 600;
+}
+
+.dashboard-nav-links .nav-ai-button:hover {
+  background: #256d2a;
+  color: #ffffff;
+}
+
+/* ================= MAIN ================= */
+
+.dashboard-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* ================= WELCOME ================= */
+
+.dashboard-welcome {
+  min-height: 230px;
+  padding: 35px 40px;
+  margin-bottom: 25px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+  border: 1px solid #c8e6c9;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  overflow: hidden;
+}
+
+.welcome-content {
+  flex: 1;
+}
+
+.welcome-badge {
+  display: inline-block;
+  padding: 7px 12px;
+  margin-bottom: 15px;
+  border-radius: 20px;
+  background: #ffffff;
+  color: #2e7d32;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dashboard-welcome h1 {
+  margin: 0 0 8px;
+  color: #2e7d32;
+  font-size: 34px;
+}
+
+.dashboard-welcome h2 {
+  margin: 0 0 12px;
+  color: #455a64;
+  font-size: 21px;
+}
+
+.dashboard-welcome p {
+  max-width: 650px;
+  margin: 0;
+  color: #607d8b;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.welcome-cow {
+  width: 130px;
+  height: 130px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  font-size: 70px;
+}
+
+/* ================= COMMON CARD ================= */
+
+.dashboard-card {
+  background: #ffffff;
+  padding: 25px;
+  margin-bottom: 25px;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-card-heading {
+  padding-bottom: 18px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dashboard-card-heading h2 {
+  margin: 0 0 6px;
+  color: #37474f;
+  font-size: 21px;
+}
+
+.dashboard-card-heading p {
+  margin: 0;
+  color: #78909c;
+  font-size: 14px;
+}
+
+/* ================= OVERVIEW ================= */
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.overview-card {
+  min-height: 125px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-radius: 14px;
+  border: 1px solid;
+}
+
+.overview-card > span {
+  font-size: 34px;
+}
+
+.overview-card p {
+  margin: 0 0 7px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.overview-card h2 {
+  margin: 0;
+  font-size: 25px;
+}
+
+.cows-card {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.cows-card p,
+.cows-card h2 {
+  color: #166534;
+}
+
+.milk-card {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.milk-card p,
+.milk-card h2 {
+  color: #1d4ed8;
+}
+
+.feed-card {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.feed-card p,
+.feed-card h2 {
+  color: #92400e;
+}
+
+.income-card {
+  background: #fdf2f8;
+  border-color: #fbcfe8;
+}
+
+.income-card p,
+.income-card h2 {
+  color: #9d174d;
+}
+
+/* ================= MODULE CARDS ================= */
+
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.module-card {
+  min-height: 145px;
+  padding: 20px;
+  text-align: left;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 14px !important;
+  background: #ffffff !important;
+  color: #263238 !important;
+  cursor: pointer;
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
+
+.module-card:hover {
+  transform: translateY(-4px);
+  border-color: #2e7d32 !important;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  opacity: 1 !important;
+}
+
+.module-card span {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 30px;
+}
+
+.module-card strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #37474f;
+  font-size: 15px;
+}
+
+.module-card small {
+  color: #78909c;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ================= AI ================= */
+
+.dashboard-ai-card {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  padding: 30px;
+  margin-bottom: 25px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #f3e5f5, #ede7f6);
+  border: 1px solid #ddd6fe;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+}
+
+.ai-dashboard-icon {
+  width: 75px;
+  height: 75px;
+  min-width: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: #ffffff;
+  font-size: 40px;
+}
+
+.ai-dashboard-content {
+  flex: 1;
+}
+
+.ai-dashboard-content > span {
+  color: #7e22ce;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.ai-dashboard-content h2 {
+  margin: 7px 0 8px;
+  color: #4a148c;
+  font-size: 22px;
+}
+
+.ai-dashboard-content p {
+  max-width: 700px;
+  margin: 0;
+  color: #6a1b9a;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.ai-dashboard-content button {
+  margin-top: 17px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 9px;
+  background: #6a1b9a;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ai-dashboard-content button:hover {
+  background: #58117e;
+  transform: translateY(-2px);
+}
+
+/* ================= FOOTER ================= */
+
+.dashboard-footer {
+  padding: 25px 20px;
+  margin-top: 10px;
+  text-align: center;
+  color: #78909c;
+  border-top: 1px solid #dfe4e8;
+}
+
+.dashboard-footer strong {
+  color: #546e7a;
+  font-size: 14px;
+}
+
+.dashboard-footer p {
+  margin: 8px 0;
+  font-size: 13px;
+}
+
+.dashboard-footer small {
+  font-size: 11px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1000px) {
+  .dashboard-navbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dashboard-logo {
+    justify-content: center;
+  }
+
+  .dashboard-nav-links {
+    justify-content: center;
+  }
+
+  .overview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .module-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .dashboard-main {
+    padding: 20px 15px;
+  }
+
+  .dashboard-welcome {
+    padding: 28px 22px;
+  }
+
+  .welcome-cow {
+    width: 95px;
+    height: 95px;
+    font-size: 50px;
+  }
+
+  .dashboard-welcome h1 {
+    font-size: 27px;
+  }
+
+  .dashboard-ai-card {
+    padding: 25px;
+  }
+}
+
+@media (max-width: 550px) {
+  .dashboard-navbar {
+    padding: 12px 15px;
+  }
+
+  .dashboard-logo {
+    font-size: 18px;
+  }
+
+  .dashboard-nav-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-nav-links button {
+    width: 100%;
+  }
+
+  .dashboard-nav-links .nav-ai-button {
+    grid-column: span 2;
+  }
+
+  .dashboard-welcome {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .dashboard-welcome p {
+    margin: 0 auto;
+  }
+
+  .overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .module-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-ai-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .ai-dashboard-content p {
+    margin: auto;
+  }
+}

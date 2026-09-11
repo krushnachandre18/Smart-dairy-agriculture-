@@ -1,0 +1,391 @@
+/* ================================
+   MILK COLLECTION PAGE
+================================ */
+
+.milk-page {
+  min-height: 100vh;
+  padding: 30px;
+  background: #f8fafc;
+  color: #1e293b;
+}
+
+.milk-header {
+  max-width: 1150px;
+  margin: 0 auto 25px;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ecfdf5;
+  border: 1px solid #d1fae5;
+  border-radius: 18px;
+}
+
+.milk-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 10px;
+  border-radius: 20px;
+  background: #d1fae5;
+  color: #047857;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.milk-header h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+}
+
+.milk-header p {
+  margin: 0;
+  color: #64748b;
+}
+
+.milk-header-icon {
+  width: 75px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: white;
+  font-size: 38px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+}
+
+/* ================================
+   CARD
+================================ */
+
+.milk-card {
+  max-width: 1150px;
+  margin: 0 auto 25px;
+  padding: 28px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.milk-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.milk-card-heading h2 {
+  margin: 0 0 5px;
+  font-size: 22px;
+}
+
+.milk-card-heading p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.record-count {
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ================================
+   FORM
+================================ */
+
+.milk-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.milk-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.milk-form-group label {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.milk-form-group input,
+.milk-form-group select {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: white;
+  color: #1e293b;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.milk-form-group input:focus,
+.milk-form-group select:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+}
+
+/* ================================
+   CALCULATION
+================================ */
+
+.milk-calculation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.calculation-box {
+  padding: 20px;
+  border-radius: 12px;
+  background: #f0fdf4;
+  border: 1px solid #dcfce7;
+}
+
+.calculation-box span {
+  display: block;
+  margin-bottom: 8px;
+  color: #475569;
+  font-size: 14px;
+}
+
+.calculation-box strong {
+  display: block;
+  font-size: 25px;
+  color: #047857;
+}
+
+.calculation-box small {
+  color: #64748b;
+}
+
+.amount-box {
+  background: #eff6ff;
+  border-color: #dbeafe;
+}
+
+.amount-box strong {
+  color: #2563eb;
+}
+
+/* ================================
+   BUTTON
+================================ */
+
+.add-milk-button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #10b981;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.add-milk-button:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(16, 185, 129, 0.2);
+}
+
+/* ================================
+   MESSAGE
+================================ */
+
+.milk-message {
+  margin-top: 15px;
+  padding: 12px 15px;
+  border-radius: 8px;
+  background: #ecfdf5;
+  border: 1px solid #bbf7d0;
+  color: #047857;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ================================
+   TABLE
+================================ */
+
+.milk-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.milk-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+.milk-table th {
+  padding: 14px 12px;
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+  color: #475569;
+  font-size: 13px;
+  text-align: left;
+}
+
+.milk-table td {
+  padding: 15px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 14px;
+}
+
+.milk-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* ================================
+   BADGES
+================================ */
+
+.session-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-pending {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-verified {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ================================
+   VERIFY BUTTON
+================================ */
+
+.verify-button {
+  padding: 7px 13px;
+  border: none;
+  border-radius: 7px;
+  background: #2563eb;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.verify-button:hover {
+  background: #1d4ed8;
+}
+
+.verified-text {
+  color: #16a34a;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ================================
+   EMPTY STATE
+================================ */
+
+.milk-empty {
+  padding: 50px 20px;
+  text-align: center;
+  border: 2px dashed #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.milk-empty div {
+  font-size: 45px;
+  margin-bottom: 10px;
+}
+
+.milk-empty h3 {
+  margin: 0 0 8px;
+}
+
+.milk-empty p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* ================================
+   FOOTER
+================================ */
+
+.milk-footer {
+  max-width: 1150px;
+  margin: 30px auto 0;
+  padding: 20px;
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 700px) {
+  .milk-page {
+    padding: 15px;
+  }
+
+  .milk-header {
+    padding: 22px;
+  }
+
+  .milk-header h1 {
+    font-size: 26px;
+  }
+
+  .milk-header-icon {
+    display: none;
+  }
+
+  .milk-card {
+    padding: 20px;
+  }
+
+  .milk-form-grid,
+  .milk-calculation {
+    grid-template-columns: 1fr;
+  }
+
+  .milk-card-heading {
+    align-items: flex-start;
+    gap: 15px;
+    flex-direction: column;
+  }
+}
