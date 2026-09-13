@@ -203,10 +203,17 @@
 }
 
 .add-feed-button {
-  margin-top: 25px !important;
+
+
+   margin-top: 25px !important;
   padding: 13px 25px !important;
   background: #10b981 !important;
-  font-size: 15px !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 9px !important;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .add-feed-button:hover {

@@ -416,11 +416,16 @@
 
 /* Add Cow Button */
 .add-cow-button {
-  margin-top: 28px !important;
+   margin-top: 25px !important;
   padding: 13px 25px !important;
   background: #222 !important;
   color: white !important;
-  font-size: 15px !important;
+  border: none !important;
+  border-radius: 9px !important;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+ 
 }
 
 .add-cow-button:hover {

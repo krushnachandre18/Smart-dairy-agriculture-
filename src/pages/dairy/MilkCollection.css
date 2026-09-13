@@ -1,0 +1,286 @@
+/* =================================
+   MILK COLLECTION PAGE
+================================= */
+
+.milk-collection-page {
+  min-height: 100vh;
+  padding: 30px;
+  background: #f1f5f9;
+  color: #1e293b;
+  font-family: Arial, sans-serif;
+}
+
+/* =================================
+   COLLECTION FORM CARD
+================================= */
+
+.milk-collection-card {
+  max-width: 850px;
+  margin: 0 auto 30px;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+}
+
+.milk-collection-card h1 {
+  margin-bottom: 25px;
+  color: #0f172a;
+  font-size: 30px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* =================================
+   FORM
+================================= */
+
+.milk-collection-card form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* =================================
+   FORM GROUP
+================================= */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  background: #f8fafc;
+  color: #1e293b;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #0f766e;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+}
+
+/* =================================
+   SELECTED FARMER BOX
+================================= */
+
+.selected-farmer-box {
+  grid-column: span 2;
+  padding: 16px 20px;
+  border-left: 5px solid #0f766e;
+  border-radius: 10px;
+  background: #ecfdf5;
+}
+
+.selected-farmer-box p {
+  margin: 5px 0;
+  color: #065f46;
+  font-size: 14px;
+}
+
+/* =================================
+   CALCULATION BOX
+================================= */
+
+.calculation-box {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  padding: 18px;
+  border-radius: 12px;
+  background: #f0fdfa;
+  border: 1px solid #99f6e4;
+}
+
+.calculation-box p {
+  margin: 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #0f766e;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* =================================
+   SUBMIT BUTTON
+================================= */
+
+.milk-collection-card form > button {
+  grid-column: span 2;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #0f766e;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.milk-collection-card form > button:hover {
+  background: #115e59;
+  transform: translateY(-2px);
+}
+
+/* =================================
+   RECORDS CARD
+================================= */
+
+.milk-records-card {
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+}
+
+.milk-records-card h2 {
+  margin-bottom: 20px;
+  color: #0f172a;
+  font-size: 23px;
+  font-weight: 700;
+}
+
+/* =================================
+   TABLE
+================================= */
+
+.milk-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.milk-table-container table {
+  width: 100%;
+  min-width: 1100px;
+  border-collapse: collapse;
+}
+
+.milk-table-container thead {
+  background: #0f766e;
+  color: #ffffff;
+}
+
+.milk-table-container th {
+  padding: 14px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.milk-table-container td {
+  padding: 13px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+  font-size: 13px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.milk-table-container tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.milk-table-container tbody tr:hover {
+  background: #ecfdf5;
+}
+
+/* =================================
+   TABLE HIGHLIGHTS
+================================= */
+
+.milk-table-container td:first-child {
+  color: #0f766e;
+  font-weight: 700;
+}
+
+.milk-table-container td:nth-child(2) {
+  font-weight: 600;
+}
+
+.milk-table-container td:nth-child(9) {
+  color: #15803d;
+  font-weight: 700;
+}
+
+/* =================================
+   STATUS
+================================= */
+
+.milk-table-container td:last-child {
+  font-weight: 700;
+  color: #92400e;
+}
+
+/* =================================
+   EMPTY MESSAGE
+================================= */
+
+.milk-records-card > p {
+  padding: 20px;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #64748b;
+  text-align: center;
+}
+
+/* =================================
+   RESPONSIVE DESIGN
+================================= */
+
+@media (max-width: 768px) {
+  .milk-collection-page {
+    padding: 18px;
+  }
+
+  .milk-collection-card {
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .milk-collection-card h1 {
+    font-size: 25px;
+  }
+
+  .milk-collection-card form {
+    grid-template-columns: 1fr;
+  }
+
+  .selected-farmer-box,
+  .calculation-box,
+  .milk-collection-card form > button {
+    grid-column: span 1;
+  }
+
+  .calculation-box {
+    grid-template-columns: 1fr;
+  }
+
+  .milk-records-card {
+    padding: 18px;
+  }
+
+  .milk-records-card h2 {
+    font-size: 20px;
+  }
+}

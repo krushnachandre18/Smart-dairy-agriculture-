@@ -481,3 +481,129 @@
     margin: auto;
   }
 }
+.logout-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+}
+/* =========================
+   DAIRY MILK SUMMARY
+========================= */
+
+.milk-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.milk-summary-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+}
+
+.milk-summary-box span {
+  font-size: 32px;
+}
+
+.milk-summary-box h3 {
+  margin: 10px 0;
+  color: #475569;
+  font-size: 16px;
+}
+
+.milk-summary-box strong {
+  display: block;
+  color: #16a34a;
+  font-size: 25px;
+  margin-bottom: 8px;
+}
+
+.milk-summary-box small {
+  color: #64748b;
+}
+
+.view-milk-btn {
+  margin-top: 22px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.view-milk-btn:hover {
+  background: #1d4ed8;
+}
+
+/* =========================
+   RECENT MILK TABLE
+========================= */
+
+.milk-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.milk-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.milk-table th,
+.milk-table td {
+  padding: 13px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.milk-table th {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.milk-status {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.empty-milk-message {
+  color: #64748b;
+  padding: 20px 0;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+  .milk-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .milk-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}

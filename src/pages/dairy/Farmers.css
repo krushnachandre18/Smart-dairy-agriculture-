@@ -1,0 +1,311 @@
+.farmers-page {
+  min-height: 100vh;
+  background: #f1f5f9;
+  color: #1e293b;
+  font-family: Arial, sans-serif;
+}
+
+/* NAVBAR */
+
+.farmers-navbar {
+  background: #166534;
+  color: white;
+  padding: 18px 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.farmers-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.farmers-logo {
+  width: 48px;
+  height: 48px;
+  background: white;
+  color: #166534;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+}
+
+.farmers-brand h2 {
+  margin: 0;
+  font-size: 23px;
+}
+
+.farmers-brand p {
+  margin: 4px 0 0;
+  color: #bbf7d0;
+  font-size: 13px;
+}
+
+.back-dashboard-btn {
+  background: white;
+  color: #166534;
+  border: none;
+  padding: 11px 17px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.back-dashboard-btn:hover {
+  background: #dcfce7;
+}
+
+/* MAIN */
+
+.farmers-main {
+  max-width: 1250px;
+  margin: auto;
+  padding: 30px;
+}
+
+/* HEADER */
+
+.farmers-heading {
+  background: white;
+  padding: 28px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  box-shadow: 0 5px 15px rgba(15, 23, 42, 0.07);
+}
+
+.farmers-heading span {
+  color: #16a34a;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.farmers-heading h1 {
+  margin: 8px 0;
+  font-size: 32px;
+  color: #14532d;
+}
+
+.farmers-heading p {
+  margin: 0;
+  color: #64748b;
+}
+
+.heading-icon {
+  font-size: 65px;
+}
+
+/* FORM CARD */
+
+.farmer-form-card,
+.registered-farmers-card {
+  background: white;
+  padding: 28px;
+  border-radius: 16px;
+  margin-bottom: 25px;
+  box-shadow: 0 5px 15px rgba(15, 23, 42, 0.07);
+}
+
+.section-title,
+.registered-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.section-title h2,
+.registered-heading h2 {
+  margin: 0 0 7px;
+  color: #14532d;
+}
+
+.section-title p,
+.registered-heading p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.form-icon {
+  font-size: 35px;
+}
+
+.farmer-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #334155;
+}
+
+.form-group input {
+  padding: 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  font-size: 15px;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+}
+
+.add-farmer-btn {
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 9px;
+  padding: 13px 20px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  align-self: end;
+}
+
+.add-farmer-btn:hover {
+  background: #15803d;
+}
+
+/* REGISTERED FARMERS */
+
+.farmer-count {
+  background: #dcfce7;
+  color: #166534;
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.farmers-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.farmers-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+}
+
+.farmers-table th,
+.farmers-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.farmers-table th {
+  background: #dcfce7;
+  color: #166534;
+  font-size: 14px;
+}
+
+.farmers-table tr:hover {
+  background: #f8fafc;
+}
+
+.active-status {
+  background: #dcfce7;
+  color: #166534;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.delete-farmer-btn {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.delete-farmer-btn:hover {
+  background: #fecaca;
+}
+
+/* EMPTY STATE */
+
+.empty-farmers {
+  text-align: center;
+  padding: 45px 20px;
+  color: #64748b;
+}
+
+.empty-farmers div {
+  font-size: 55px;
+  margin-bottom: 15px;
+}
+
+.empty-farmers h3 {
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 800px) {
+  .farmers-navbar {
+    padding: 18px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .farmers-main {
+    padding: 15px;
+  }
+
+  .farmers-heading {
+    padding: 22px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .farmers-heading h1 {
+    font-size: 26px;
+  }
+
+  .farmer-form {
+    grid-template-columns: 1fr;
+  }
+
+  .farmer-form-card,
+  .registered-farmers-card {
+    padding: 20px;
+  }
+
+  .section-title,
+  .registered-heading {
+    align-items: flex-start;
+    gap: 15px;
+    flex-direction: column;
+  }
+
+  .heading-icon {
+    font-size: 45px;
+  }
+}

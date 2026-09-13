@@ -1,0 +1,108 @@
+.farmer-milk-page {
+  min-height: 100vh;
+  padding: 30px;
+  background: #f1f5f9;
+  font-family: Arial, sans-serif;
+  color: #1e293b;
+}
+
+.farmer-milk-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.farmer-milk-header h1 {
+  margin: 0;
+  color: #0f172a;
+}
+
+.farmer-milk-header p {
+  color: #64748b;
+}
+
+.farmer-milk-header button {
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.farmer-milk-summary {
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.farmer-milk-summary h2 {
+  margin: 0 0 12px;
+  color: #475569;
+}
+
+.farmer-milk-summary strong {
+  font-size: 32px;
+  color: #16a34a;
+}
+
+.farmer-milk-table-box {
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.farmer-table-wrapper {
+  overflow-x: auto;
+}
+
+.farmer-table-wrapper table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.farmer-table-wrapper th,
+.farmer-table-wrapper td {
+  padding: 13px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.farmer-table-wrapper th {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.farmer-status {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.no-records {
+  color: #64748b;
+  padding: 20px 0;
+}
+
+@media (max-width: 600px) {
+  .farmer-milk-page {
+    padding: 18px;
+  }
+
+  .farmer-milk-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
