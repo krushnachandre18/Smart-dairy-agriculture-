@@ -110,15 +110,33 @@ function Cows() {
       return;
     }
 
-    const newCow = {
-      id: Date.now(),
-      tagNumber,
-      breed,
-      age: Number(age),
-      purchaseDate,
-      status,
-    };
+    const loggedInFarmerMobile =
+  localStorage.getItem("loggedInFarmerMobile");
 
+const farmers =
+  JSON.parse(localStorage.getItem("farmers")) || [];
+
+const loggedInFarmer = farmers.find(
+  (farmer) =>
+    String(farmer.mobile) ===
+    String(loggedInFarmerMobile)
+);
+
+const newCow = {
+  id: Date.now(),
+
+  farmerMobile: loggedInFarmerMobile,
+
+  farmerId: loggedInFarmer
+    ? loggedInFarmer.farmerId
+    : "",
+
+  tagNumber,
+  breed,
+  age: Number(age),
+  purchaseDate,
+  status,
+};
     const updatedCows = [...cows, newCow];
 
     setCows(updatedCows);

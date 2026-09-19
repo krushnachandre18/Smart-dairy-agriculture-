@@ -9,53 +9,95 @@ function Profile() {
   const [totalMilk, setTotalMilk] = useState(0);
   const [totalEarning, setTotalEarning] = useState(0);
   const [totalCows, setTotalCows] = useState(0);
+useEffect(() => {
+  // ================= LOGGED IN FARMER =================
 
-  useEffect(() => {
-    
-    // Farmer account
-   const mobile = localStorage.getItem("loggedInFarmerMobile");
+  const mobile =
+    localStorage.getItem("loggedInFarmerMobile");
 
-const farmers =
-  JSON.parse(localStorage.getItem("farmers")) || [];
+  // ================= FARMER DATA =================
 
-const savedFarmer = farmers.find(
-  (farmer) => farmer.mobile === mobile
-);
+  const farmers =
+    JSON.parse(localStorage.getItem("farmers")) || [];
 
-if (savedFarmer) {
-  setFarmer(savedFarmer);
-}
+  const savedFarmer = farmers.find(
+    (farmer) =>
+      String(farmer.mobile) === String(mobile)
+  );
 
-    // Milk records
-    const milkRecords =
-      JSON.parse(localStorage.getItem("milkRecords")) || [];
+  if (savedFarmer) {
+    setFarmer(savedFarmer);
+  }
 
-    const farmerMilk = milkRecords.filter(
-      (record) =>
-        record.farmerMobile === mobile
-    );
+  // ================= MILK RECORDS =================
 
-    const milk = farmerMilk.reduce(
-      (total, record) =>
-        total + Number(record.quantity || 0),
-      0
-    );
+  const milkRecords =
+    JSON.parse(localStorage.getItem("milkRecords")) || [];
 
-    const earning = farmerMilk.reduce(
-      (total, record) =>
-        total + Number(record.amount || 0),
-      0
-    );
+  /*
+    Old records:
+    They have farmerId but may not have farmerMobile.
 
-    setTotalMilk(milk);
-    setTotalEarning(earning);
+    New records:
+    They will have farmerMobile.
 
-    // Cow records
-    const cows =
-      JSON.parse(localStorage.getItem("cows")) || [];
+    So we check BOTH.
+  */
 
-    setTotalCows(cows.length);
-  }, []);
+  const farmerMilk = milkRecords.filter((record) => {
+    const mobileMatch =
+      String(record.farmerMobile || "") ===
+      String(mobile);
+
+    const farmerIdMatch =
+      savedFarmer &&
+      String(record.farmerId || "") ===
+      String(savedFarmer.farmerId);
+
+    return mobileMatch || farmerIdMatch;
+  });
+
+  // ================= TOTAL MILK =================
+
+  const milk = farmerMilk.reduce(
+    (total, record) =>
+      total + Number(record.quantity || 0),
+    0
+  );
+
+  // ================= TOTAL EARNING =================
+
+  const earning = farmerMilk.reduce(
+    (total, record) =>
+      total + Number(record.amount || 0),
+    0
+  );
+
+  setTotalMilk(milk);
+  setTotalEarning(earning);
+
+  // ================= TOTAL COWS =================
+
+  // ================= TOTAL COWS =================
+
+const cows =
+  JSON.parse(localStorage.getItem("cows")) || [];
+
+const farmerCows = cows.filter((cow) => {
+  const mobileMatch =
+    String(cow.farmerMobile || "") ===
+    String(mobile);
+
+  const farmerIdMatch =
+    savedFarmer &&
+    String(cow.farmerId || "") ===
+    String(savedFarmer.farmerId);
+
+  return mobileMatch || farmerIdMatch;
+});
+
+setTotalCows(farmerCows.length);
+}, []);
 
   if (!farmer) {
     return (

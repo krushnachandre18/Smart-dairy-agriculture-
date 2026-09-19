@@ -385,3 +385,35 @@
 .logout-btn:hover {
   background: #dc2626;
 }
+/* ================================
+   DAIRY CENTER INFORMATION
+================================ */
+
+.dairy-center-info {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.dairy-center-info > div {
+  min-width: 150px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dairy-center-info strong {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.dairy-center-info span {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+}

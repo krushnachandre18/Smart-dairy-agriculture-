@@ -12,31 +12,114 @@ function AIChatbot() {
   ]);
 
   // Get data from localStorage
-  const getData = () => {
-    const milkRecords = JSON.parse(
+ // =====================================================
+// GET LOGGED-IN FARMER DATA
+// =====================================================
+
+const getData = () => {
+  const loggedInFarmerMobile =
+    localStorage.getItem("loggedInFarmerMobile");
+
+  const farmers =
+    JSON.parse(localStorage.getItem("farmers")) || [];
+
+  const loggedInFarmer = farmers.find(
+    (farmer) =>
+      String(farmer.mobile) ===
+      String(loggedInFarmerMobile)
+  );
+
+  // ================= MILK =================
+
+  const allMilkRecords =
+    JSON.parse(
       localStorage.getItem("milkRecords") || "[]"
     );
 
-    const incomeRecords = JSON.parse(
+  const milkRecords =
+    allMilkRecords.filter((record) => {
+      const mobileMatch =
+        String(record.farmerMobile || "") ===
+        String(loggedInFarmerMobile);
+
+      const farmerIdMatch =
+        loggedInFarmer &&
+        String(record.farmerId || "") ===
+          String(loggedInFarmer.farmerId);
+
+      return mobileMatch || farmerIdMatch;
+    });
+
+  // ================= INCOME =================
+
+  const allIncomeRecords =
+    JSON.parse(
       localStorage.getItem("incomeRecords") || "[]"
     );
 
-    const expenseRecords = JSON.parse(
+  const incomeRecords =
+    allIncomeRecords.filter((income) => {
+      const mobileMatch =
+        String(income.farmerMobile || "") ===
+        String(loggedInFarmerMobile);
+
+      const farmerIdMatch =
+        loggedInFarmer &&
+        String(income.farmerId || "") ===
+          String(loggedInFarmer.farmerId);
+
+      return mobileMatch || farmerIdMatch;
+    });
+
+  // ================= EXPENSE =================
+
+  const allExpenseRecords =
+    JSON.parse(
       localStorage.getItem("expenseRecords") || "[]"
     );
 
-    const cows = JSON.parse(
+  const expenseRecords =
+    allExpenseRecords.filter((expense) => {
+      const mobileMatch =
+        String(expense.farmerMobile || "") ===
+        String(loggedInFarmerMobile);
+
+      const farmerIdMatch =
+        loggedInFarmer &&
+        String(expense.farmerId || "") ===
+          String(loggedInFarmer.farmerId);
+
+      return mobileMatch || farmerIdMatch;
+    });
+
+  // ================= COWS =================
+
+  const allCows =
+    JSON.parse(
       localStorage.getItem("cows") || "[]"
     );
 
-    return {
-      milkRecords,
-      incomeRecords,
-      expenseRecords,
-      cows
-    };
-  };
+  const cows =
+    allCows.filter((cow) => {
+      const mobileMatch =
+        String(cow.farmerMobile || "") ===
+        String(loggedInFarmerMobile);
 
+      const farmerIdMatch =
+        loggedInFarmer &&
+        String(cow.farmerId || "") ===
+          String(loggedInFarmer.farmerId);
+
+      return mobileMatch || farmerIdMatch;
+    });
+
+  return {
+    milkRecords,
+    incomeRecords,
+    expenseRecords,
+    cows
+  };
+};
   // 1. Milk Forecast
   const milkForecast = () => {
     const { milkRecords } = getData();
@@ -57,7 +140,247 @@ function AIChatbot() {
       2
     )} Litres per entry.`;
   };
+// 2. Cow Analysis
+const cowAnalysis = () => {
+  const { cows } = getData();
 
+  if (cows.length === 0) {
+    return "🐄 No cow records available.";
+  }
+
+  const activeCows = cows.filter(
+    (cow) => cow.status === "Active"
+  ).length;
+
+  const pregnantCows = cows.filter(
+    (cow) => cow.status === "Pregnant"
+  ).length;
+
+  const soldCows = cows.filter(
+    (cow) => cow.status === "Sold"
+  ).length;
+
+  const inactiveCows = cows.filter(
+    (cow) => cow.status === "Inactive"
+  ).length;
+
+  return `🐄 Cow Analysis:
+
+Total Cows: ${cows.length}
+Active Cows: ${activeCows}
+Pregnant Cows: ${pregnantCows}
+Sold Cows: ${soldCows}
+Inactive Cows: ${inactiveCows}`;
+};
+// 3. Milk Production Analysis
+const milkProductionAnalysis = () => {
+  const { milkRecords } = getData();
+
+  if (milkRecords.length === 0) {
+    return "🥛 No milk records available for analysis.";
+  }
+
+  const totalMilk = milkRecords.reduce(
+    (total, record) =>
+      total + Number(record.quantity || 0),
+    0
+  );
+
+  const averageMilk =
+    totalMilk / milkRecords.length;
+
+  const morningRecords = milkRecords.filter(
+    (record) =>
+      String(record.session).toLowerCase() === "morning"
+  );
+
+  const eveningRecords = milkRecords.filter(
+    (record) =>
+      String(record.session).toLowerCase() === "evening"
+  );
+
+  const morningMilk = morningRecords.reduce(
+    (total, record) =>
+      total + Number(record.quantity || 0),
+    0
+  );
+
+  const eveningMilk = eveningRecords.reduce(
+    (total, record) =>
+      total + Number(record.quantity || 0),
+    0
+  );
+
+  const milkValues = milkRecords.map((record) =>
+    Number(record.quantity || 0)
+  );
+
+  const highestMilk = Math.max(...milkValues);
+  const lowestMilk = Math.min(...milkValues);
+
+  return `🥛 Milk Production Analysis:
+
+Total Milk: ${totalMilk.toFixed(2)} Litres
+Average per Entry: ${averageMilk.toFixed(2)} Litres
+
+🌅 Morning Milk: ${morningMilk.toFixed(2)} Litres
+🌙 Evening Milk: ${eveningMilk.toFixed(2)} Litres
+
+📈 Highest Entry: ${highestMilk.toFixed(2)} Litres
+📉 Lowest Entry: ${lowestMilk.toFixed(2)} Litres`;
+};
+// 4. Financial Analysis
+const financialAnalysis = () => {
+  const {
+    incomeRecords,
+    expenseRecords
+  } = getData();
+
+  const totalIncome = incomeRecords.reduce(
+    (total, income) =>
+      total + Number(income.amount || 0),
+    0
+  );
+
+  const totalExpense = expenseRecords.reduce(
+    (total, expense) =>
+      total + Number(expense.amount || 0),
+    0
+  );
+
+  const profit = totalIncome - totalExpense;
+
+  let profitMargin = 0;
+
+  if (totalIncome > 0) {
+    profitMargin =
+      (profit / totalIncome) * 100;
+  }
+
+  if (
+    incomeRecords.length === 0 &&
+    expenseRecords.length === 0
+  ) {
+    return "💰 No financial records available.";
+  }
+
+  if (profit > 0) {
+    return `💰 Financial Analysis:
+
+Total Income: ₹${totalIncome.toFixed(2)}
+Total Expenses: ₹${totalExpense.toFixed(2)}
+
+📈 Profit: ₹${profit.toFixed(2)}
+📊 Profit Margin: ${profitMargin.toFixed(2)}%
+
+Your recorded income is currently higher than your expenses.`;
+  }
+
+  if (profit < 0) {
+    return `💰 Financial Analysis:
+
+Total Income: ₹${totalIncome.toFixed(2)}
+Total Expenses: ₹${totalExpense.toFixed(2)}
+
+⚠️ Loss: ₹${Math.abs(profit).toFixed(2)}
+📊 Profit Margin: ${profitMargin.toFixed(2)}%
+
+Your recorded expenses are currently higher than your income.`;
+  }
+
+  return `💰 Financial Analysis:
+
+Total Income: ₹${totalIncome.toFixed(2)}
+Total Expenses: ₹${totalExpense.toFixed(2)}
+
+➖ Profit/Loss: ₹0.00`;
+};
+// 5. Smart Alerts & Recommendations
+const smartAlerts = () => {
+  const {
+    milkRecords,
+    expenseRecords,
+    cows
+  } = getData();
+
+  const alerts = [];
+
+  // Milk alerts
+  if (milkRecords.length > 0) {
+    const totalMilk = milkRecords.reduce(
+      (total, record) =>
+        total + Number(record.quantity || 0),
+      0
+    );
+
+    const averageMilk =
+      totalMilk / milkRecords.length;
+
+    if (averageMilk < 5) {
+      alerts.push(
+        "🥛 Milk production is low. Check cow health, feed and water."
+      );
+    }
+
+    const unusualMilk = milkRecords.filter((record) => {
+      const quantity = Number(record.quantity || 0);
+      const fat = Number(record.fat || 0);
+      const snf = Number(record.snf || 0);
+
+      return (
+        quantity < 2 ||
+        quantity > 30 ||
+        fat < 2 ||
+        fat > 8 ||
+        snf < 7 ||
+        snf > 10
+      );
+    });
+
+    if (unusualMilk.length > 0) {
+      alerts.push(
+        `⚠️ ${unusualMilk.length} unusual milk reading(s) detected.`
+      );
+    }
+  }
+
+  // Expense alert
+  if (expenseRecords.length > 0) {
+    const totalExpense = expenseRecords.reduce(
+      (total, expense) =>
+        total + Number(expense.amount || 0),
+      0
+    );
+
+    if (totalExpense > 10000) {
+      alerts.push(
+        "💸 Your recorded expenses are high. Review unnecessary expenses."
+      );
+    }
+  }
+
+  // Cow alert
+  if (cows.length === 0) {
+    alerts.push(
+      "🐄 No cows are registered. Add your cows to get better farm analysis."
+    );
+  }
+
+  if (alerts.length === 0) {
+    return `✅ Smart Alert Check:
+
+No major alerts detected.
+
+Your recorded farm data looks normal. 👍`;
+  }
+
+  return `⚠️ Smart Alerts:
+
+${alerts.join("\n\n")}
+
+💡 Recommendation:
+Review these areas regularly to improve farm management.`;
+};
   // 2. Expense Analysis
   const expenseAnalysis = () => {
     const { expenseRecords } = getData();
@@ -217,7 +540,38 @@ Current Loss: ₹${Math.abs(profit)} ⚠️`;
       q.includes("loss") ||
       q.includes("नफा") ||
       q.includes("तोटा")
-    ) {
+    ) 
+    if (
+  q.includes("milk analysis") ||
+  q.includes("milk production analysis") ||
+  q.includes("दूध analysis")
+) {
+  return milkProductionAnalysis();
+}
+
+if (
+  q.includes("financial analysis") ||
+  q.includes("finance analysis") ||
+  q.includes("financial")
+) {
+  return financialAnalysis();
+}
+
+if (
+  q.includes("cow analysis") ||
+  q.includes("cows analysis")
+) {
+  return cowAnalysis();
+}
+
+if (
+  q.includes("smart alert") ||
+  q.includes("alerts") ||
+  q.includes("recommendation")
+) {
+  return smartAlerts();
+}
+    {
       if (profit > 0) {
         return `Your current profit is ₹${profit}. 📈`;
       }
@@ -309,10 +663,63 @@ Current Loss: ₹${Math.abs(profit)} ⚠️`;
             runFeature("🥛 Milk Forecast", milkForecast())
           }
         >
+          
           <span>🥛</span>
           <strong>Milk Forecast</strong>
           <small>Analyze milk production</small>
         </button>
+        <button
+  className="ai-insight-button"
+  onClick={() =>
+    runFeature(
+      "🐄 Cow Analysis",
+      cowAnalysis()
+    )
+  }
+>
+  <span>🐄</span>
+  <strong>Cow Analysis</strong>
+  <small>Analyze your cows</small>
+</button>
+<button
+  className="ai-insight-button"
+  onClick={() =>
+    runFeature(
+      "🥛 Milk Production Analysis",
+      milkProductionAnalysis()
+    )
+  }
+>
+  <span>🥛</span>
+  <strong>Milk Analysis</strong>
+  <small>Analyze milk production</small>
+</button>
+<button
+  className="ai-insight-button"
+  onClick={() =>
+    runFeature(
+      "💰 Financial Analysis",
+      financialAnalysis()
+    )
+  }
+>
+  <span>💰</span>
+  <strong>Financial Analysis</strong>
+  <small>Analyze income & expenses</small>
+</button>
+<button
+  className="ai-insight-button"
+  onClick={() =>
+    runFeature(
+      "⚠️ Smart Alerts",
+      smartAlerts()
+    )
+  }
+>
+  <span>⚠️</span>
+  <strong>Smart Alerts</strong>
+  <small>Get farm recommendations</small>
+</button>
 
         <button
           className="ai-insight-button"

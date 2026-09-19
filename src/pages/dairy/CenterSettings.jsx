@@ -11,7 +11,10 @@ function CenterSettings() {
   const [village, setVillage] = useState("");
   const [address, setAddress] = useState("");
   const [milkRate, setMilkRate] = useState("");
-  const [message, setMessage] = useState("");
+const [password, setPassword] = useState("");
+const [message, setMessage] = useState("");
+
+  
 
   useEffect(() => {
     const savedSettings = JSON.parse(
@@ -22,30 +25,44 @@ function CenterSettings() {
     setInchargeName(savedSettings.inchargeName || "");
     setMobile(savedSettings.mobile || "");
     setVillage(savedSettings.village || "");
+  
     setAddress(savedSettings.address || "");
-    setMilkRate(savedSettings.milkRate || "");
+setMilkRate(savedSettings.milkRate || "");
+setPassword(savedSettings.password || "");
   }, []);
 
-  const handleSave = (event) => {
-    event.preventDefault();
+ const handleSave = (event) => {
+  event.preventDefault();
 
-    const settings = {
-      centerName,
-      inchargeName,
-      mobile,
-      village,
-      address,
-      milkRate,
-    };
-
-    localStorage.setItem(
-      "centerSettings",
-      JSON.stringify(settings)
-    );
-
-    setMessage("Center settings saved successfully.");
+  const settings = {
+    centerName,
+    inchargeName,
+    mobile,
+    password,
+    village,
+    address,
+    milkRate,
   };
 
+  localStorage.setItem(
+    "centerSettings",
+    JSON.stringify(settings)
+  );
+
+  localStorage.setItem(
+    "dairyMobile",
+    mobile
+  );
+
+  localStorage.setItem(
+    "dairyPassword",
+    password
+  );
+
+  setMessage(
+    "Center settings saved successfully."
+  );
+};
   return (
     <div className="center-settings-page">
       <nav className="center-settings-navbar">
@@ -111,6 +128,19 @@ function CenterSettings() {
                   required
                 />
               </div>
+              <div className="form-group">
+  <label>Dairy Login Password</label>
+
+  <input
+    type="password"
+    value={password}
+    onChange={(event) =>
+      setPassword(event.target.value)
+    }
+    placeholder="Enter dairy login password"
+    required
+  />
+</div>
 
               <div className="form-group">
                 <label>Village / City</label>

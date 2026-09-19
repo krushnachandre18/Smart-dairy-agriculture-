@@ -15,9 +15,34 @@ function Feed() {
   const [cost, setCost] = useState("");
 
   const [feedRecords, setFeedRecords] = useState(() => {
-    const savedFeed = localStorage.getItem("feedRecords");
-    return savedFeed ? JSON.parse(savedFeed) : [];
+  const loggedInFarmerMobile =
+    localStorage.getItem("loggedInFarmerMobile");
+
+  const farmers =
+    JSON.parse(localStorage.getItem("farmers")) || [];
+
+  const loggedInFarmer = farmers.find(
+    (farmer) =>
+      String(farmer.mobile) ===
+      String(loggedInFarmerMobile)
+  );
+
+  const savedFeed =
+    JSON.parse(localStorage.getItem("feedRecords")) || [];
+
+  return savedFeed.filter((feed) => {
+    const mobileMatch =
+      String(feed.farmerMobile || "") ===
+      String(loggedInFarmerMobile);
+
+    const farmerIdMatch =
+      loggedInFarmer &&
+      String(feed.farmerId || "") ===
+      String(loggedInFarmer.farmerId);
+
+    return mobileMatch || farmerIdMatch;
   });
+});
 
   // =========================
   // DAILY FEED USAGE
@@ -29,10 +54,35 @@ function Feed() {
     new Date().toISOString().split("T")[0]
   );
 
-  const [usageRecords, setUsageRecords] = useState(() => {
-    const savedUsage = localStorage.getItem("feedUsageRecords");
-    return savedUsage ? JSON.parse(savedUsage) : [];
+ const [usageRecords, setUsageRecords] = useState(() => {
+  const loggedInFarmerMobile =
+    localStorage.getItem("loggedInFarmerMobile");
+
+  const farmers =
+    JSON.parse(localStorage.getItem("farmers")) || [];
+
+  const loggedInFarmer = farmers.find(
+    (farmer) =>
+      String(farmer.mobile) ===
+      String(loggedInFarmerMobile)
+  );
+
+  const savedUsage =
+    JSON.parse(localStorage.getItem("feedUsageRecords")) || [];
+
+  return savedUsage.filter((usage) => {
+    const mobileMatch =
+      String(usage.farmerMobile || "") ===
+      String(loggedInFarmerMobile);
+
+    const farmerIdMatch =
+      loggedInFarmer &&
+      String(usage.farmerId || "") ===
+      String(loggedInFarmer.farmerId);
+
+    return mobileMatch || farmerIdMatch;
   });
+});
 
   const [message, setMessage] = useState("");
 
@@ -54,24 +104,60 @@ function Feed() {
       setMessage("Cost cannot be negative");
       return;
     }
+const loggedInFarmerMobile =
+  localStorage.getItem("loggedInFarmerMobile");
 
-    const newFeed = {
-      id: Date.now(),
-      feedType: feedType.trim(),
-      quantity: Number(quantity),
-      cost: Number(cost),
-      date: new Date().toLocaleDateString(),
-    };
+const farmers =
+  JSON.parse(localStorage.getItem("farmers")) || [];
 
-    const updatedRecords = [...feedRecords, newFeed];
+const loggedInFarmer = farmers.find(
+  (farmer) =>
+    String(farmer.mobile) ===
+    String(loggedInFarmerMobile)
+);
+const newFeed = {
+  id: Date.now(),
 
-    setFeedRecords(updatedRecords);
+  farmerMobile: loggedInFarmerMobile,
 
-    localStorage.setItem(
-      "feedRecords",
-      JSON.stringify(updatedRecords)
-    );
+  farmerId: loggedInFarmer
+    ? loggedInFarmer.farmerId
+    : "",
 
+  feedType: feedType.trim(),
+  quantity: Number(quantity),
+  cost: Number(cost),
+  date: new Date().toLocaleDateString(),
+};
+    
+
+    const allFeedRecords =
+  JSON.parse(localStorage.getItem("feedRecords")) || [];
+
+const updatedAllRecords = [
+  ...allFeedRecords,
+  newFeed,
+];
+
+const myFeedRecords = updatedAllRecords.filter((feed) => {
+  const mobileMatch =
+    String(feed.farmerMobile || "") ===
+    String(loggedInFarmerMobile);
+
+  const farmerIdMatch =
+    loggedInFarmer &&
+    String(feed.farmerId || "") ===
+    String(loggedInFarmer.farmerId);
+
+  return mobileMatch || farmerIdMatch;
+});
+
+setFeedRecords(myFeedRecords);
+
+localStorage.setItem(
+  "feedRecords",
+  JSON.stringify(updatedAllRecords)
+);
     setFeedType("");
     setQuantity("");
     setCost("");
@@ -121,25 +207,59 @@ function Feed() {
       );
       return;
     }
+const loggedInFarmerMobile =
+  localStorage.getItem("loggedInFarmerMobile");
 
+const farmers =
+  JSON.parse(localStorage.getItem("farmers")) || [];
+
+const loggedInFarmer = farmers.find(
+  (farmer) =>
+    String(farmer.mobile) ===
+    String(loggedInFarmerMobile)
+);
     const newUsage = {
-      id: Date.now(),
-      feedType: usageFeedType,
-      quantity: Number(usageQuantity),
-      date: usageDate,
-    };
+  id: Date.now(),
 
-    const updatedUsageRecords = [
-      ...usageRecords,
-      newUsage,
-    ];
+  farmerMobile: loggedInFarmerMobile,
 
-    setUsageRecords(updatedUsageRecords);
+  farmerId: loggedInFarmer
+    ? loggedInFarmer.farmerId
+    : "",
 
-    localStorage.setItem(
-      "feedUsageRecords",
-      JSON.stringify(updatedUsageRecords)
-    );
+  feedType: usageFeedType,
+  quantity: Number(usageQuantity),
+  date: usageDate,
+};
+    const allUsageRecords =
+  JSON.parse(localStorage.getItem("feedUsageRecords")) || [];
+
+const updatedAllUsageRecords = [
+  ...allUsageRecords,
+  newUsage,
+];
+
+const myUsageRecords = updatedAllUsageRecords.filter(
+  (usage) => {
+    const mobileMatch =
+      String(usage.farmerMobile || "") ===
+      String(loggedInFarmerMobile);
+
+    const farmerIdMatch =
+      loggedInFarmer &&
+      String(usage.farmerId || "") ===
+      String(loggedInFarmer.farmerId);
+
+    return mobileMatch || farmerIdMatch;
+  }
+);
+
+setUsageRecords(myUsageRecords);
+
+localStorage.setItem(
+  "feedUsageRecords",
+  JSON.stringify(updatedAllUsageRecords)
+);
 
     setUsageFeedType("");
     setUsageQuantity("");
@@ -262,7 +382,7 @@ function Feed() {
         }}
       >
         <span>🌱</span>
-        <strong>Feed Type & Stock</strong>
+        <strong>Add Feed  </strong>
         <small>Add new feed and stock quantity</small>
       </button>
 

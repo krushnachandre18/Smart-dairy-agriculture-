@@ -12,16 +12,54 @@ function Dashboard() {
   });
 
   // Logged-in Farmer Mobile
-  const loggedInFarmerMobile =
-    localStorage.getItem("loggedInFarmerMobile");
+const loggedInFarmerMobile =
+  localStorage.getItem("loggedInFarmerMobile");
 
-  // ================= MY FARMER RECORDS =================
 
-  const myMilkRecords = milkRecords.filter(
-    (record) =>
-      record.farmerMobile === loggedInFarmerMobile
-  );
+// ================= LOGGED-IN FARMER =================
 
+const farmers =
+  JSON.parse(localStorage.getItem("farmers")) || [];
+
+const loggedInFarmer = farmers.find(
+  (farmer) =>
+    String(farmer.mobile) ===
+    String(loggedInFarmerMobile)
+);
+
+// ================= MY FARMER RECORDS =================
+
+const myMilkRecords = milkRecords.filter((record) => {
+  const mobileMatch =
+    String(record.farmerMobile || "") ===
+    String(loggedInFarmerMobile);
+
+  const farmerIdMatch =
+    loggedInFarmer &&
+    String(record.farmerId || "") ===
+    String(loggedInFarmer.farmerId);
+
+  return mobileMatch || farmerIdMatch;
+});
+// ================= COW RECORDS =================
+
+const cows =
+  JSON.parse(localStorage.getItem("cows")) || [];
+
+const myCows = cows.filter((cow) => {
+  const mobileMatch =
+    String(cow.farmerMobile || "") ===
+    String(loggedInFarmerMobile);
+
+  const farmerIdMatch =
+    loggedInFarmer &&
+    String(cow.farmerId || "") ===
+    String(loggedInFarmer.farmerId);
+
+  return mobileMatch || farmerIdMatch;
+});
+
+const totalCows = myCows.length;
   // ================= TOTAL MILK =================
 
   const totalMilk = myMilkRecords.reduce(
@@ -38,6 +76,7 @@ function Dashboard() {
     0
   );
 
+  
   // ================= MORNING MILK =================
 
   const morningMilk = myMilkRecords
@@ -162,6 +201,27 @@ function Dashboard() {
             </div>
 
           </div>
+          {/* TOTAL COWS */}
+
+<div className="milk-summary-box">
+
+  <span>
+    🐄
+  </span>
+
+  <h3>
+    Total Cows
+  </h3>
+
+  <strong>
+    {totalCows}
+  </strong>
+
+  <small>
+    My registered cows
+  </small>
+
+</div>
 
 
           {/* ================= SUMMARY GRID ================= */}

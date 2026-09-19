@@ -57,6 +57,7 @@ function MilkCollection() {
       farmerId: selectedFarmerData.farmerId,
 
       farmerName: selectedFarmerData.name,
+      farmerMobile: selectedFarmerData.mobile,
 
       date: new Date().toLocaleDateString(),
 

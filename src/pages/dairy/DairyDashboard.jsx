@@ -1,9 +1,28 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import "./DairyDashboard.css";
 
+
 function DairyDashboard() {
-    const navigate = useNavigate();
+
+  const navigate = useNavigate();
+
+  const [centerSettings, setCenterSettings] = useState({
+    centerName: "",
+    inchargeName: "",
+    mobile: "",
+    village: "",
+    address: "",
+    milkRate: ""
+  });
+
+  useEffect(() => {
+    const savedSettings = JSON.parse(
+      localStorage.getItem("centerSettings") || "{}"
+    );
+
+    setCenterSettings(savedSettings);
+  }, []);
   return (
     <div className="dairy-page">
 
@@ -11,8 +30,12 @@ function DairyDashboard() {
       
       <nav className="dairy-navbar">
         <div className="dashboard-logo">
-          🐄 <span>Smart Dairy Management</span>
-        </div>
+  🐄{" "}
+  <span>
+    {centerSettings.centerName ||
+      "Smart Dairy Management"}
+  </span>
+</div>
         <div className="dairy-nav-links">
   
   <button onClick={() => navigate("/dairy/Farmers")}>
@@ -48,14 +71,45 @@ function DairyDashboard() {
               🥛 COLLECTION CENTER
             </span>
 
-            <h1>Welcome to Dairy Dashboard</h1>
+            <h1>
+  Welcome to{" "}
+  {centerSettings.centerName ||
+    "Dairy Dashboard"}
+</h1>
 
-            <p>
-              Manage farmers, milk collection, payments and dairy reports
-              from one place.
-            </p>
+<p>
+  {centerSettings.inchargeName
+    ? `Hello ${centerSettings.inchargeName}, manage farmers, milk collection, payments and dairy reports from one place.`
+    : "Manage farmers, milk collection, payments and dairy reports from one place."}
+</p>
           </div>
+<div className="dairy-center-info">
 
+  <div>
+    <strong>🏢 Center</strong>
+    <span>
+      {centerSettings.centerName ||
+        "Not Set"}
+    </span>
+  </div>
+
+  <div>
+    <strong>👤 In-charge</strong>
+    <span>
+      {centerSettings.inchargeName ||
+        "Not Set"}
+    </span>
+  </div>
+
+  <div>
+    <strong>📍 Location</strong>
+    <span>
+      {centerSettings.village ||
+        "Not Set"}
+    </span>
+  </div>
+
+</div>
           <div className="dairy-welcome-icon">
             🥛
           </div>
