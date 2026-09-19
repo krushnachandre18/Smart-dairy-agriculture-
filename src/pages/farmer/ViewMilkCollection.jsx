@@ -8,20 +8,11 @@ function FarmerMilkCollection() {
   const [records, setRecords] = useState([]);
 
   useEffect(() => {
-    const allRecords =
-      JSON.parse(localStorage.getItem("milkRecords")) || [];
+  const allRecords =
+    JSON.parse(localStorage.getItem("milkRecords")) || [];
 
-    const loggedInFarmerMobile = localStorage.getItem(
-      "loggedInFarmerMobile"
-    );
-
-    const farmerRecords = allRecords.filter(
-      (record) =>
-        record.farmerMobile === loggedInFarmerMobile
-    );
-
-    setRecords(farmerRecords);
-  }, []);
+  setRecords(allRecords);
+}, []);
 
   return (
     <div className="farmer-milk-page">

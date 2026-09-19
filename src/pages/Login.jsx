@@ -10,13 +10,16 @@ function Login() {
   const [role, setRole] = useState("farmer");
   const [message, setMessage] = useState("");
 
-  const handleLogin = (event) => {
-    event.preventDefault();
 
-    if (mobile.trim() === "" || password.trim() === "") {
-      setMessage("Please enter mobile number and password.");
-      return;
-    }
+
+  const handleLogin = (event) => {
+    const mobile = document.querySelector(
+    'input[placeholder="Enter mobile number"]'
+  ).value;
+    if (!mobile) {
+    alert("Please enter mobile number");
+    return;
+  }
 
     if (role === "farmer") {
      localStorage.setItem("loggedInFarmerMobile", mobile);

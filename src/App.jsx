@@ -18,6 +18,7 @@ import Register from "./pages/Register";
 import DailyReports from "./pages/dairy/DailyReports";
 import MilkCollection from "./pages/dairy/milkcollection";
 import FarmerMilkCollection from "./pages/farmer/ViewMilkCollection";
+import Profile from "./pages/farmer/Profile";
 
 function App() {
   return (
@@ -80,6 +81,10 @@ function App() {
 <Route
   path="/farmer/ViewMilkCollection"
   element={<FarmerMilkCollection />}
+/>
+<Route
+  path="/farmer/profile"
+  element={<Profile />}
 />
       </Routes>
     </BrowserRouter>
