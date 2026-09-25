@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 
@@ -7,10 +7,11 @@ function Dashboard() {
 
   // ================= MILK RECORDS =================
 
-  const [milkRecords] = useState(() => {
-    return JSON.parse(localStorage.getItem("milkRecords")) || [];
-  });
+ const [refreshKey, setRefreshKey] = useState(0);
 
+const [milkRecords] = useState(() => {
+  return JSON.parse(localStorage.getItem("milkRecords")) || [];
+});
   // Logged-in Farmer Mobile
 const loggedInFarmerMobile =
   localStorage.getItem("loggedInFarmerMobile");
@@ -41,76 +42,221 @@ const myMilkRecords = milkRecords.filter((record) => {
 
   return mobileMatch || farmerIdMatch;
 });
+
+
+
 // ================= COW RECORDS =================
 
-const cows =
-  JSON.parse(localStorage.getItem("cows")) || [];
+// ================= COW RECORDS =================
 
-const myCows = cows.filter((cow) => {
-  const mobileMatch =
-    String(cow.farmerMobile || "") ===
-    String(loggedInFarmerMobile);
+const [myCows, setMyCows] = useState([]);
 
-  const farmerIdMatch =
-    loggedInFarmer &&
-    String(cow.farmerId || "") ===
-    String(loggedInFarmer.farmerId);
+useEffect(() => {
+  const loadCows = async () => {
+    try {
+      if (!loggedInFarmer) {
+        setMyCows([]);
+        return;
+      }
 
-  return mobileMatch || farmerIdMatch;
-});
+      const response = await fetch(
+        `http://localhost:5000/api/cows/${loggedInFarmer.farmerId}`
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMyCows(
+          Array.isArray(data.cows)
+            ? data.cows
+            : []
+        );
+      } else {
+        console.error(data.message);
+        setMyCows([]);
+      }
+    } catch (error) {
+      console.error(
+        "Dashboard cow load error:",
+        error
+      );
+
+      setMyCows([]);
+    }
+  };
+
+  loadCows();
+}, [loggedInFarmer?.farmerId]);
 
 const totalCows = myCows.length;
   // ================= TOTAL MILK =================
 
-  const totalMilk = myMilkRecords.reduce(
+// ================= VERIFIED MILK RECORDS =================
+
+const verifiedMilkRecords = myMilkRecords.filter(
+  (record) =>
+    String(record.status).toLowerCase() === "verified"
+);
+
+// ================= TOTAL MILK =================
+
+const totalMilk = verifiedMilkRecords.reduce(
+  (total, record) =>
+    total + Number(record.quantity || 0),
+  0
+);
+
+// ================= TOTAL EARNING =================
+
+const totalAmount = verifiedMilkRecords.reduce(
+  (total, record) =>
+    total + Number(record.amount || 0),
+  0
+);
+
+// ================= MORNING MILK =================
+
+const morningMilk = verifiedMilkRecords
+  .filter(
+    (record) =>
+      String(record.session).toLowerCase() ===
+      "morning"
+  )
+  .reduce(
     (total, record) =>
       total + Number(record.quantity || 0),
     0
   );
 
-  // ================= TOTAL EARNING =================
+// ================= EVENING MILK =================
 
-  const totalAmount = myMilkRecords.reduce(
+const eveningMilk = verifiedMilkRecords
+  .filter(
+    (record) =>
+      String(record.session).toLowerCase() ===
+      "evening"
+  )
+  .reduce(
+    (total, record) =>
+      total + Number(record.quantity || 0),
+    0
+  );
+
+// ================= MILK ENTRIES =================
+
+const totalMilkEntries =
+  verifiedMilkRecords.length;
+
+// ================= PENDING ENTRIES =================
+
+const pendingMilkEntries = myMilkRecords.filter(
+  (record) =>
+    !record.status ||
+    String(record.status).toLowerCase() ===
+      "pending"
+).length;
+
+// ================= MONTHLY PERFORMANCE =================
+
+const today = new Date();
+
+const currentMonth = today.getMonth() + 1;
+const currentYear = today.getFullYear();
+
+const monthlyVerifiedMilkRecords =
+  verifiedMilkRecords.filter((record) => {
+    const dateString = String(record.date || "");
+
+    // M/D/YYYY or MM/DD/YYYY
+    const match = dateString.match(
+      /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+    );
+
+    if (match) {
+      const month = Number(match[1]);
+      const year = Number(match[3]);
+
+      return (
+        month === currentMonth &&
+        year === currentYear
+      );
+    }
+
+    return false;
+  });
+
+const monthlyMilk = monthlyVerifiedMilkRecords.reduce(
+  (total, record) =>
+    total + Number(record.quantity || 0),
+  0
+);
+
+const monthlyEarning =
+  monthlyVerifiedMilkRecords.reduce(
     (total, record) =>
       total + Number(record.amount || 0),
     0
   );
 
-  
-  // ================= MORNING MILK =================
+const monthlyEntries =
+  monthlyVerifiedMilkRecords.length;
 
-  const morningMilk = myMilkRecords
-    .filter(
-      (record) => record.session === "Morning"
-    )
-    .reduce(
-      (total, record) =>
-        total + Number(record.quantity || 0),
-      0
-    );
+const averageMilk =
+  monthlyEntries > 0
+    ? monthlyMilk / monthlyEntries
+    : 0;
+// ================= SMART ALERTS =================
 
-  // ================= EVENING MILK =================
+const alerts = [];
 
-  const eveningMilk = myMilkRecords
-    .filter(
-      (record) => record.session === "Evening"
-    )
-    .reduce(
-      (total, record) =>
-        total + Number(record.quantity || 0),
-      0
-    );
+if (pendingMilkEntries > 0) {
+  alerts.push({
+    type: "warning",
+    icon: "⏳",
+    title: "Pending Milk Verification",
+    message: `${pendingMilkEntries} milk record(s) are waiting for verification.`,
+  });
+}
 
-  // ================= MILK ENTRIES =================
+const rejectedMilkEntries = myMilkRecords.filter(
+  (record) =>
+    String(record.status || "").toLowerCase() === "rejected"
+).length;
 
-  const totalMilkEntries = myMilkRecords.length;
+if (rejectedMilkEntries > 0) {
+  alerts.push({
+    type: "danger",
+    icon: "❌",
+    title: "Rejected Milk Records",
+    message: `${rejectedMilkEntries} milk record(s) were rejected.`,
+  });
+}
 
+if (totalCows === 0) {
+  alerts.push({
+    type: "info",
+    icon: "🐄",
+    title: "No Cow Records",
+    message: "You have not registered any cows yet.",
+  });
+}
+
+if (totalMilk === 0 && totalMilkEntries === 0) {
+  alerts.push({
+    type: "info",
+    icon: "🥛",
+    title: "No Milk Collection",
+    message: "No verified milk collection records are available.",
+  });
+}
   // ================= LOGOUT =================
 
-  const handleLogout = () => {
-    localStorage.removeItem("loggedInFarmerMobile");
-    navigate("/");
-  };
+ const handleLogout = () => {
+  localStorage.removeItem("loggedInFarmerMobile");
+  localStorage.removeItem("loggedInFarmerId");
+  navigate("/");
+};
+
 
   return (
     <div className="dashboard-page">
@@ -132,6 +278,13 @@ const totalCows = myCows.length;
           >
             👤 Profile
           </button>
+           <button
+    className="refresh-btn"
+    onClick={() => window.location.reload()}
+  >
+    🔄 Refresh
+  </button>
+
 
           <button
             className="logout-btn"
@@ -153,6 +306,7 @@ const totalCows = myCows.length;
         <section className="dashboard-welcome">
 
           <div className="welcome-content">
+            
 
             <span className="welcome-badge">
               🌱 Smart Farm Management
@@ -166,10 +320,30 @@ const totalCows = myCows.length;
               Farmer Dashboard
             </h2>
 
-            <p>
-              Manage your dairy, cows, feed,
-              finances and AI insights from one place.
-            </p>
+           
+{loggedInFarmer && (
+  <div className="farmer-welcome-card">
+    <div>
+      <span>👨‍🌾 Farmer</span>
+      <h2>{loggedInFarmer.name}</h2>
+    </div>
+
+    <div>
+      <span>🆔 Farmer ID</span>
+      <strong>{loggedInFarmer.farmerId}</strong>
+    </div>
+
+    <div>
+      <span>📱 Mobile</span>
+      <strong>{loggedInFarmer.mobile}</strong>
+    </div>
+
+    <div>
+      <span>📍 Village</span>
+      <strong>{loggedInFarmer.village}</strong>
+    </div>
+  </div>
+)}
 
           </div>
 
@@ -178,7 +352,109 @@ const totalCows = myCows.length;
           </div>
 
         </section>
+{/* =================================================
+                    SMART ALERTS
+================================================= */}
 
+<section className="dashboard-card smart-alerts-section">
+
+  <div className="dashboard-card-heading">
+    <div>
+      <h2>🔔 Smart Alerts</h2>
+      <p>Important updates about your farm.</p>
+    </div>
+  </div>
+
+  {alerts.length === 0 ? (
+    <div className="no-alerts">
+      ✅ No important alerts right now.
+    </div>
+  ) : (
+    <div className="alerts-list">
+      {alerts.map((alert, index) => (
+        <div
+          key={index}
+          className={`alert-item ${alert.type}`}
+        >
+          <div className="alert-icon">
+            {alert.icon}
+          </div>
+
+          <div className="alert-content">
+            <strong>{alert.title}</strong>
+            <p>{alert.message}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+
+</section>
+
+{/* =================================================
+              MONTHLY PERFORMANCE
+================================================= */}
+
+<section className="dashboard-card monthly-performance-section">
+
+  <div className="dashboard-card-heading">
+    <div>
+      <h2>📊 Monthly Performance</h2>
+      <p>
+        Your verified milk performance for this month.
+      </p>
+    </div>
+  </div>
+
+  <div className="monthly-performance-grid">
+
+    <div className="performance-box">
+      <span>🥛</span>
+      <h3>Monthly Milk</h3>
+      <strong>
+        {monthlyMilk.toFixed(2)} L
+      </strong>
+      <small>
+        Verified milk
+      </small>
+    </div>
+
+    <div className="performance-box">
+      <span>💰</span>
+      <h3>Milk Earning</h3>
+      <strong>
+        ₹{monthlyEarning.toFixed(2)}
+      </strong>
+      <small>
+        Verified amount
+      </small>
+    </div>
+
+    <div className="performance-box">
+      <span>📋</span>
+      <h3>Milk Entries</h3>
+      <strong>
+        {monthlyEntries}
+      </strong>
+      <small>
+        This month
+      </small>
+    </div>
+
+    <div className="performance-box">
+      <span>📈</span>
+      <h3>Average Milk</h3>
+      <strong>
+        {averageMilk.toFixed(2)} L
+      </strong>
+      <small>
+        Per entry
+      </small>
+    </div>
+
+  </div>
+
+</section>
 
         {/* ================================================= */}
         {/*                 DAIRY MILK SUMMARY                */}
@@ -335,8 +611,12 @@ const totalCows = myCows.length;
             }}
           >
             <strong>
-              📋 Total Milk Entries: {totalMilkEntries}
-            </strong>
+  📋 Verified Milk Entries: {totalMilkEntries}
+</strong>
+
+<div style={{ marginTop: "8px" }}>
+  ⏳ Pending Entries: {pendingMilkEntries}
+</div>
           </div>
 
 
@@ -353,131 +633,91 @@ const totalCows = myCows.length;
 
         </section>
 
+{/* =================================================
+                  QUICK ACTIONS
+================================================= */}
 
-        {/* ================================================= */}
-        {/*                  FARM MANAGEMENT                  */}
-        {/* ================================================= */}
+<section className="dashboard-card quick-actions-section">
 
-        <section className="dashboard-card">
+  <div className="dashboard-card-heading">
+    <div>
+      <h2>🐄 Farm Management</h2>
+     
+    </div>
+  </div>
 
-          <div className="dashboard-card-heading">
+  <div className="quick-actions-grid">
 
-            <div>
+    <button
+      className="quick-action-card"
+      onClick={() =>
+        navigate("/farmer/ViewMilkCollection")
+      }
+    >
+      <span>🥛</span>
+      <strong>View Milk</strong>
+      <small>Check milk collection</small>
+    </button>
 
-              <h2>
-                🐄 Farm Management
-              </h2>
+    <button
+      className="quick-action-card"
+      onClick={() =>
+        navigate("/farmer/cows")
+      }
+    >
+      <span>🐄</span>
+      <strong>Manage Cows</strong>
+      <small>Manage your cows</small>
+    </button>
 
-              <p>
-                Manage cows, feed, finances and reports.
-              </p>
+    <button
+      className="quick-action-card"
+      onClick={() =>
+        navigate("/farmer/Feed")
+      }
+    >
+      <span>🌾</span>
+      <strong>Manage Feed</strong>
+      <small>Manage feed records</small>
+    </button>
 
-            </div>
+    <button
+      className="quick-action-card"
+      onClick={() =>
+        navigate("/farmer/financial")
+      }
+    >
+      <span>💰</span>
+      <strong>Financial</strong>
+      <small>Income and expenses</small>
+    </button>
 
-          </div>
+    <button
+      className="quick-action-card"
+      onClick={() =>
+        navigate("/farmer/reports")
+      }
+    >
+      <span>📊</span>
+      <strong>Reports</strong>
+      <small>View farm reports</small>
+    </button>
 
+    <button
+      className="quick-action-card"
+      onClick={() =>
+        navigate("/farmer/ai-chatbot")
+      }
+    >
+      <span>🤖</span>
+      <strong>AI Assistant</strong>
+      <small>Get smart insights</small>
+    </button>
 
-          <div className="module-grid">
+  </div>
 
-            {/* COW MANAGEMENT */}
-
-            <button
-              className="module-card"
-              onClick={() =>
-                navigate("/farmer/cows")
-              }
-            >
-
-              <span>
-                🐄
-              </span>
-
-              <strong>
-                Cow Management
-              </strong>
-
-              <small>
-                Manage cow records and health
-              </small>
-
-            </button>
-
-
-            {/* FEED MANAGEMENT */}
-
-            <button
-              className="module-card"
-              onClick={() =>
-                navigate("/farmer/Feed")
-              }
-            >
-
-              <span>
-                🌾
-              </span>
-
-              <strong>
-                Feed Management
-              </strong>
-
-              <small>
-                Manage feed stock and usage
-              </small>
-
-            </button>
-
-
-            {/* FINANCIAL MANAGEMENT */}
-
-            <button
-              className="module-card"
-              onClick={() =>
-                navigate("/farmer/financial")
-              }
-            >
-
-              <span>
-                💰
-              </span>
-
-              <strong>
-                Financial Management
-              </strong>
-
-              <small>
-                Manage income and expenses
-              </small>
-
-            </button>
-
-
-            {/* REPORTS */}
-
-            <button
-              className="module-card"
-              onClick={() =>
-                navigate("/farmer/reports")
-              }
-            >
-
-              <span>
-                📊
-              </span>
-
-              <strong>
-                Reports
-              </strong>
-
-              <small>
-                View farm performance reports
-              </small>
-
-            </button>
-
-          </div>
-
-        </section>
-
+</section>
+        
 
         {/* ================================================= */}
         {/*                       AI                          */}

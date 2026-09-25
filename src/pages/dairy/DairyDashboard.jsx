@@ -15,14 +15,90 @@ function DairyDashboard() {
     address: "",
     milkRate: ""
   });
+  const [dashboardStats, setDashboardStats] = useState({
+  totalFarmers: 0,
+  todayMilk: 0,
+  pendingVerification: 0,
+  totalPayments: 0
+});
 
   useEffect(() => {
-    const savedSettings = JSON.parse(
-      localStorage.getItem("centerSettings") || "{}"
+    const farmers =
+      JSON.parse(localStorage.getItem("farmers") || "[]");
+
+    const milkRecords =
+      JSON.parse(localStorage.getItem("milkRecords") || "[]");
+
+    // Today's date
+    const today = new Date().toLocaleDateString();
+
+    // ==========================================
+    // VERIFIED MILK RECORDS
+    // ==========================================
+
+    const verifiedRecords = milkRecords.filter(
+      (record) =>
+        String(record.status).toLowerCase() ===
+        "verified"
     );
 
-    setCenterSettings(savedSettings);
+    // ==========================================
+    // TODAY'S VERIFIED MILK
+    // ==========================================
+
+    const todayMilk = verifiedRecords
+      .filter(
+        (record) =>
+          record.date === today
+      )
+      .reduce(
+        (total, record) =>
+          total + Number(record.quantity || 0),
+        0
+      );
+
+    // ==========================================
+    // PENDING VERIFICATION
+    // ==========================================
+
+    const pendingVerification =
+      milkRecords.filter(
+        (record) =>
+          !record.status ||
+          String(record.status).toLowerCase() ===
+            "pending"
+      ).length;
+
+    // ==========================================
+    // TOTAL VERIFIED MILK AMOUNT
+    // ==========================================
+
+    const totalPayments =
+      verifiedRecords.reduce(
+        (total, record) =>
+          total + Number(record.amount || 0),
+        0
+      );
+
+    // ==========================================
+    // UPDATE DASHBOARD
+    // ==========================================
+
+    setDashboardStats({
+      totalFarmers: farmers.length,
+      todayMilk,
+      pendingVerification,
+      totalPayments,
+    });
   }, []);
+  useEffect(() => {
+  const savedSettings = JSON.parse(
+    localStorage.getItem("centerSettings") || "{}"
+  );
+
+  setCenterSettings(savedSettings);
+}, []);
+  
   return (
     <div className="dairy-page">
 
@@ -115,7 +191,68 @@ function DairyDashboard() {
           </div>
         </section>
 
-        
+        <section className="dairy-summary-section">
+
+  <div className="dairy-summary-card">
+    <div className="summary-icon">
+      👨‍🌾
+    </div>
+
+    <div>
+      <h3>
+        {dashboardStats.totalFarmers}
+      </h3>
+
+      <p>Total Farmers</p>
+    </div>
+  </div>
+
+
+  <div className="dairy-summary-card">
+    <div className="summary-icon">
+      🥛
+    </div>
+
+    <div>
+      <h3>
+        {dashboardStats.todayMilk.toFixed(2)} L
+      </h3>
+
+      <p>Today's Verified Milk</p>
+    </div>
+  </div>
+
+
+  <div className="dairy-summary-card">
+    <div className="summary-icon">
+      ⏳
+    </div>
+
+    <div>
+      <h3>
+        {dashboardStats.pendingVerification}
+      </h3>
+
+      <p>Pending Verification</p>
+    </div>
+  </div>
+
+
+  <div className="dairy-summary-card">
+    <div className="summary-icon">
+      💰
+    </div>
+
+    <div>
+      <h3>
+        ₹{dashboardStats.totalPayments.toFixed(2)}
+      </h3>
+
+     <p>Total Verified Amount</p>
+    </div>
+  </div>
+
+</section>
 
         {/* Dairy Management */}
         <section className="dairy-card">

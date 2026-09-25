@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Feed.css";
 
 function Feed() {
@@ -14,265 +14,290 @@ function Feed() {
   const [quantity, setQuantity] = useState("");
   const [cost, setCost] = useState("");
 
-  const [feedRecords, setFeedRecords] = useState(() => {
-  const loggedInFarmerMobile =
-    localStorage.getItem("loggedInFarmerMobile");
+  const [feedRecords, setFeedRecords] = useState([]);
 
-  const farmers =
-    JSON.parse(localStorage.getItem("farmers")) || [];
+  // =========================
+  // LOAD FEED RECORDS FROM MYSQL
+  // =========================
+  useEffect(() => {
+    const loadFeedRecords = async () => {
+      try {
+        const loggedInFarmerMobile =
+          localStorage.getItem("loggedInFarmerMobile");
 
-  const loggedInFarmer = farmers.find(
-    (farmer) =>
-      String(farmer.mobile) ===
-      String(loggedInFarmerMobile)
+        const farmers =
+          JSON.parse(localStorage.getItem("farmers")) || [];
+
+        const loggedInFarmer = farmers.find(
+          (farmer) =>
+            String(farmer.mobile) ===
+            String(loggedInFarmerMobile)
+        );
+
+        if (!loggedInFarmer) {
+          setFeedRecords([]);
+          return;
+        }
+
+        const response = await fetch(
+          `http://localhost:5000/api/feed-records/${loggedInFarmer.farmerId}`
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+  setFeedRecords(
+    Array.isArray(data.records)
+      ? data.records.map((feed) => ({
+          ...feed,
+          feedType: feed.feedType || feed.feed_name,
+          date: feed.date,
+        }))
+      : []
   );
+} else {
+          console.error(data.message);
+        }
+      } catch (error) {
+        console.error("Feed records load error:", error);
+      }
+    };
 
-  const savedFeed =
-    JSON.parse(localStorage.getItem("feedRecords")) || [];
+    loadFeedRecords();
+  }, []);
+useEffect(() => {
+  const loadUsageRecords = async () => {
+    try {
+      const loggedInFarmerMobile =
+        localStorage.getItem("loggedInFarmerMobile");
 
-  return savedFeed.filter((feed) => {
-    const mobileMatch =
-      String(feed.farmerMobile || "") ===
-      String(loggedInFarmerMobile);
+      const farmers =
+        JSON.parse(localStorage.getItem("farmers")) || [];
 
-    const farmerIdMatch =
-      loggedInFarmer &&
-      String(feed.farmerId || "") ===
-      String(loggedInFarmer.farmerId);
+      const loggedInFarmer = farmers.find(
+        (farmer) =>
+          String(farmer.mobile) ===
+          String(loggedInFarmerMobile)
+      );
 
-    return mobileMatch || farmerIdMatch;
-  });
-});
+      if (!loggedInFarmer) {
+        setUsageRecords([]);
+        return;
+      }
 
+      const response = await fetch(
+        `http://localhost:5000/api/feed-usage/${loggedInFarmer.farmerId}`
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setUsageRecords(
+          Array.isArray(data.records)
+            ? data.records.map((usage) => ({
+                ...usage,
+                feedType: usage.feed_name,
+                quantity: usage.quantity_used,
+                date: usage.usage_date,
+              }))
+            : []
+        );
+      } else {
+        console.error(data.message);
+      }
+    } catch (error) {
+      console.error("Feed usage load error:", error);
+    }
+  };
+
+  loadUsageRecords();
+}, []);
   // =========================
   // DAILY FEED USAGE
   // =========================
   const [usageFeedType, setUsageFeedType] = useState("");
+  const [usageFeedId, setUsageFeedId] = useState("");
   const [usageQuantity, setUsageQuantity] = useState("");
 
   const [usageDate, setUsageDate] = useState(
     new Date().toISOString().split("T")[0]
   );
 
- const [usageRecords, setUsageRecords] = useState(() => {
-  const loggedInFarmerMobile =
-    localStorage.getItem("loggedInFarmerMobile");
-
-  const farmers =
-    JSON.parse(localStorage.getItem("farmers")) || [];
-
-  const loggedInFarmer = farmers.find(
-    (farmer) =>
-      String(farmer.mobile) ===
-      String(loggedInFarmerMobile)
-  );
-
-  const savedUsage =
-    JSON.parse(localStorage.getItem("feedUsageRecords")) || [];
-
-  return savedUsage.filter((usage) => {
-    const mobileMatch =
-      String(usage.farmerMobile || "") ===
-      String(loggedInFarmerMobile);
-
-    const farmerIdMatch =
-      loggedInFarmer &&
-      String(usage.farmerId || "") ===
-      String(loggedInFarmer.farmerId);
-
-    return mobileMatch || farmerIdMatch;
-  });
-});
+const [usageRecords, setUsageRecords] = useState([]);
 
   const [message, setMessage] = useState("");
 
   // =========================
   // ADD FEED
   // =========================
-  const handleAddFeed = () => {
-    if (!feedType || !quantity || !cost) {
-      setMessage("Please fill all feed fields");
+ const handleAddFeed = async () => {
+ if (
+  feedType.trim() === "" ||
+  quantity === "" ||
+  cost === ""
+) {
+  setMessage("Please fill all feed fields");
+  return;
+}
+
+  if (Number(quantity) <= 0) {
+    setMessage("Quantity must be greater than 0");
+    return;
+  }
+
+  if (Number(cost) < 0) {
+    setMessage("Cost cannot be negative");
+    return;
+  }
+
+  try {
+    const loggedInFarmerMobile =
+      localStorage.getItem("loggedInFarmerMobile");
+
+    const farmers =
+      JSON.parse(localStorage.getItem("farmers")) || [];
+
+    const loggedInFarmer = farmers.find(
+      (farmer) =>
+        String(farmer.mobile) ===
+        String(loggedInFarmerMobile)
+    );
+
+    if (!loggedInFarmer) {
+      setMessage("Farmer not found");
       return;
     }
 
-    if (Number(quantity) <= 0) {
-      setMessage("Quantity must be greater than 0");
-      return;
-    }
-
-    if (Number(cost) < 0) {
-      setMessage("Cost cannot be negative");
-      return;
-    }
-const loggedInFarmerMobile =
-  localStorage.getItem("loggedInFarmerMobile");
-
-const farmers =
-  JSON.parse(localStorage.getItem("farmers")) || [];
-
-const loggedInFarmer = farmers.find(
-  (farmer) =>
-    String(farmer.mobile) ===
-    String(loggedInFarmerMobile)
-);
-const newFeed = {
-  id: Date.now(),
-
-  farmerMobile: loggedInFarmerMobile,
-
-  farmerId: loggedInFarmer
-    ? loggedInFarmer.farmerId
-    : "",
-
-  feedType: feedType.trim(),
+    const response = await fetch(
+      "http://localhost:5000/api/feed-records",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+  farmerId: loggedInFarmer.farmerId,
+  feedName: feedType.trim(),
+  feedType: "General",
   quantity: Number(quantity),
+  unit: "Kg",
   cost: Number(cost),
-  date: new Date().toLocaleDateString(),
-};
-    
+  supplier: null,
+  purchaseDate: new Date().toISOString().split("T")[0],
+}),
+      }
+    );
 
-    const allFeedRecords =
-  JSON.parse(localStorage.getItem("feedRecords")) || [];
+    const data = await response.json();
 
-const updatedAllRecords = [
-  ...allFeedRecords,
-  newFeed,
-];
+    if (!response.ok) {
+      setMessage(
+        data.message || "Failed to add feed"
+      );
+      return;
+    }
 
-const myFeedRecords = updatedAllRecords.filter((feed) => {
-  const mobileMatch =
-    String(feed.farmerMobile || "") ===
-    String(loggedInFarmerMobile);
+    setMessage("Feed stock added successfully!");
 
-  const farmerIdMatch =
-    loggedInFarmer &&
-    String(feed.farmerId || "") ===
-    String(loggedInFarmer.farmerId);
-
-  return mobileMatch || farmerIdMatch;
-});
-
-setFeedRecords(myFeedRecords);
-
-localStorage.setItem(
-  "feedRecords",
-  JSON.stringify(updatedAllRecords)
-);
     setFeedType("");
     setQuantity("");
     setCost("");
 
-    setMessage("Feed stock added successfully!");
-  };
+    // Reload feed records from MySQL
+    const feedResponse = await fetch(
+      `http://localhost:5000/api/feed-records/${loggedInFarmer.farmerId}`
+    );
 
+    const feedData = await feedResponse.json();
+if (feedResponse.ok) {
+  setFeedRecords(
+    Array.isArray(feedData.records)
+      ? feedData.records.map((feed) => ({
+          ...feed,
+          feedType: feed.feedType || feed.feed_name,
+          date: feed.date,
+        }))
+      : []
+  );
+}
+  } catch (error) {
+    console.error("Add feed error:", error);
+    setMessage("Server connection error");
+  }
+};
   // =========================
   // ADD DAILY FEED USAGE
   // =========================
-  const handleAddUsage = () => {
-    if (!usageFeedType || !usageQuantity || !usageDate) {
-      setMessage("Please fill all usage fields");
-      return;
-    }
-
-    if (Number(usageQuantity) <= 0) {
-      setMessage("Usage quantity must be greater than 0");
-      return;
-    }
-
-    // Total stock added for selected feed
-    const selectedFeed = feedRecords.filter(
-      (feed) => feed.feedType === usageFeedType
-    );
-
-    const totalStock = selectedFeed.reduce(
-      (total, feed) => total + Number(feed.quantity || 0),
-      0
-    );
-
-    // Total already used
-    const previousUsage = usageRecords
-      .filter(
-        (usage) => usage.feedType === usageFeedType
-      )
-      .reduce(
-        (total, usage) => total + Number(usage.quantity || 0),
-        0
-      );
-
-    const availableStock = totalStock - previousUsage;
-
-    if (Number(usageQuantity) > availableStock) {
-      setMessage(
-        `Not enough stock! Available ${availableStock} Kg`
-      );
-      return;
-    }
-const loggedInFarmerMobile =
-  localStorage.getItem("loggedInFarmerMobile");
-
-const farmers =
-  JSON.parse(localStorage.getItem("farmers")) || [];
-
-const loggedInFarmer = farmers.find(
-  (farmer) =>
-    String(farmer.mobile) ===
-    String(loggedInFarmerMobile)
-);
-    const newUsage = {
-  id: Date.now(),
-
-  farmerMobile: loggedInFarmerMobile,
-
-  farmerId: loggedInFarmer
-    ? loggedInFarmer.farmerId
-    : "",
-
-  feedType: usageFeedType,
-  quantity: Number(usageQuantity),
-  date: usageDate,
-};
-    const allUsageRecords =
-  JSON.parse(localStorage.getItem("feedUsageRecords")) || [];
-
-const updatedAllUsageRecords = [
-  ...allUsageRecords,
-  newUsage,
-];
-
-const myUsageRecords = updatedAllUsageRecords.filter(
-  (usage) => {
-    const mobileMatch =
-      String(usage.farmerMobile || "") ===
-      String(loggedInFarmerMobile);
-
-    const farmerIdMatch =
-      loggedInFarmer &&
-      String(usage.farmerId || "") ===
-      String(loggedInFarmer.farmerId);
-
-    return mobileMatch || farmerIdMatch;
+ const handleAddUsage = async () => {
+  if (!usageFeedId || !usageQuantity || !usageDate) {
+    setMessage("Please fill all usage fields");
+    return;
   }
-);
 
-setUsageRecords(myUsageRecords);
+  if (Number(usageQuantity) <= 0) {
+    setMessage("Usage quantity must be greater than 0");
+    return;
+  }
 
-localStorage.setItem(
-  "feedUsageRecords",
-  JSON.stringify(updatedAllUsageRecords)
-);
+  try {
+    const loggedInFarmerMobile =
+      localStorage.getItem("loggedInFarmerMobile");
 
+    const farmers =
+      JSON.parse(localStorage.getItem("farmers")) || [];
+
+    const loggedInFarmer = farmers.find(
+      (farmer) =>
+        String(farmer.mobile) ===
+        String(loggedInFarmerMobile)
+    );
+
+    if (!loggedInFarmer) {
+      setMessage("Farmer not found");
+      return;
+    }
+
+    const response = await fetch(
+      "http://localhost:5000/api/feed-usage",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          farmerId: loggedInFarmer.farmerId,
+          feedId: Number(usageFeedId),
+          usageDate: usageDate,
+          quantityUsed: Number(usageQuantity),
+          unit: "Kg",
+          notes: null,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setMessage(
+        data.message || "Failed to add feed usage"
+      );
+      return;
+    }
+
+    setMessage("Daily feed usage added successfully!");
+
+    setUsageFeedId("");
     setUsageFeedType("");
     setUsageQuantity("");
-
     setUsageDate(
       new Date().toISOString().split("T")[0]
     );
 
-    setMessage(
-      "Daily feed usage added successfully!"
-    );
-  };
-
+  } catch (error) {
+    console.error("Add feed usage error:", error);
+    setMessage("Server connection error");
+  }
+};
   // =========================
   // GET REMAINING STOCK
   // =========================
@@ -298,11 +323,11 @@ localStorage.setItem(
   // =========================
   // UNIQUE FEED TYPES
   // =========================
-  const uniqueFeedTypes = [
-    ...new Set(
-      feedRecords.map((feed) => feed.feedType)
-    ),
-  ];
+const uniqueFeedTypes = [
+  ...new Set(
+    feedRecords.map((feed) => feed.feedType)
+  ),
+];
 
   // =========================
   // FEED STOCK SUMMARY
@@ -477,8 +502,7 @@ localStorage.setItem(
             type="text"
             placeholder="Example: Green Grass"
             value={feedType}
-            onChange={(e) =>
-              setFeedType(e.target.value)
+            onChange={(e) => setFeedType(e.target.value)
             }
           />
         </div>
@@ -611,9 +635,9 @@ localStorage.setItem(
                 return (
                   <tr key={feed.id}>
 
-                    <td>
-                      <strong>{feed.feedType}</strong>
-                    </td>
+                   <td>
+  <strong>{feed.feedType}</strong>
+</td>
 
                     <td>
                       {feed.quantity} Kg
@@ -639,7 +663,11 @@ localStorage.setItem(
                       <strong>₹{feed.cost}</strong>
                     </td>
 
-                    <td>{feed.date}</td>
+                    <td>
+  {feed.date
+    ? new Date(feed.date).toLocaleDateString("en-IN")
+    : "-"}
+</td>
 
                   </tr>
                 );
@@ -690,25 +718,29 @@ localStorage.setItem(
         <div className="form-group">
           <label>Feed Type</label>
 
-          <select
-            value={usageFeedType}
-            onChange={(e) =>
-              setUsageFeedType(e.target.value)
-            }
-          >
-            <option value="">
-              Select Feed Type
-            </option>
+         <select
+  value={usageFeedId}
+  onChange={(e) => {
+    const selectedId = e.target.value;
+    setUsageFeedId(selectedId);
 
-            {uniqueFeedTypes.map((type) => (
-              <option
-                key={type}
-                value={type}
-              >
-                {type}
-              </option>
-            ))}
-          </select>
+    const selectedFeed = feedRecords.find(
+      (feed) => String(feed.id) === String(selectedId)
+    );
+
+    setUsageFeedType(
+      selectedFeed ? selectedFeed.feedType : ""
+    );
+  }}
+>
+  <option value="">Select Feed Type</option>
+
+  {feedRecords.map((feed) => (
+  <option key={feed.id} value={feed.id}>
+    {feed.feedType}
+  </option>
+))}
+</select>
         </div>
 
         <div className="form-group">
@@ -979,7 +1011,11 @@ localStorage.setItem(
               {feedRecords.map((feed) => (
                 <tr key={`add-${feed.id}`}>
 
-                  <td>{feed.date}</td>
+                  <td>
+  {feed.date
+    ? new Date(feed.date).toLocaleDateString("en-IN")
+    : "-"}
+</td>
 
                   <td>
                     <strong>{feed.feedType}</strong>

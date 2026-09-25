@@ -19,7 +19,7 @@ import DailyReports from "./pages/dairy/DailyReports";
 import MilkCollection from "./pages/dairy/milkcollection";
 import FarmerMilkCollection from "./pages/farmer/ViewMilkCollection";
 import Profile from "./pages/farmer/Profile";
-
+import Reports from "./pages/farmer/Reports";
 function App() {
   return (
     <BrowserRouter>
@@ -85,6 +85,10 @@ function App() {
 <Route
   path="/farmer/profile"
   element={<Profile />}
+/>
+<Route
+  path="/farmer/reports"
+  element={<Reports />}
 />
       </Routes>
     </BrowserRouter>

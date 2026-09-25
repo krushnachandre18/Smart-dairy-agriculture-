@@ -7,194 +7,466 @@ function DailyReports() {
   );
 
   const [milkRecords] = useState(() => {
-    const savedRecords = localStorage.getItem("milkRecords");
+    const savedRecords =
+      localStorage.getItem("milkRecords");
 
-    return savedRecords ? JSON.parse(savedRecords) : [];
+    return savedRecords
+      ? JSON.parse(savedRecords)
+      : [];
   });
+
+  // ==========================================
+  // SELECTED DATE RECORDS
+  // ==========================================
 
   const selectedDateRecords = milkRecords.filter(
     (record) => record.date === selectedDate
   );
 
+  // ==========================================
+  // STATUS RECORDS
+  // ==========================================
+
+  const verifiedRecords = selectedDateRecords.filter(
+    (record) =>
+      String(record.status).toLowerCase() ===
+      "verified"
+  );
+
+  const pendingRecords = selectedDateRecords.filter(
+    (record) =>
+      !record.status ||
+      String(record.status).toLowerCase() ===
+        "pending"
+  );
+
+  const rejectedRecords = selectedDateRecords.filter(
+    (record) =>
+      String(record.status).toLowerCase() ===
+      "rejected"
+  );
+
+  // ==========================================
+  // FARMER-WISE VERIFIED REPORT
+  // ==========================================
+
   const farmerReport = [
     ...new Map(
-      selectedDateRecords.map((record) => [
+      verifiedRecords.map((record) => [
         record.farmerId || "unknown",
         {
-          farmerId: record.farmerId || "Not Available",
-          farmerName: record.farmerName || "Not Available",
+          farmerId:
+            record.farmerId ||
+            "Not Available",
+
+          farmerName:
+            record.farmerName ||
+            "Not Available",
+
           morningMilk: 0,
           eveningMilk: 0,
           totalMilk: 0,
           totalAmount: 0,
-          status: "Pending",
         },
       ])
     ).values(),
   ];
 
-  selectedDateRecords.forEach((record) => {
+  // ==========================================
+  // CALCULATE FARMER TOTALS
+  // ==========================================
+
+  verifiedRecords.forEach((record) => {
     const farmer = farmerReport.find(
-      (item) => item.farmerId === record.farmerId
+      (item) =>
+        String(item.farmerId) ===
+        String(
+          record.farmerId ||
+            "Not Available"
+        )
     );
 
     if (!farmer) {
       return;
     }
 
-    const quantity = Number(record.quantity || 0);
-    const amount = Number(record.amount || 0);
+    const quantity = Number(
+      record.quantity || 0
+    );
 
-    if (record.session === "Morning") {
+    const amount = Number(
+      record.amount || 0
+    );
+
+    if (
+      String(record.session).toLowerCase() ===
+      "morning"
+    ) {
       farmer.morningMilk += quantity;
     }
 
-    if (record.session === "Evening") {
+    if (
+      String(record.session).toLowerCase() ===
+      "evening"
+    ) {
       farmer.eveningMilk += quantity;
     }
 
     farmer.totalMilk += quantity;
     farmer.totalAmount += amount;
-
-    if (record.status === "Verified") {
-      farmer.status = "Verified";
-    }
   });
 
-  const totalMilk = selectedDateRecords.reduce(
+  // ==========================================
+  // TOTAL VERIFIED MILK
+  // ==========================================
+
+  const totalMilk = verifiedRecords.reduce(
     (total, record) =>
       total + Number(record.quantity || 0),
     0
   );
 
-  const totalAmount = selectedDateRecords.reduce(
+  // ==========================================
+  // TOTAL VERIFIED AMOUNT
+  // ==========================================
+
+  const totalAmount = verifiedRecords.reduce(
     (total, record) =>
       total + Number(record.amount || 0),
     0
   );
 
-  const verifiedRecords = selectedDateRecords.filter(
-    (record) => record.status === "Verified"
-  ).length;
+  // ==========================================
+  // TOTAL MORNING MILK
+  // ==========================================
 
-  const pendingRecords = selectedDateRecords.filter(
-    (record) => record.status !== "Verified"
-  ).length;
+  const morningMilk = verifiedRecords
+    .filter(
+      (record) =>
+        String(record.session).toLowerCase() ===
+        "morning"
+    )
+    .reduce(
+      (total, record) =>
+        total + Number(record.quantity || 0),
+      0
+    );
+
+  // ==========================================
+  // TOTAL EVENING MILK
+  // ==========================================
+
+  const eveningMilk = verifiedRecords
+    .filter(
+      (record) =>
+        String(record.session).toLowerCase() ===
+        "evening"
+    )
+    .reduce(
+      (total, record) =>
+        total + Number(record.quantity || 0),
+      0
+    );
+
+  // ==========================================
+  // DATE CHANGE
+  // ==========================================
+
+  const handleDateChange = (event) => {
+    const value = event.target.value;
+
+    if (!value) {
+      return;
+    }
+
+    const date = new Date(
+      `${value}T00:00:00`
+    );
+
+    setSelectedDate(
+      date.toLocaleDateString()
+    );
+  };
+
+  // ==========================================
+  // UI
+  // ==========================================
 
   return (
     <div className="daily-report-page">
+
+      {/* HEADER */}
+
       <div className="daily-report-header">
-        <h1>Daily Milk Report</h1>
-        <p>Farmer-wise daily milk collection report</p>
+
+        <h1>
+          Daily Milk Report
+        </h1>
+
+        <p>
+          Farmer-wise daily milk collection report
+        </p>
+
       </div>
 
-      {/* Date Filter */}
+      {/* DATE FILTER */}
 
       <div className="daily-date-card">
-        <label>Select Date</label>
+
+        <label>
+          Select Date
+        </label>
 
         <input
           type="date"
-          onChange={(e) => {
-            const date = new Date(e.target.value);
-            setSelectedDate(date.toLocaleDateString());
-          }}
+          onChange={handleDateChange}
         />
 
         <span>
           Report Date: {selectedDate}
         </span>
+
       </div>
 
-      {/* Summary Cards */}
+      {/* SUMMARY CARDS */}
 
       <div className="daily-summary">
+
         <div className="daily-summary-card">
-          <h3>Total Milk</h3>
-          <p>{totalMilk.toFixed(2)} L</p>
+
+          <h3>
+            Verified Milk
+          </h3>
+
+          <p>
+            {totalMilk.toFixed(2)} L
+          </p>
+
         </div>
 
         <div className="daily-summary-card">
-          <h3>Total Amount</h3>
-          <p>₹{totalAmount.toFixed(2)}</p>
+
+          <h3>
+            Verified Amount
+          </h3>
+
+          <p>
+            ₹{totalAmount.toFixed(2)}
+          </p>
+
         </div>
 
         <div className="daily-summary-card">
-          <h3>Verified Records</h3>
-          <p>{verifiedRecords}</p>
+
+          <h3>
+            Pending Records
+          </h3>
+
+          <p>
+            {pendingRecords.length}
+          </p>
+
         </div>
 
         <div className="daily-summary-card">
-          <h3>Pending Records</h3>
-          <p>{pendingRecords}</p>
+
+          <h3>
+            Rejected Records
+          </h3>
+
+          <p>
+            {rejectedRecords.length}
+          </p>
+
         </div>
+
       </div>
 
-      {/* Farmer-wise Report */}
+      {/* SESSION SUMMARY */}
+
+      <div className="daily-summary">
+
+        <div className="daily-summary-card">
+
+          <h3>
+            Morning Milk
+          </h3>
+
+          <p>
+            {morningMilk.toFixed(2)} L
+          </p>
+
+        </div>
+
+        <div className="daily-summary-card">
+
+          <h3>
+            Evening Milk
+          </h3>
+
+          <p>
+            {eveningMilk.toFixed(2)} L
+          </p>
+
+        </div>
+
+        <div className="daily-summary-card">
+
+          <h3>
+            Verified Records
+          </h3>
+
+          <p>
+            {verifiedRecords.length}
+          </p>
+
+        </div>
+
+        <div className="daily-summary-card">
+
+          <h3>
+            Total Records
+          </h3>
+
+          <p>
+            {selectedDateRecords.length}
+          </p>
+
+        </div>
+
+      </div>
+
+      {/* FARMER-WISE REPORT */}
 
       <div className="daily-report-table-card">
-        <h2>Farmer-wise Daily Report</h2>
+
+        <h2>
+          Farmer-wise Daily Report
+        </h2>
 
         {farmerReport.length === 0 ? (
+
           <p className="no-daily-record">
-            No milk records available for this date.
+            No verified milk records available
+            for this date.
           </p>
+
         ) : (
+
           <div className="daily-table-container">
+
             <table>
+
               <thead>
+
                 <tr>
-                  <th>Farmer ID</th>
-                  <th>Farmer Name</th>
-                  <th>Morning Milk</th>
-                  <th>Evening Milk</th>
-                  <th>Total Milk</th>
-                  <th>Total Amount</th>
-                  <th>Status</th>
+
+                  <th>
+                    Farmer ID
+                  </th>
+
+                  <th>
+                    Farmer Name
+                  </th>
+
+                  <th>
+                    Morning Milk
+                  </th>
+
+                  <th>
+                    Evening Milk
+                  </th>
+
+                  <th>
+                    Total Milk
+                  </th>
+
+                  <th>
+                    Total Amount
+                  </th>
+
+                  <th>
+                    Status
+                  </th>
+
                 </tr>
+
               </thead>
 
               <tbody>
-                {farmerReport.map((farmer) => (
-                  <tr key={farmer.farmerId}>
-                    <td>{farmer.farmerId}</td>
 
-                    <td>{farmer.farmerName}</td>
+                {farmerReport.map(
+                  (farmer) => (
 
-                    <td>
-                      {farmer.morningMilk.toFixed(2)} L
-                    </td>
+                    <tr
+                      key={
+                        farmer.farmerId
+                      }
+                    >
 
-                    <td>
-                      {farmer.eveningMilk.toFixed(2)} L
-                    </td>
+                      <td>
+                        {farmer.farmerId}
+                      </td>
 
-                    <td className="daily-total-milk">
-                      {farmer.totalMilk.toFixed(2)} L
-                    </td>
+                      <td>
+                        {farmer.farmerName}
+                      </td>
 
-                    <td className="daily-total-amount">
-                      ₹{farmer.totalAmount.toFixed(2)}
-                    </td>
+                      <td>
+                        {farmer.morningMilk.toFixed(
+                          2
+                        )}{" "}
+                        L
+                      </td>
 
-                    <td>
-                      <span
-                        className={
-                          farmer.status === "Verified"
-                            ? "daily-verified"
-                            : "daily-pending"
-                        }
-                      >
-                        {farmer.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
+                      <td>
+                        {farmer.eveningMilk.toFixed(
+                          2
+                        )}{" "}
+                        L
+                      </td>
+
+                      <td className="daily-total-milk">
+
+                        {farmer.totalMilk.toFixed(
+                          2
+                        )}{" "}
+                        L
+
+                      </td>
+
+                      <td className="daily-total-amount">
+
+                        ₹
+                        {farmer.totalAmount.toFixed(
+                          2
+                        )}
+
+                      </td>
+
+                      <td>
+
+                        <span className="daily-verified">
+                          Verified
+                        </span>
+
+                      </td>
+
+                    </tr>
+
+                  )
+                )}
+
               </tbody>
+
             </table>
+
           </div>
+
         )}
+
       </div>
+
     </div>
   );
 }

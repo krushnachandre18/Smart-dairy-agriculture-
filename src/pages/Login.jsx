@@ -10,9 +10,8 @@ function Login() {
   const [role, setRole] = useState("farmer");
   const [message, setMessage] = useState("");
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-
     setMessage("");
 
     if (!mobile.trim()) {
@@ -25,78 +24,113 @@ function Login() {
       return;
     }
 
-    // =========================
-    // FARMER LOGIN
-    // =========================
-
-    if (role === "farmer") {
-      const farmers =
-        JSON.parse(localStorage.getItem("farmers")) || [];
-
-      const farmer = farmers.find(
-        (item) =>
-          String(item.mobile) === String(mobile) &&
-          String(item.password) === String(password)
-      );
-
-      if (!farmer) {
-        setMessage(
-          "Invalid farmer mobile number or password."
+    try {
+      // =========================
+      // FARMER LOGIN
+      // =========================
+      if (role === "farmer") {
+        const response = await fetch(
+          "http://localhost:5000/api/farmers/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              mobile: mobile.trim(),
+              password,
+            }),
+          }
         );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          setMessage(
+            data.message || "Invalid farmer mobile number or password."
+          );
+          return;
+        }
+
+        const farmer = data.farmer;
+
+        // Save logged-in farmer information
+        localStorage.setItem(
+          "loggedInFarmerMobile",
+          farmer.mobile
+        );
+
+        localStorage.setItem(
+          "loggedInFarmerId",
+          farmer.farmer_id
+        );
+
+        localStorage.setItem(
+          "loggedInFarmerDbId",
+          farmer.id
+        );
+
+        localStorage.setItem(
+          "loggedInRole",
+          "farmer"
+        );
+
+        navigate("/farmer/dashboard");
         return;
       }
 
-      localStorage.setItem(
-        "loggedInFarmerMobile",
-        mobile
-      );
-
-      localStorage.setItem(
-        "loggedInFarmerId",
-        farmer.farmerId || ""
-      );
-
-      navigate("/farmer/dashboard");
-      return;
-    }
-
-    // =========================
-    // DAIRY LOGIN
-    // =========================
-
+      // =========================
+      // DAIRY LOGIN
+      // =========================
     if (role === "dairy") {
-      const dairyMobile =
-        localStorage.getItem("dairyMobile");
+  const response = await fetch(
+    "http://localhost:5000/api/dairy/login",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        mobile: mobile.trim(),
+        password,
+      }),
+    }
+  );
 
-      const dairyPassword =
-        localStorage.getItem("dairyPassword");
+  const data = await response.json();
 
-      // Default Dairy Login
-      const defaultDairyMobile = "9999999999";
-      const defaultDairyPassword = "dairy123";
+  if (!response.ok) {
+    setMessage(
+      data.message || "Invalid dairy mobile number or password."
+    );
+    return;
+  }
 
-      const savedMobile =
-        dairyMobile || defaultDairyMobile;
+  const dairyUser = data.dairyUser;
 
-      const savedPassword =
-        dairyPassword || defaultDairyPassword;
+  localStorage.setItem(
+    "loggedInDairyId",
+    dairyUser.id
+  );
 
-      if (
-        String(mobile) !== String(savedMobile) ||
-        String(password) !== String(savedPassword)
-      ) {
-        setMessage(
-          "Invalid dairy mobile number or password."
-        );
-        return;
-      }
+  localStorage.setItem(
+    "dairyMobile",
+    dairyUser.mobile
+  );
 
-      localStorage.setItem(
-        "loggedInRole",
-        "dairy"
+  localStorage.setItem(
+    "loggedInRole",
+    "dairy"
+  );
+
+  navigate("/dairy/dashboard");
+}
+    } catch (error) {
+      console.error("Login error:", error);
+
+      setMessage(
+        "Cannot connect to server. Please make sure backend is running."
       );
-
-      navigate("/dairy/dashboard");
     }
   };
 
@@ -104,151 +138,76 @@ function Login() {
     <div className="login-page">
       <div className="login-container">
 
-        {/* ================= LEFT SIDE ================= */}
+        <h1>🥛 Smart Dairy</h1>
 
-        <section className="login-left">
+        <p>Login to your account</p>
 
-          <div className="brand-logo">🐄</div>
+        <form onSubmit={handleLogin}>
 
-          <h1>Smart Dairy & Farmer</h1>
+          <div className="form-group">
+            <label>Login As</label>
 
-          <br />
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="farmer">
+                👨‍🌾 Farmer
+              </option>
 
-          <p>
-            Manage your cows, milk collection,
-            payments and farm activities in one
-            smart platform.
-          </p>
-
-          <div className="feature-list">
-            <div>🥛 Easy Milk Collection</div>
-            <div>🐄 Cow Management</div>
-            <div>💰 Payment Tracking</div>
-            <div>📊 Smart Reports</div>
+              <option value="dairy">
+                🥛 Dairy
+              </option>
+            </select>
           </div>
 
-        </section>
+          <div className="form-group">
+            <label>Mobile Number</label>
 
-        {/* ================= RIGHT SIDE ================= */}
-
-        <section className="login-right">
-
-          <div className="login-card">
-
-            <div className="mobile-logo">🐄</div>
-
-            <h2>Welcome Back!</h2>
-
-            <p className="login-subtitle">
-              Login to your Smart Dairy & Farmer
-              account
-            </p>
-
-            <form onSubmit={handleLogin}>
-
-              {/* LOGIN TYPE */}
-
-              <div className="form-group">
-
-                <label>
-                  Select Login Type
-                </label>
-
-                <select
-                  value={role}
-                  onChange={(event) => {
-                    setRole(event.target.value);
-                    setMessage("");
-                  }}
-                >
-                  <option value="farmer">
-                    Farmer Login
-                  </option>
-
-                  <option value="dairy">
-                    Dairy In-charge Login
-                  </option>
-                </select>
-
-              </div>
-
-              {/* MOBILE */}
-
-              <div className="form-group">
-
-                <label>
-                  Mobile Number
-                </label>
-
-                <input
-                  type="tel"
-                  value={mobile}
-                  onChange={(event) =>
-                    setMobile(event.target.value)
-                  }
-                  placeholder="Enter mobile number"
-                  maxLength="10"
-                />
-
-              </div>
-
-              {/* PASSWORD */}
-
-              <div className="form-group">
-
-                <label>
-                  Password
-                </label>
-
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(event) =>
-                    setPassword(event.target.value)
-                  }
-                  placeholder="Enter password"
-                />
-
-              </div>
-
-              {/* MESSAGE */}
-
-              {message && (
-                <p className="login-message">
-                  {message}
-                </p>
-              )}
-
-              {/* LOGIN BUTTON */}
-
-              <button
-                className="login-button"
-                type="submit"
-              >
-                Login →
-              </button>
-
-              {/* REGISTER */}
-
-              <button
-                type="button"
-                className="register-link-button"
-                onClick={() =>
-                  navigate("/register")
-                }
-              >
-                Create New Account
-              </button>
-
-            </form>
-
-            <p className="login-footer">
-              Smart Dairy & Farm System
-            </p>
-
+            <input
+              type="text"
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+              placeholder="Enter mobile number"
+              maxLength="10"
+            />
           </div>
 
-        </section>
+          <div className="form-group">
+            <label>Password</label>
+
+            <input
+              type="password"
+              value={password}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
+              placeholder="Enter password"
+            />
+          </div>
+
+          {message && (
+            <p className="login-message">
+              {message}
+            </p>
+          )}
+
+          <button type="submit">
+            Login
+          </button>
+
+        </form>
+
+        <div className="register-link">
+          <p>New farmer?</p>
+
+          <button
+            type="button"
+            onClick={() => navigate("/register")}
+          >
+            Create Farmer Account
+          </button>
+        </div>
 
       </div>
     </div>

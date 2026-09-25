@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Financial.css";
 
 function Financial() {
@@ -33,26 +33,45 @@ function Financial() {
 
   const [incomeDescription, setIncomeDescription] =
     useState("");
+const [incomeRecords, setIncomeRecords] = useState([]);
+// LOAD INCOME RECORDS FROM MYSQL
+useEffect(() => {
+  const loadIncomeRecords = async () => {
+    try {
+      if (!loggedInFarmer) {
+        setIncomeRecords([]);
+        return;
+      }
 
-  const [incomeRecords, setIncomeRecords] = useState(() => {
-    const savedIncome =
-      JSON.parse(
-        localStorage.getItem("incomeRecords")
-      ) || [];
+      const response = await fetch(
+        `http://localhost:5000/api/income/${loggedInFarmer.farmerId}`
+      );
 
-    return savedIncome.filter((income) => {
-      const mobileMatch =
-        String(income.farmerMobile || "") ===
-        String(loggedInFarmerMobile);
+      const data = await response.json();
 
-      const farmerIdMatch =
-        loggedInFarmer &&
-        String(income.farmerId || "") ===
-          String(loggedInFarmer.farmerId);
+      if (response.ok) {
+        setIncomeRecords(
+          Array.isArray(data.records)
+            ? data.records.map((income) => ({
+                ...income,
+                incomeType: income.income_type,
+                date: income.income_date,
+              }))
+            : []
+        );
+      } else {
+        console.error(data.message);
+      }
+    } catch (error) {
+      console.error(
+        "Income load error:",
+        error
+      );
+    }
+  };
 
-      return mobileMatch || farmerIdMatch;
-    });
-  });
+  loadIncomeRecords();
+}, [loggedInFarmer?.farmerId]);
 
   // =====================================================
   // EXPENSES
@@ -67,28 +86,47 @@ function Financial() {
 
   const [expenseDescription, setExpenseDescription] =
     useState("");
+const [expenseRecords, setExpenseRecords] = useState([]);
+// LOAD EXPENSE RECORDS FROM MYSQL
+useEffect(() => {
+  const loadExpenseRecords = async () => {
+    try {
+      if (!loggedInFarmer) {
+        setExpenseRecords([]);
+        return;
+      }
 
-  const [expenseRecords, setExpenseRecords] =
-    useState(() => {
-      const savedExpenses =
-        JSON.parse(
-          localStorage.getItem("expenseRecords")
-        ) || [];
+      const response = await fetch(
+        `http://localhost:5000/api/expenses/${loggedInFarmer.farmerId}`
+      );
 
-      return savedExpenses.filter((expense) => {
-        const mobileMatch =
-          String(expense.farmerMobile || "") ===
-          String(loggedInFarmerMobile);
+      const data = await response.json();
 
-        const farmerIdMatch =
-          loggedInFarmer &&
-          String(expense.farmerId || "") ===
-            String(loggedInFarmer.farmerId);
+      if (response.ok) {
+        setExpenseRecords(
+          Array.isArray(data.records)
+            ? data.records.map((expense) => ({
+                ...expense,
+                expenseType:
+                  expense.expense_type,
+                date:
+                  expense.expense_date,
+              }))
+            : []
+        );
+      } else {
+        console.error(data.message);
+      }
+    } catch (error) {
+      console.error(
+        "Expense load error:",
+        error
+      );
+    }
+  };
 
-        return mobileMatch || farmerIdMatch;
-      });
-    });
-
+  loadExpenseRecords();
+}, [loggedInFarmer?.farmerId]);
   // =====================================================
   // MESSAGE
   // =====================================================
@@ -147,86 +185,90 @@ function Financial() {
   // ADD INCOME
   // =====================================================
 
-  const handleAddIncome = () => {
-    if (
-      !incomeType ||
-      !incomeAmount ||
-      !incomeDate
-    ) {
-      setMessage(
-        "Please fill all income fields"
-      );
-      return;
-    }
+ const handleAddIncome = async () => {
+  if (
+    !incomeType ||
+    !incomeAmount ||
+    !incomeDate
+  ) {
+    setMessage(
+      "Please fill all income fields"
+    );
+    return;
+  }
 
-    if (Number(incomeAmount) <= 0) {
-      setMessage(
-        "Income amount must be greater than 0"
-      );
-      return;
-    }
+  if (Number(incomeAmount) <= 0) {
+    setMessage(
+      "Income amount must be greater than 0"
+    );
+    return;
+  }
 
-    const newIncome = {
-      id: Date.now(),
+  if (!loggedInFarmer) {
+    setMessage("Farmer not found");
+    return;
+  }
 
-      farmerMobile:
-        loggedInFarmerMobile,
-
-      farmerId: loggedInFarmer
-        ? loggedInFarmer.farmerId
-        : "",
-
-      incomeType: incomeType,
-
-      amount: Number(incomeAmount),
-
-      date: incomeDate,
-
-      description: incomeDescription,
-    };
-
-    // Get ALL income records
-    const allIncomeRecords =
-      JSON.parse(
-        localStorage.getItem("incomeRecords")
-      ) || [];
-
-    // Add new record
-    const updatedAllIncome = [
-      ...allIncomeRecords,
-      newIncome,
-    ];
-
-    // Current farmer records only
-    const myIncomeRecords =
-      updatedAllIncome.filter((income) => {
-        const mobileMatch =
-          String(income.farmerMobile || "") ===
-          String(loggedInFarmerMobile);
-
-        const farmerIdMatch =
-          loggedInFarmer &&
-          String(income.farmerId || "") ===
-            String(loggedInFarmer.farmerId);
-
-        return (
-          mobileMatch || farmerIdMatch
-        );
-      });
-
-    setIncomeRecords(myIncomeRecords);
-
-    // Save ALL farmers' records
-    localStorage.setItem(
-      "incomeRecords",
-      JSON.stringify(updatedAllIncome)
+  try {
+    const response = await fetch(
+      "http://localhost:5000/api/income",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          farmerId:
+            loggedInFarmer.farmerId,
+          incomeType: incomeType,
+          amount: Number(incomeAmount),
+          incomeDate: incomeDate,
+          description:
+            incomeDescription,
+        }),
+      }
     );
 
-    // Clear form
+    const data = await response.json();
+
+    if (!response.ok) {
+      setMessage(
+        data.message ||
+          "Failed to add income"
+      );
+      return;
+    }
+
+    // Reload income records from MySQL
+    const incomeResponse =
+      await fetch(
+        `http://localhost:5000/api/income/${loggedInFarmer.farmerId}`
+      );
+
+    const incomeData =
+      await incomeResponse.json();
+
+    if (incomeResponse.ok) {
+      setIncomeRecords(
+        Array.isArray(
+          incomeData.records
+        )
+          ? incomeData.records.map(
+              (income) => ({
+                ...income,
+                incomeType:
+                  income.income_type,
+                date:
+                  income.income_date,
+              })
+            )
+          : []
+      );
+    }
+
     setIncomeType("");
     setIncomeAmount("");
     setIncomeDescription("");
-
     setIncomeDate(
       new Date()
         .toISOString()
@@ -236,104 +278,106 @@ function Financial() {
     setMessage(
       "Income added successfully!"
     );
-  };
+  } catch (error) {
+    console.error(
+      "Income add error:",
+      error
+    );
+
+    setMessage(
+      "Server connection failed"
+    );
+  }
+};
 
   // =====================================================
   // ADD EXPENSE
   // =====================================================
 
-  const handleAddExpense = () => {
-    if (
-      !expenseType ||
-      !expenseAmount ||
-      !expenseDate
-    ) {
+const handleAddExpense = async () => {
+  if (
+    !expenseType ||
+    !expenseAmount ||
+    !expenseDate
+  ) {
+    setMessage(
+      "Please fill all expense fields"
+    );
+    return;
+  }
+
+  if (Number(expenseAmount) <= 0) {
+    setMessage(
+      "Expense amount must be greater than 0"
+    );
+    return;
+  }
+
+  if (!loggedInFarmer) {
+    setMessage("Farmer not found");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "http://localhost:5000/api/expenses",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          farmerId:
+            loggedInFarmer.farmerId,
+          expenseType: expenseType,
+          amount: Number(expenseAmount),
+          expenseDate: expenseDate,
+          description:
+            expenseDescription,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
       setMessage(
-        "Please fill all expense fields"
+        data.message ||
+          "Failed to add expense"
       );
       return;
     }
 
-    if (Number(expenseAmount) <= 0) {
-      setMessage(
-        "Expense amount must be greater than 0"
+    // Reload expense records from MySQL
+    const expenseResponse =
+      await fetch(
+        `http://localhost:5000/api/expenses/${loggedInFarmer.farmerId}`
       );
-      return;
+
+    const expenseData =
+      await expenseResponse.json();
+
+    if (expenseResponse.ok) {
+      setExpenseRecords(
+        Array.isArray(
+          expenseData.records
+        )
+          ? expenseData.records.map(
+              (expense) => ({
+                ...expense,
+                expenseType:
+                  expense.expense_type,
+                date:
+                  expense.expense_date,
+              })
+            )
+          : []
+      );
     }
 
-    const newExpense = {
-      id: Date.now(),
-
-      farmerMobile:
-        loggedInFarmerMobile,
-
-      farmerId: loggedInFarmer
-        ? loggedInFarmer.farmerId
-        : "",
-
-      expenseType: expenseType,
-
-      amount: Number(expenseAmount),
-
-      date: expenseDate,
-
-      description: expenseDescription,
-    };
-
-    // Get ALL expense records
-    const allExpenseRecords =
-      JSON.parse(
-        localStorage.getItem("expenseRecords")
-      ) || [];
-
-    // Add new expense
-    const updatedAllExpenses = [
-      ...allExpenseRecords,
-      newExpense,
-    ];
-
-    // Current farmer records only
-    const myExpenseRecords =
-      updatedAllExpenses.filter(
-        (expense) => {
-          const mobileMatch =
-            String(
-              expense.farmerMobile || ""
-            ) ===
-            String(loggedInFarmerMobile);
-
-          const farmerIdMatch =
-            loggedInFarmer &&
-            String(
-              expense.farmerId || ""
-            ) ===
-              String(
-                loggedInFarmer.farmerId
-              );
-
-          return (
-            mobileMatch || farmerIdMatch
-          );
-        }
-      );
-
-    setExpenseRecords(
-      myExpenseRecords
-    );
-
-    // Save ALL farmers' records
-    localStorage.setItem(
-      "expenseRecords",
-      JSON.stringify(
-        updatedAllExpenses
-      )
-    );
-
-    // Clear form
     setExpenseType("");
     setExpenseAmount("");
     setExpenseDescription("");
-
     setExpenseDate(
       new Date()
         .toISOString()
@@ -343,8 +387,17 @@ function Financial() {
     setMessage(
       "Expense added successfully!"
     );
-  };
+  } catch (error) {
+    console.error(
+      "Expense add error:",
+      error
+    );
 
+    setMessage(
+      "Server connection failed"
+    );
+  }
+};
   // =====================================================
   // CALCULATE TOTALS
   // =====================================================

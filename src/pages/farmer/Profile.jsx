@@ -59,19 +59,29 @@ useEffect(() => {
 
   // ================= TOTAL MILK =================
 
-  const milk = farmerMilk.reduce(
-    (total, record) =>
-      total + Number(record.quantity || 0),
-    0
-  );
+  // ================= VERIFIED MILK RECORDS =================
 
-  // ================= TOTAL EARNING =================
+const verifiedFarmerMilk = farmerMilk.filter(
+  (record) =>
+    String(record.status || "").toLowerCase() ===
+    "verified"
+);
 
-  const earning = farmerMilk.reduce(
-    (total, record) =>
-      total + Number(record.amount || 0),
-    0
-  );
+// ================= TOTAL VERIFIED MILK =================
+
+const milk = verifiedFarmerMilk.reduce(
+  (total, record) =>
+    total + Number(record.quantity || 0),
+  0
+);
+
+// ================= TOTAL VERIFIED EARNING =================
+
+const earning = verifiedFarmerMilk.reduce(
+  (total, record) =>
+    total + Number(record.amount || 0),
+  0
+);
 
   setTotalMilk(milk);
   setTotalEarning(earning);
@@ -219,6 +229,10 @@ setTotalCows(farmerCows.length);
               {farmer.address || "Not available"}
             </p>
           </div>
+          <div>
+  <label>Farmer ID</label>
+  <p>{farmer.farmerId || "Not available"}</p>
+</div>
 
           <div>
             <label>Village</label>

@@ -1,0 +1,363 @@
+/* =========================
+   FARMER REPORTS PAGE
+========================= */
+
+.reports-page {
+  min-height: 100vh;
+  padding: 30px;
+  background: #f8fafc;
+  color: #1e293b;
+  font-family: Arial, sans-serif;
+}
+
+/* HEADER */
+
+.reports-header {
+  max-width: 1200px;
+  margin: 0 auto 25px;
+}
+
+.reports-header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.reports-header p {
+  margin-top: 8px;
+  color: #64748b;
+}
+
+/* FARMER INFO */
+
+.farmer-info-card {
+  max-width: 1200px;
+  margin: 0 auto 25px;
+  padding: 20px;
+  background: white;
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.farmer-info-card div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.farmer-info-card span {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.farmer-info-card strong {
+  font-size: 17px;
+}
+
+/* MONTH */
+
+.month-selector-card {
+  max-width: 1200px;
+  margin: 0 auto 25px;
+  padding: 20px;
+  background: white;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.month-selector-card label {
+  font-weight: bold;
+}
+
+.month-selector-card input {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+/* SUMMARY CARDS */
+
+.report-grid {
+  max-width: 1200px;
+  margin: 0 auto 25px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.report-card {
+  background: white;
+  padding: 22px;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.report-card span {
+  font-size: 30px;
+}
+
+.report-card h3 {
+  margin: 12px 0 8px;
+}
+
+.report-card strong {
+  display: block;
+  font-size: 25px;
+  margin-bottom: 7px;
+}
+
+.report-card small {
+  color: #64748b;
+}
+
+/* SECTIONS */
+
+.report-section {
+  max-width: 1200px;
+  margin: 0 auto 25px;
+  padding: 25px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.section-title h2 {
+  margin: 0;
+}
+
+.section-title p {
+  color: #64748b;
+  margin-top: 7px;
+}
+
+/* MILK */
+
+.milk-report-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.milk-report-grid div {
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.milk-report-grid span {
+  display: block;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.milk-report-grid strong {
+  font-size: 22px;
+}
+
+/* FINANCIAL */
+
+.financial-report-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.financial-box {
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.financial-box h3 {
+  margin-top: 0;
+}
+
+.financial-box strong {
+  font-size: 22px;
+}
+
+/* COW */
+
+.cow-report-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.cow-report-grid div {
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.cow-report-grid span {
+  display: block;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.cow-report-grid strong {
+  font-size: 24px;
+}
+
+/* STATUS */
+
+.status-report-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.status-box {
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.status-box span {
+  display: block;
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.status-box strong {
+  display: block;
+  font-size: 26px;
+}
+
+.status-box small {
+  display: block;
+  margin-top: 5px;
+}
+
+.status-box.verified {
+  background: #ecfdf5;
+}
+
+.status-box.pending {
+  background: #fffbeb;
+}
+
+.status-box.rejected {
+  background: #fef2f2;
+}
+
+/* FOOTER */
+
+.reports-footer {
+  max-width: 1200px;
+  margin: 35px auto 0;
+  padding: 25px;
+  text-align: center;
+  color: #64748b;
+}
+
+.reports-footer strong {
+  color: #1e293b;
+}
+
+.reports-footer p {
+  margin: 8px 0;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .farmer-info-card {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .report-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .milk-report-grid,
+  .financial-report-grid,
+  .cow-report-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .reports-page {
+    padding: 15px;
+  }
+
+  .farmer-info-card,
+  .report-grid,
+  .milk-report-grid,
+  .financial-report-grid,
+  .cow-report-grid,
+  .status-report-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .month-selector-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .reports-header h1 {
+    font-size: 25px;
+  }
+}
+/* =========================
+   PRINT REPORT BUTTON
+========================= */
+
+.print-report-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.print-report-btn:hover {
+  background: #1d4ed8;
+}
+
+/* =========================
+   PRINT SETTINGS
+========================= */
+
+@media print {
+  body {
+    background: white;
+  }
+
+  .print-report-btn {
+    display: none;
+  }
+
+  .reports-page {
+    padding: 10px;
+    background: white;
+  }
+
+  .reports-header {
+    border-bottom: 2px solid #222;
+  }
+
+  .month-selector-card {
+    display: none;
+  }
+
+  .reports-footer {
+    margin-top: 30px;
+  }
+}

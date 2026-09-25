@@ -1,31 +1,30 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import "./MilkCollection.css";
 
 function MilkCollection() {
-  
-  const [farmers] = useState(() => {
-    const savedFarmers = localStorage.getItem("farmers");
+  const [farmers, setFarmers] = useState([]);
 
-    return savedFarmers ? JSON.parse(savedFarmers) : [];
-  });
-  
+  const [selectedFarmer, setSelectedFarmer] =
+    useState("");
 
-  const [selectedFarmer, setSelectedFarmer] = useState("");
+  const [session, setSession] =
+    useState("Morning");
 
-  const [session, setSession] = useState("Morning");
-  const [quantity, setQuantity] = useState("");
-  const [fat, setFat] = useState("");
-  const [snf, setSnf] = useState("");
+  const [quantity, setQuantity] =
+    useState("");
 
-  const [records, setRecords] = useState(() => {
-    const savedRecords = localStorage.getItem("milkRecords");
-    const farmerMobile = localStorage.getItem("loggedInFarmerMobile");
+  const [fat, setFat] =
+    useState("");
 
-    return savedRecords ? JSON.parse(savedRecords) : [];
-  });
+  const [snf, setSnf] =
+    useState("");
+
+  const [records, setRecords] =
+    useState([]);
 
   const selectedFarmerData = farmers.find(
-    (farmer) => farmer.farmerId === selectedFarmer
+    (farmer) =>
+      farmer.farmer_id === selectedFarmer
   );
 
   const rate =
@@ -38,7 +37,76 @@ function MilkCollection() {
       ? Number(quantity) * rate
       : 0;
 
-  const handleAddRecord = (e) => {
+  // ==========================================
+  // LOAD FARMERS + MILK RECORDS
+  // ==========================================
+  useEffect(() => {
+    loadFarmers();
+    loadMilkRecords();
+  }, []);
+
+  const loadFarmers = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/farmers"
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(
+          data.message ||
+            "Failed to load farmers."
+        );
+        return;
+      }
+
+      setFarmers(data.farmers || []);
+    } catch (error) {
+      console.error(
+        "Load farmers error:",
+        error
+      );
+
+      alert(
+        "Cannot connect to server. Please make sure backend is running."
+      );
+    }
+  };
+
+  const loadMilkRecords = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/milk-records"
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(
+          data.message ||
+            "Failed to load milk records."
+        );
+        return;
+      }
+
+      setRecords(data.records || []);
+    } catch (error) {
+      console.error(
+        "Load milk records error:",
+        error
+      );
+
+      alert(
+        "Cannot connect to server. Please make sure backend is running."
+      );
+    }
+  };
+
+  // ==========================================
+  // ADD MILK RECORD
+  // ==========================================
+  const handleAddRecord = async (e) => {
     e.preventDefault();
 
     if (!selectedFarmer) {
@@ -51,220 +119,391 @@ function MilkCollection() {
       return;
     }
 
-    const newRecord = {
-      id: Date.now(),
+    if (!selectedFarmerData) {
+      alert("Selected farmer not found.");
+      return;
+    }
 
-      farmerId: selectedFarmerData.farmerId,
+    // MySQL DATE format
+    const today =
+      new Date().toISOString().split("T")[0];
 
-      farmerName: selectedFarmerData.name,
-      farmerMobile: selectedFarmerData.mobile,
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/milk-records",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            farmerId:
+              selectedFarmerData.farmer_id,
 
-      date: new Date().toLocaleDateString(),
+            collectionDate: today,
 
-      session: session,
+            session: session,
 
-      quantity: Number(quantity),
+            quantity: Number(quantity),
 
-      fat: Number(fat),
+            fat: Number(fat),
 
-      snf: Number(snf),
+            snf: Number(snf),
 
-      rate: Number(rate.toFixed(2)),
+            rate: Number(rate.toFixed(2)),
 
-      amount: Number(amount.toFixed(2)),
+            amount: Number(amount.toFixed(2)),
+          }),
+        }
+      );
 
-      status: "Pending",
-    };
+      const data = await response.json();
 
-    const updatedRecords = [...records, newRecord];
+      if (!response.ok) {
+        alert(
+          data.message ||
+            "Failed to add milk collection."
+        );
+        return;
+      }
 
-    setRecords(updatedRecords);
+      // Reload records from MySQL
+      await loadMilkRecords();
 
-    localStorage.setItem(
-      "milkRecords",
-      JSON.stringify(updatedRecords)
-    );
+      // Reset form
+      setSelectedFarmer("");
+      setQuantity("");
+      setFat("");
+      setSnf("");
 
-    setSelectedFarmer("");
-    setQuantity("");
-    setFat("");
-    setSnf("");
+      alert(
+        "Milk collection added successfully"
+      );
+    } catch (error) {
+      console.error(
+        "Add milk record error:",
+        error
+      );
 
-    alert("Milk collection added successfully");
+      alert(
+        "Cannot connect to server. Please make sure backend is running."
+      );
+    }
   };
 
   return (
     <div className="milk-collection-page">
+
       <div className="milk-collection-card">
+
         <h1>Milk Collection</h1>
 
         <form onSubmit={handleAddRecord}>
-          {/* Farmer Dropdown */}
 
+          {/* Farmer Dropdown */}
           <div className="form-group">
-            <label>Select Farmer</label>
+
+            <label>
+              Select Farmer
+            </label>
 
             <select
               value={selectedFarmer}
-              onChange={(e) => setSelectedFarmer(e.target.value)}
+              onChange={(e) =>
+                setSelectedFarmer(
+                  e.target.value
+                )
+              }
             >
-              <option value="">Select Farmer</option>
+
+              <option value="">
+                Select Farmer
+              </option>
 
               {farmers.map((farmer) => (
+
                 <option
                   key={farmer.id}
-                  value={farmer.farmerId}
+                  value={farmer.farmer_id}
                 >
-                  {farmer.farmerId} - {farmer.name}
+                  {farmer.farmer_id} -{" "}
+                  {farmer.name}
                 </option>
+
               ))}
+
             </select>
+
           </div>
 
           {/* Selected Farmer Details */}
-
           {selectedFarmerData && (
+
             <div className="selected-farmer-box">
+
               <p>
-                <strong>Farmer ID:</strong>{" "}
-                {selectedFarmerData.farmerId}
+                <strong>
+                  Farmer ID:
+                </strong>{" "}
+                {selectedFarmerData.farmer_id}
               </p>
 
               <p>
-                <strong>Farmer Name:</strong>{" "}
+                <strong>
+                  Farmer Name:
+                </strong>{" "}
                 {selectedFarmerData.name}
               </p>
+
+              <p>
+                <strong>
+                  Mobile:
+                </strong>{" "}
+                {selectedFarmerData.mobile}
+              </p>
+
             </div>
+
           )}
 
           {/* Session */}
-
           <div className="form-group">
-            <label>Milk Session</label>
+
+            <label>
+              Milk Session
+            </label>
 
             <select
               value={session}
-              onChange={(e) => setSession(e.target.value)}
+              onChange={(e) =>
+                setSession(e.target.value)
+              }
             >
-              <option value="Morning">Morning</option>
-              <option value="Evening">Evening</option>
+
+              <option value="Morning">
+                Morning
+              </option>
+
+              <option value="Evening">
+                Evening
+              </option>
+
             </select>
+
           </div>
 
           {/* Quantity */}
-
           <div className="form-group">
-            <label>Milk Quantity (Litres)</label>
+
+            <label>
+              Milk Quantity (Litres)
+            </label>
 
             <input
               type="number"
               placeholder="Enter quantity"
               value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
+              onChange={(e) =>
+                setQuantity(e.target.value)
+              }
+              min="0"
+              step="0.01"
             />
+
           </div>
 
           {/* Fat */}
-
           <div className="form-group">
-            <label>Fat</label>
+
+            <label>
+              Fat
+            </label>
 
             <input
               type="number"
               step="0.1"
               placeholder="Enter fat"
               value={fat}
-              onChange={(e) => setFat(e.target.value)}
+              onChange={(e) =>
+                setFat(e.target.value)
+              }
+              min="0"
             />
+
           </div>
 
           {/* SNF */}
-
           <div className="form-group">
-            <label>SNF</label>
+
+            <label>
+              SNF
+            </label>
 
             <input
               type="number"
               step="0.1"
               placeholder="Enter SNF"
               value={snf}
-              onChange={(e) => setSnf(e.target.value)}
+              onChange={(e) =>
+                setSnf(e.target.value)
+              }
+              min="0"
             />
+
           </div>
 
           {/* Rate */}
-
           <div className="calculation-box">
+
             <p>
-              <strong>Rate:</strong> ₹{rate.toFixed(2)}
+              <strong>
+                Rate:
+              </strong>{" "}
+              ₹{rate.toFixed(2)}
             </p>
 
             <p>
-              <strong>Total Amount:</strong> ₹
-              {amount.toFixed(2)}
+              <strong>
+                Total Amount:
+              </strong>{" "}
+              ₹{amount.toFixed(2)}
             </p>
+
           </div>
 
           <button type="submit">
             Add Milk Collection
           </button>
+
         </form>
+
       </div>
 
       {/* Milk Records Table */}
-
       <div className="milk-records-card">
-        <h2>Milk Collection Records</h2>
+
+        <h2>
+          Milk Collection Records
+        </h2>
 
         {records.length === 0 ? (
-          <p>No milk records available.</p>
+
+          <p>
+            No milk records available.
+          </p>
+
         ) : (
+
           <div className="milk-table-container">
+
             <table>
+
               <thead>
+
                 <tr>
+
                   <th>Farmer ID</th>
+
                   <th>Farmer Name</th>
+
                   <th>Date</th>
+
                   <th>Session</th>
+
                   <th>Quantity</th>
+
                   <th>Fat</th>
+
                   <th>SNF</th>
+
                   <th>Rate</th>
+
                   <th>Amount</th>
+
                   <th>Status</th>
+
                 </tr>
+
               </thead>
 
               <tbody>
+
                 {records.map((record) => (
+
                   <tr key={record.id}>
-                    <td>{record.farmerId || "Not Available"}</td>
 
-                    <td>{record.farmerName || "Not Available"}</td>
+                    <td>
+                      {record.farmerId ||
+                        "Not Available"}
+                    </td>
 
-                    <td>{record.date}</td>
+                    <td>
+                      {record.farmerName ||
+                        "Not Available"}
+                    </td>
 
-                    <td>{record.session}</td>
+                    <td>
+                      {record.collection_date ||
+                        "-"}
+                    </td>
 
-                    <td>{record.quantity} L</td>
+                    <td>
+                      {record.session ||
+                        "-"}
+                    </td>
 
-                    <td>{record.fat}</td>
+                    <td>
+                      {Number(
+                        record.quantity || 0
+                      )}{" "}
+                      L
+                    </td>
 
-                    <td>{record.snf}</td>
+                    <td>
+                      {Number(
+                        record.fat || 0
+                      ).toFixed(2)}
+                    </td>
 
-                    <td>₹{Number(record.rate || 0).toFixed(2)}</td>
+                    <td>
+                      {Number(
+                        record.snf || 0
+                      ).toFixed(2)}
+                    </td>
 
-                    <td>₹{Number(record.amount || 0).toFixed(2)}</td>
+                    <td>
+                      ₹
+                      {Number(
+                        record.rate || 0
+                      ).toFixed(2)}
+                    </td>
 
-                    <td>{record.status || "Pending"}</td>
+                    <td>
+                      ₹
+                      {Number(
+                        record.amount || 0
+                      ).toFixed(2)}
+                    </td>
+
+                    <td>
+                      {record.status ||
+                        "Pending"}
+                    </td>
+
                   </tr>
+
                 ))}
+
               </tbody>
+
             </table>
+
           </div>
+
         )}
+
       </div>
+
     </div>
   );
 }

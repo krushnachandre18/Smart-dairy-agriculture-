@@ -15,8 +15,7 @@ function AIChatbot() {
  // =====================================================
 // GET LOGGED-IN FARMER DATA
 // =====================================================
-
-const getData = () => {
+const getData = async () => {
   const loggedInFarmerMobile =
     localStorage.getItem("loggedInFarmerMobile");
 
@@ -29,100 +28,107 @@ const getData = () => {
       String(loggedInFarmerMobile)
   );
 
-  // ================= MILK =================
+  if (!loggedInFarmer) {
+    return {
+      milkRecords: [],
+      incomeRecords: [],
+      expenseRecords: [],
+      cows: [],
+    };
+  }
 
-  const allMilkRecords =
-    JSON.parse(
-      localStorage.getItem("milkRecords") || "[]"
+  const farmerId = loggedInFarmer.farmerId;
+
+  try {
+    // ================= MILK =================
+
+    const milkResponse = await fetch(
+      `http://localhost:5000/api/milk-records/${farmerId}`
     );
 
-  const milkRecords =
-    allMilkRecords.filter((record) => {
-      const mobileMatch =
-        String(record.farmerMobile || "") ===
-        String(loggedInFarmerMobile);
+    const milkData = await milkResponse.json();
 
-      const farmerIdMatch =
-        loggedInFarmer &&
-        String(record.farmerId || "") ===
-          String(loggedInFarmer.farmerId);
+    const milkRecords =
+      milkResponse.ok &&
+      Array.isArray(milkData.records)
+        ? milkData.records.map((milk) => ({
+            ...milk,
+            quantity: Number(milk.quantity || 0),
+            amount: Number(milk.amount || 0),
+            fat: Number(milk.fat || 0),
+            snf: Number(milk.snf || 0),
+          }))
+        : [];
 
-      return mobileMatch || farmerIdMatch;
-    });
+    // ================= INCOME =================
 
-  // ================= INCOME =================
-
-  const allIncomeRecords =
-    JSON.parse(
-      localStorage.getItem("incomeRecords") || "[]"
+    const incomeResponse = await fetch(
+      `http://localhost:5000/api/income/${farmerId}`
     );
 
-  const incomeRecords =
-    allIncomeRecords.filter((income) => {
-      const mobileMatch =
-        String(income.farmerMobile || "") ===
-        String(loggedInFarmerMobile);
+    const incomeData = await incomeResponse.json();
 
-      const farmerIdMatch =
-        loggedInFarmer &&
-        String(income.farmerId || "") ===
-          String(loggedInFarmer.farmerId);
+    const incomeRecords =
+      incomeResponse.ok &&
+      Array.isArray(incomeData.records)
+        ? incomeData.records.map((income) => ({
+            ...income,
+            amount: Number(income.amount || 0),
+          }))
+        : [];
 
-      return mobileMatch || farmerIdMatch;
-    });
+    // ================= EXPENSE =================
 
-  // ================= EXPENSE =================
-
-  const allExpenseRecords =
-    JSON.parse(
-      localStorage.getItem("expenseRecords") || "[]"
+    const expenseResponse = await fetch(
+      `http://localhost:5000/api/expenses/${farmerId}`
     );
 
-  const expenseRecords =
-    allExpenseRecords.filter((expense) => {
-      const mobileMatch =
-        String(expense.farmerMobile || "") ===
-        String(loggedInFarmerMobile);
+    const expenseData = await expenseResponse.json();
 
-      const farmerIdMatch =
-        loggedInFarmer &&
-        String(expense.farmerId || "") ===
-          String(loggedInFarmer.farmerId);
+    const expenseRecords =
+      expenseResponse.ok &&
+      Array.isArray(expenseData.records)
+        ? expenseData.records.map((expense) => ({
+            ...expense,
+            amount: Number(expense.amount || 0),
+          }))
+        : [];
 
-      return mobileMatch || farmerIdMatch;
-    });
+    // ================= COWS =================
 
-  // ================= COWS =================
-
-  const allCows =
-    JSON.parse(
-      localStorage.getItem("cows") || "[]"
+    const cowResponse = await fetch(
+      `http://localhost:5000/api/cows/${farmerId}`
     );
 
-  const cows =
-    allCows.filter((cow) => {
-      const mobileMatch =
-        String(cow.farmerMobile || "") ===
-        String(loggedInFarmerMobile);
+    const cowData = await cowResponse.json();
 
-      const farmerIdMatch =
-        loggedInFarmer &&
-        String(cow.farmerId || "") ===
-          String(loggedInFarmer.farmerId);
+    const cows =
+      cowResponse.ok &&
+      Array.isArray(cowData.cows)
+        ? cowData.cows
+        : [];
 
-      return mobileMatch || farmerIdMatch;
-    });
+    return {
+      milkRecords,
+      incomeRecords,
+      expenseRecords,
+      cows,
+    };
 
-  return {
-    milkRecords,
-    incomeRecords,
-    expenseRecords,
-    cows
-  };
+  } catch (error) {
+    console.error("AI data load error:", error);
+
+    return {
+      milkRecords: [],
+      incomeRecords: [],
+      expenseRecords: [],
+      cows: [],
+    };
+  }
 };
   // 1. Milk Forecast
-  const milkForecast = () => {
-    const { milkRecords } = getData();
+const milkForecast = async () => {
+  const { milkRecords } = await getData();
 
     if (milkRecords.length === 0) {
       return "No milk records available for forecasting. 🥛";
@@ -141,8 +147,8 @@ const getData = () => {
     )} Litres per entry.`;
   };
 // 2. Cow Analysis
-const cowAnalysis = () => {
-  const { cows } = getData();
+const cowAnalysis = async () => {
+  const { cows } = await getData();
 
   if (cows.length === 0) {
     return "🐄 No cow records available.";
@@ -173,8 +179,8 @@ Sold Cows: ${soldCows}
 Inactive Cows: ${inactiveCows}`;
 };
 // 3. Milk Production Analysis
-const milkProductionAnalysis = () => {
-  const { milkRecords } = getData();
+const milkProductionAnalysis = async () => {
+  const { milkRecords } = await getData();
 
   if (milkRecords.length === 0) {
     return "🥛 No milk records available for analysis.";
@@ -230,11 +236,11 @@ Average per Entry: ${averageMilk.toFixed(2)} Litres
 📉 Lowest Entry: ${lowestMilk.toFixed(2)} Litres`;
 };
 // 4. Financial Analysis
-const financialAnalysis = () => {
+const financialAnalysis = async () => {
   const {
     incomeRecords,
     expenseRecords
-  } = getData();
+  } = await getData();
 
   const totalIncome = incomeRecords.reduce(
     (total, income) =>
@@ -296,12 +302,12 @@ Total Expenses: ₹${totalExpense.toFixed(2)}
 ➖ Profit/Loss: ₹0.00`;
 };
 // 5. Smart Alerts & Recommendations
-const smartAlerts = () => {
+const smartAlerts = async () => {
   const {
     milkRecords,
     expenseRecords,
     cows
-  } = getData();
+  } = await getData();
 
   const alerts = [];
 
@@ -382,8 +388,8 @@ ${alerts.join("\n\n")}
 Review these areas regularly to improve farm management.`;
 };
   // 2. Expense Analysis
-  const expenseAnalysis = () => {
-    const { expenseRecords } = getData();
+  const expenseAnalysis = async () => {
+    const { expenseRecords } = await getData();
 
     if (expenseRecords.length === 0) {
       return "No expense records available. 💸";
@@ -411,8 +417,8 @@ Highest Expense: ₹${highestExpense}`;
   };
 
   // 3. Profit Analysis
-  const profitAnalysis = () => {
-    const { incomeRecords, expenseRecords } = getData();
+  const profitAnalysis = async () => {
+    const { incomeRecords, expenseRecords } = await getData();
 
     const totalIncome = incomeRecords.reduce(
       (total, income) =>
@@ -446,8 +452,8 @@ Current Loss: ₹${Math.abs(profit)} ⚠️`;
   };
 
   // 4. Unusual Milk Reading Alert
-  const anomalyAlert = () => {
-    const { milkRecords } = getData();
+  const anomalyAlert = async () => {
+    const { milkRecords } = await getData();
 
     if (milkRecords.length === 0) {
       return "No milk records available for anomaly checking.";
@@ -476,11 +482,11 @@ Current Loss: ₹${Math.abs(profit)} ⚠️`;
   };
 
   // 5. General Chatbot
-  const getAIResponse = (question) => {
+  const getAIResponse = async (question) => {
     const q = question.toLowerCase();
 
     const { milkRecords, incomeRecords, expenseRecords, cows } =
-      getData();
+      await getData();
 
     const totalMilk = milkRecords.reduce(
       (total, record) =>

@@ -4,19 +4,25 @@ import "./MilkVerification.css";
 function MilkVerification() {
   const [milkRecords, setMilkRecords] = useState([]);
 
+  // ================================
+  // LOAD MILK RECORDS
+  // ================================
+
   useEffect(() => {
     loadMilkRecords();
   }, []);
 
   const loadMilkRecords = () => {
-    const savedRecords = localStorage.getItem("milkRecords");
+    const savedRecords = JSON.parse(
+      localStorage.getItem("milkRecords") || "[]"
+    );
 
-    if (savedRecords) {
-      setMilkRecords(JSON.parse(savedRecords));
-    } else {
-      setMilkRecords([]);
-    }
+    setMilkRecords(savedRecords);
   };
+
+  // ================================
+  // VERIFY MILK RECORD
+  // ================================
 
   const handleVerify = (recordId) => {
     const updatedRecords = milkRecords.map((record) => {
@@ -37,8 +43,12 @@ function MilkVerification() {
       JSON.stringify(updatedRecords)
     );
 
-    alert("Milk record verified successfully");
+    alert("Milk record verified successfully.");
   };
+
+  // ================================
+  // REJECT MILK RECORD
+  // ================================
 
   const handleReject = (recordId) => {
     const updatedRecords = milkRecords.map((record) => {
@@ -59,18 +69,48 @@ function MilkVerification() {
       JSON.stringify(updatedRecords)
     );
 
-    alert("Milk record rejected");
+    alert("Milk record rejected.");
   };
+
+  // ================================
+  // PENDING RECORDS
+  // ================================
+
+  const pendingRecords = milkRecords.filter(
+    (record) =>
+      !record.status ||
+      String(record.status).toLowerCase() === "pending"
+  );
+
+  // ================================
+  // UI
+  // ================================
 
   return (
     <div className="milk-verification-page">
+
       <h1>Milk Verification</h1>
 
-      {milkRecords.length === 0 ? (
-        <p>No milk records available for verification.</p>
+      <p>
+        Review and verify pending farmer milk entries.
+      </p>
+
+      {pendingRecords.length === 0 ? (
+
+        <div className="no-records-message">
+          <h3>✅ No pending milk records</h3>
+
+          <p>
+            All milk records have been verified or rejected.
+          </p>
+        </div>
+
       ) : (
+
         <div className="verification-table-container">
+
           <table border="1" cellPadding="10">
+
             <thead>
               <tr>
                 <th>Farmer ID</th>
@@ -88,85 +128,113 @@ function MilkVerification() {
             </thead>
 
             <tbody>
-              {milkRecords.map((record) => (
+
+              {pendingRecords.map((record) => (
+
                 <tr key={record.id}>
+
+                  {/* FARMER ID */}
+
                   <td>
                     {record.farmerId || "Not Available"}
                   </td>
+
+                  {/* FARMER NAME */}
 
                   <td>
                     {record.farmerName || "Not Available"}
                   </td>
 
+                  {/* DATE */}
+
                   <td>
                     {record.date || "-"}
                   </td>
+
+                  {/* SESSION */}
 
                   <td>
                     {record.session || "-"}
                   </td>
 
-                  <td>
-                    {record.quantity || 0} L
-                  </td>
+                  {/* QUANTITY */}
 
                   <td>
-                    {record.fat || 0}
+                    {Number(record.quantity || 0)} L
                   </td>
 
-                  <td>
-                    {record.snf || 0}
-                  </td>
+                  {/* FAT */}
 
                   <td>
-                    ₹{Number(record.rate || 0).toFixed(2)}
+                    {Number(record.fat || 0).toFixed(2)}
                   </td>
 
-                  <td>
-                    ₹{Number(record.amount || 0).toFixed(2)}
-                  </td>
+                  {/* SNF */}
 
                   <td>
-                    <span
-                      className={
-                        record.status === "Verified"
-                          ? "verified-status"
-                          : record.status === "Rejected"
-                          ? "rejected-status"
-                          : "pending-status"
-                      }
-                    >
-                      {record.status || "Pending"}
+                    {Number(record.snf || 0).toFixed(2)}
+                  </td>
+
+                  {/* RATE */}
+
+                  <td>
+                    ₹
+                    {Number(record.rate || 0).toFixed(2)}
+                  </td>
+
+                  {/* AMOUNT */}
+
+                  <td>
+                    ₹
+                    {Number(record.amount || 0).toFixed(2)}
+                  </td>
+
+                  {/* STATUS */}
+
+                  <td>
+                    <span className="pending-status">
+                      Pending
                     </span>
                   </td>
 
-                  <td>
-                    {record.status === "Verified" ? (
-                      <span>Verified</span>
-                    ) : record.status === "Rejected" ? (
-                      <span>Rejected</span>
-                    ) : (
-                      <div>
-                        <button
-                          onClick={() => handleVerify(record.id)}
-                        >
-                          Verify
-                        </button>
+                  {/* ACTION */}
 
-                        <button
-                          onClick={() => handleReject(record.id)}
-                        >
-                          Reject
-                        </button>
-                      </div>
-                    )}
+                  <td>
+
+                    <div className="verification-actions">
+
+                      <button
+                        onClick={() =>
+                          handleVerify(record.id)
+                        }
+                      >
+                        ✅ Verify
+                      </button>
+
+                      <button
+                        onClick={() =>
+                          handleReject(record.id)
+                        }
+                      >
+                        ❌ Reject
+                      </button>
+
+                    </div>
+
                   </td>
+
                 </tr>
+
               ))}
+
             </tbody>
+
           </table>
+
         </div>
+
       )}
+
     </div>
   );
 }

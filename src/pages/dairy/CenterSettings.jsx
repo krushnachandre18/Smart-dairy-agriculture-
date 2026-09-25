@@ -11,187 +11,364 @@ function CenterSettings() {
   const [village, setVillage] = useState("");
   const [address, setAddress] = useState("");
   const [milkRate, setMilkRate] = useState("");
-const [password, setPassword] = useState("");
-const [message, setMessage] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
-  
-
+  // ==========================================
+  // LOAD SETTINGS FROM MYSQL
+  // ==========================================
   useEffect(() => {
-    const savedSettings = JSON.parse(
-      localStorage.getItem("centerSettings") || "{}"
-    );
+    const loadSettings = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/center-settings"
+        );
 
-    setCenterName(savedSettings.centerName || "");
-    setInchargeName(savedSettings.inchargeName || "");
-    setMobile(savedSettings.mobile || "");
-    setVillage(savedSettings.village || "");
-  
-    setAddress(savedSettings.address || "");
-setMilkRate(savedSettings.milkRate || "");
-setPassword(savedSettings.password || "");
+        const data = await response.json();
+
+        if (!response.ok) {
+          setMessage(
+            data.message || "Failed to load center settings."
+          );
+          return;
+        }
+
+        const settings = data.settings;
+
+        if (!settings) {
+          return;
+        }
+
+        setCenterName(settings.center_name || "");
+        setInchargeName(settings.incharge_name || "");
+        setMobile(settings.mobile || "");
+        setVillage(settings.village || "");
+        setAddress(settings.address || "");
+        setMilkRate(settings.milk_rate ?? "");
+      } catch (error) {
+        console.error("Load settings error:", error);
+
+        setMessage(
+          "Cannot connect to server. Please make sure backend is running."
+        );
+      }
+    };
+
+    loadSettings();
   }, []);
 
- const handleSave = (event) => {
-  event.preventDefault();
+  // ==========================================
+  // SAVE SETTINGS TO MYSQL
+  // ==========================================
+  const handleSave = async (event) => {
+    event.preventDefault();
+    setMessage("");
 
-  const settings = {
-    centerName,
-    inchargeName,
-    mobile,
-    password,
-    village,
-    address,
-    milkRate,
+    // Mobile validation
+    if (!/^[0-9]{10}$/.test(mobile)) {
+      setMessage(
+        "Please enter a valid 10 digit mobile number."
+      );
+      return;
+    }
+
+    // Password validation
+    if (password.length < 6) {
+      setMessage(
+        "Dairy login password must be at least 6 characters."
+      );
+      return;
+    }
+
+    // Milk rate validation
+    if (
+      milkRate === "" ||
+      Number(milkRate) < 0
+    ) {
+      setMessage(
+        "Please enter a valid milk rate."
+      );
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/center-settings",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            centerName: centerName.trim(),
+            inchargeName: inchargeName.trim(),
+            mobile: mobile.trim(),
+            village: village.trim(),
+            address: address.trim(),
+            milkRate: Number(milkRate),
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setMessage(
+          data.message ||
+            "Failed to save center settings."
+        );
+        return;
+      }
+
+      // Save dairy login credentials locally
+      // Login API will use these credentials
+      // only until dairy user update API is added.
+      localStorage.setItem(
+        "dairyMobile",
+        mobile.trim()
+      );
+
+      localStorage.setItem(
+        "dairyPassword",
+        password
+      );
+
+      setMessage(
+        "Center settings saved successfully."
+      );
+    } catch (error) {
+      console.error(
+        "Save settings error:",
+        error
+      );
+
+      setMessage(
+        "Cannot connect to server. Please make sure backend is running."
+      );
+    }
   };
 
-  localStorage.setItem(
-    "centerSettings",
-    JSON.stringify(settings)
-  );
-
-  localStorage.setItem(
-    "dairyMobile",
-    mobile
-  );
-
-  localStorage.setItem(
-    "dairyPassword",
-    password
-  );
-
-  setMessage(
-    "Center settings saved successfully."
-  );
-};
+  // ==========================================
+  // UI
+  // ==========================================
   return (
     <div className="center-settings-page">
+
+      {/* NAVBAR */}
       <nav className="center-settings-navbar">
         <h2>⚙️ Center Settings</h2>
 
-        <button onClick={() => navigate("/dairy/dashboard")}>
+        <button
+          onClick={() =>
+            navigate("/dairy/dashboard")
+          }
+        >
           ← Back to Dashboard
         </button>
       </nav>
 
       <main className="center-settings-main">
+
+        {/* HEADER */}
         <div className="center-settings-header">
           <div>
-            <span>SMART DAIRY CENTER</span>
-            <h1>Center Settings</h1>
-            <p>Manage your dairy center information.</p>
+            <span>
+              SMART DAIRY CENTER
+            </span>
+
+            <h1>
+              Center Settings
+            </h1>
+
+            <p>
+              Manage your dairy center
+              information.
+            </p>
           </div>
 
-          <div className="settings-icon">⚙️</div>
+          <div className="settings-icon">
+            ⚙️
+          </div>
         </div>
 
+        {/* SETTINGS CARD */}
         <section className="settings-card">
-          <h2>Center Information</h2>
+          <h2>
+            Center Information
+          </h2>
 
           <form onSubmit={handleSave}>
+
             <div className="settings-grid">
+
+              {/* CENTER NAME */}
               <div className="form-group">
-                <label>Center Name</label>
+                <label>
+                  Center Name
+                </label>
+
                 <input
                   type="text"
                   value={centerName}
                   onChange={(event) =>
-                    setCenterName(event.target.value)
+                    setCenterName(
+                      event.target.value
+                    )
                   }
                   placeholder="Enter center name"
                   required
                 />
               </div>
 
+              {/* INCHARGE */}
               <div className="form-group">
-                <label>In-charge Name</label>
+                <label>
+                  In-charge Name
+                </label>
+
                 <input
                   type="text"
                   value={inchargeName}
                   onChange={(event) =>
-                    setInchargeName(event.target.value)
+                    setInchargeName(
+                      event.target.value
+                    )
                   }
                   placeholder="Enter in-charge name"
                   required
                 />
               </div>
 
+              {/* MOBILE */}
               <div className="form-group">
-                <label>Mobile Number</label>
+                <label>
+                  Mobile Number
+                </label>
+
                 <input
                   type="tel"
                   value={mobile}
                   onChange={(event) =>
-                    setMobile(event.target.value)
+                    setMobile(
+                      event.target.value.replace(
+                        /\D/g,
+                        ""
+                      )
+                    )
                   }
-                  placeholder="Enter mobile number"
+                  placeholder="Enter 10 digit mobile number"
                   maxLength="10"
                   required
                 />
               </div>
-              <div className="form-group">
-  <label>Dairy Login Password</label>
 
-  <input
-    type="password"
-    value={password}
-    onChange={(event) =>
-      setPassword(event.target.value)
-    }
-    placeholder="Enter dairy login password"
-    required
-  />
-</div>
-
+              {/* PASSWORD */}
               <div className="form-group">
-                <label>Village / City</label>
+                <label>
+                  Dairy Login Password
+                </label>
+
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(event) =>
+                    setPassword(
+                      event.target.value
+                    )
+                  }
+                  placeholder="Minimum 6 characters"
+                  minLength="6"
+                  required
+                />
+              </div>
+
+              {/* VILLAGE */}
+              <div className="form-group">
+                <label>
+                  Village / City
+                </label>
+
                 <input
                   type="text"
                   value={village}
                   onChange={(event) =>
-                    setVillage(event.target.value)
+                    setVillage(
+                      event.target.value
+                    )
                   }
                   placeholder="Enter village or city"
                   required
                 />
               </div>
 
+              {/* ADDRESS */}
               <div className="form-group full-width">
-                <label>Address</label>
+                <label>
+                  Address
+                </label>
+
                 <textarea
                   value={address}
                   onChange={(event) =>
-                    setAddress(event.target.value)
+                    setAddress(
+                      event.target.value
+                    )
                   }
                   placeholder="Enter center address"
                   rows="4"
                   required
-                ></textarea>
+                />
               </div>
 
+              {/* MILK RATE */}
               <div className="form-group">
-                <label>Default Milk Rate ₹ / Liter</label>
+                <label>
+                  Default Milk Rate ₹ / Liter
+                </label>
+
                 <input
                   type="number"
                   value={milkRate}
                   onChange={(event) =>
-                    setMilkRate(event.target.value)
+                    setMilkRate(
+                      event.target.value
+                    )
                   }
                   placeholder="Enter milk rate"
                   min="0"
+                  step="0.01"
                   required
                 />
               </div>
+
             </div>
 
-            <button className="save-settings-btn" type="submit">
-              Save Settings
+            {/* SAVE BUTTON */}
+            <button
+              className="save-settings-btn"
+              type="submit"
+            >
+              💾 Save Settings
             </button>
 
+            {/* MESSAGE */}
             {message && (
-              <p className="success-message">{message}</p>
+              <p
+                className={
+                  message.includes(
+                    "successfully"
+                  )
+                    ? "success-message"
+                    : "error-message"
+                }
+              >
+                {message}
+              </p>
             )}
+
           </form>
         </section>
+
       </main>
     </div>
   );
