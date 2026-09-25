@@ -2,6 +2,27 @@ import { useEffect, useState } from "react";
 import "./MilkCollection.css";
 
 function MilkCollection() {
+  // ==========================================
+// FORMAT DATE
+// ==========================================
+
+const formatDate = (dateValue) => {
+  if (!dateValue) {
+    return "-";
+  }
+
+  const date = new Date(dateValue);
+
+  if (isNaN(date.getTime())) {
+    return "-";
+  }
+
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+};
   const [farmers, setFarmers] = useState([]);
 
   const [selectedFarmer, setSelectedFarmer] =
@@ -90,7 +111,15 @@ function MilkCollection() {
         return;
       }
 
-      setRecords(data.records || []);
+      setRecords(
+  Array.isArray(data.records)
+    ? data.records.map((record) => ({
+        ...record,
+        farmerId: record.farmerCode,
+        farmerName: record.farmerName,
+      }))
+    : []
+);
     } catch (error) {
       console.error(
         "Load milk records error:",
@@ -127,6 +156,23 @@ function MilkCollection() {
     // MySQL DATE format
     const today =
       new Date().toISOString().split("T")[0];
+      // Check duplicate session for same farmer and date
+const duplicateRecord = records.find(
+  (record) =>
+    String(record.farmerCode) ===
+      String(selectedFarmerData.farmer_id) &&
+    String(record.collection_date).startsWith(
+      today
+    ) &&
+    String(record.session).toLowerCase() ===
+      String(session).toLowerCase()
+);
+if (duplicateRecord) {
+  alert(
+    `Milk collection for ${selectedFarmerData.farmer_id} - ${session} is already recorded today.`
+  );
+  return;
+}
 
     try {
       const response = await fetch(
@@ -443,8 +489,7 @@ function MilkCollection() {
                     </td>
 
                     <td>
-                      {record.collection_date ||
-                        "-"}
+                      {formatDate(record.collection_date)}
                     </td>
 
                     <td>

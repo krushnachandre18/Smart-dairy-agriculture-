@@ -2,6 +2,23 @@ import { useEffect, useState } from "react";
 import "./MilkVerification.css";
 
 function MilkVerification() {
+  const formatDate = (dateValue) => {
+  if (!dateValue) {
+    return "-";
+  }
+
+  const date = new Date(dateValue);
+
+  if (isNaN(date.getTime())) {
+    return "-";
+  }
+
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+};
   const [milkRecords, setMilkRecords] = useState([]);
 
   // ================================
@@ -12,75 +29,118 @@ function MilkVerification() {
     loadMilkRecords();
   }, []);
 
-  const loadMilkRecords = () => {
-    const savedRecords = JSON.parse(
-      localStorage.getItem("milkRecords") || "[]"
+  const loadMilkRecords = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:5000/api/milk-records"
     );
 
-    setMilkRecords(savedRecords);
-  };
+    const data = await response.json();
+
+    if (response.ok) {
+      setMilkRecords(
+        Array.isArray(data.records)
+          ? data.records.map((record) => ({
+              ...record,
+
+              farmerId: record.farmerCode,
+              farmerName: record.farmerName,
+              date: record.collection_date,
+
+              quantity: Number(record.quantity || 0),
+              fat: Number(record.fat || 0),
+              snf: Number(record.snf || 0),
+              rate: Number(record.rate || 0),
+              amount: Number(record.amount || 0),
+            }))
+          : []
+      );
+    } else {
+      console.error(data.message);
+      setMilkRecords([]);
+    }
+  } catch (error) {
+    console.error("Milk verification load error:", error);
+    setMilkRecords([]);
+  }
+};
 
   // ================================
   // VERIFY MILK RECORD
   // ================================
 
-  const handleVerify = (recordId) => {
-    const updatedRecords = milkRecords.map((record) => {
-      if (record.id === recordId) {
-        return {
-          ...record,
-          status: "Verified",
-        };
+ const handleVerify = async (recordId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/milk-records/${recordId}/verify`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-
-      return record;
-    });
-
-    setMilkRecords(updatedRecords);
-
-    localStorage.setItem(
-      "milkRecords",
-      JSON.stringify(updatedRecords)
     );
 
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message || "Failed to verify milk record.");
+      return;
+    }
+
     alert("Milk record verified successfully.");
-  };
+
+    loadMilkRecords();
+  } catch (error) {
+    console.error("Verify milk error:", error);
+    alert("Server error while verifying milk record.");
+  }
+};
 
   // ================================
   // REJECT MILK RECORD
   // ================================
 
-  const handleReject = (recordId) => {
-    const updatedRecords = milkRecords.map((record) => {
-      if (record.id === recordId) {
-        return {
-          ...record,
-          status: "Rejected",
-        };
+  const handleReject = async (recordId) => {
+  try {
+    console.log("Rejecting record ID:", recordId);
+
+    const response = await fetch(
+      `http://localhost:5000/api/milk-records/${recordId}/reject`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-
-      return record;
-    });
-
-    setMilkRecords(updatedRecords);
-
-    localStorage.setItem(
-      "milkRecords",
-      JSON.stringify(updatedRecords)
     );
 
-    alert("Milk record rejected.");
-  };
+    const data = await response.json();
+
+    console.log("Reject API response:", data);
+
+    if (!response.ok) {
+      alert(data.message || "Failed to reject milk record.");
+      return;
+    }
+
+    alert("Milk record rejected successfully.");
+
+    await loadMilkRecords();
+  } catch (error) {
+    console.error("Reject milk error:", error);
+    alert("Server error while rejecting milk record.");
+  }
+};
 
   // ================================
   // PENDING RECORDS
   // ================================
 
   const pendingRecords = milkRecords.filter(
-    (record) =>
-      !record.status ||
-      String(record.status).toLowerCase() === "pending"
-  );
+  (record) =>
+    String(record.status || "").toLowerCase() === "pending"
+);
 
   // ================================
   // UI
@@ -148,7 +208,7 @@ function MilkVerification() {
                   {/* DATE */}
 
                   <td>
-                    {record.date || "-"}
+                    {formatDate(record.date)}
                   </td>
 
                   {/* SESSION */}

@@ -22,81 +22,73 @@ function DairyDashboard() {
   totalPayments: 0
 });
 
-  useEffect(() => {
-    const farmers =
-      JSON.parse(localStorage.getItem("farmers") || "[]");
-
-    const milkRecords =
-      JSON.parse(localStorage.getItem("milkRecords") || "[]");
-
-    // Today's date
-    const today = new Date().toLocaleDateString();
-
-    // ==========================================
-    // VERIFIED MILK RECORDS
-    // ==========================================
-
-    const verifiedRecords = milkRecords.filter(
-      (record) =>
-        String(record.status).toLowerCase() ===
-        "verified"
-    );
-
-    // ==========================================
-    // TODAY'S VERIFIED MILK
-    // ==========================================
-
-    const todayMilk = verifiedRecords
-      .filter(
-        (record) =>
-          record.date === today
-      )
-      .reduce(
-        (total, record) =>
-          total + Number(record.quantity || 0),
-        0
+useEffect(() => {
+  const loadDashboardData = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/dairy/dashboard"
       );
 
-    // ==========================================
-    // PENDING VERIFICATION
-    // ==========================================
+      const data = await response.json();
 
-    const pendingVerification =
-      milkRecords.filter(
-        (record) =>
-          !record.status ||
-          String(record.status).toLowerCase() ===
-            "pending"
-      ).length;
+      if (!response.ok) {
+        console.error(data.message);
+        return;
+      }
 
-    // ==========================================
-    // TOTAL VERIFIED MILK AMOUNT
-    // ==========================================
+      setDashboardStats({
+        totalFarmers: Number(data.totalFarmers || 0),
+        todayMilk: Number(data.todayMilk || 0),
+        pendingVerification: Number(
+          data.pendingVerification || 0
+        ),
+        totalPayments: Number(
+          data.totalPayments || 0
+        ),
+      });
+    } catch (error) {
+      console.error(
+        "Dairy dashboard API error:",
+        error
+      );
+    }
+  };
 
-    const totalPayments =
-      verifiedRecords.reduce(
-        (total, record) =>
-          total + Number(record.amount || 0),
-        0
+  loadDashboardData();
+}, []);
+useEffect(() => {
+  const loadCenterSettings = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/center-settings"
       );
 
-    // ==========================================
-    // UPDATE DASHBOARD
-    // ==========================================
+      const data = await response.json();
 
-    setDashboardStats({
-      totalFarmers: farmers.length,
-      todayMilk,
-      pendingVerification,
-      totalPayments,
-    });
-  }, []);
-  useEffect(() => {
-  const savedSettings = JSON.parse(
-    localStorage.getItem("centerSettings") || "{}"
-  );
+      if (!response.ok) {
+        console.error(data.message);
+        return;
+      }
 
-  setCenterSettings(savedSettings);
+      if (data.settings) {
+        setCenterSettings({
+          centerName: data.settings.center_name || "",
+          inchargeName: data.settings.incharge_name || "",
+          mobile: data.settings.mobile || "",
+          village: data.settings.village || "",
+          address: data.settings.address || "",
+          milkRate: data.settings.milk_rate || "",
+        });
+      }
+    } catch (error) {
+      console.error(
+        "Center settings load error:",
+        error
+      );
+    }
+  };
+
+  loadCenterSettings();
 }, []);
   
   return (

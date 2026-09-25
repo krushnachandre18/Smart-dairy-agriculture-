@@ -134,17 +134,73 @@ function Login() {
     }
   };
 
-  return (
-    <div className="login-page">
-      <div className="login-container">
+return (
+  <div className="login-page">
 
-        <h1>🥛 Smart Dairy</h1>
+    <div className="login-card">
 
-        <p>Login to your account</p>
+      {/* LEFT SIDE */}
+      <div className="login-info">
+
+        <div className="brand-icon">🐄</div>
+
+        <h1>Smart Dairy</h1>
+
+        <p className="brand-subtitle">
+          Dairy & Farmer Farm Management System
+        </p>
+
+        <div className="info-content">
+          <h2>Manage Your Dairy Smarter</h2>
+
+          <p>
+            Manage milk collection, cows, payments,
+            farm activities and financial records
+            in one place.
+          </p>
+        </div>
+
+        <div className="features">
+          <div>
+            <span>🥛</span>
+            <p>Milk Collection</p>
+          </div>
+
+          <div>
+            <span>🐄</span>
+            <p>Cow Management</p>
+          </div>
+
+          <div>
+            <span>📊</span>
+            <p>Smart Reports</p>
+          </div>
+
+          <div>
+            <span>🤖</span>
+            <p>AI Assistant</p>
+          </div>
+        </div>
+
+      </div>
+
+
+      {/* RIGHT SIDE */}
+      <div className="login-form-section">
+
+        <div className="form-header">
+          <h2>Welcome Back 👋</h2>
+
+          <p>
+            Login to continue to your account
+          </p>
+        </div>
 
         <form onSubmit={handleLogin}>
 
+          {/* ROLE */}
           <div className="form-group">
+
             <label>Login As</label>
 
             <select
@@ -156,24 +212,32 @@ function Login() {
               </option>
 
               <option value="dairy">
-                🥛 Dairy
+                🥛 Dairy In-charge
               </option>
             </select>
+
           </div>
 
+
+          {/* MOBILE */}
           <div className="form-group">
+
             <label>Mobile Number</label>
 
             <input
               type="text"
               value={mobile}
               onChange={(e) => setMobile(e.target.value)}
-              placeholder="Enter mobile number"
+              placeholder="Enter 10-digit mobile number"
               maxLength="10"
             />
+
           </div>
 
+
+          {/* PASSWORD */}
           <div className="form-group">
+
             <label>Password</label>
 
             <input
@@ -182,36 +246,59 @@ function Login() {
               onChange={(e) =>
                 setPassword(e.target.value)
               }
-              placeholder="Enter password"
+              placeholder="Enter your password"
             />
+
           </div>
 
+
+          {/* MESSAGE */}
           {message && (
             <p className="login-message">
               {message}
             </p>
           )}
 
-          <button type="submit">
+
+          {/* LOGIN BUTTON */}
+          <button
+            type="submit"
+            className="login-button"
+          >
             Login
           </button>
 
         </form>
 
-        <div className="register-link">
-          <p>New farmer?</p>
 
-          <button
-            type="button"
-            onClick={() => navigate("/register")}
-          >
-            Create Farmer Account
-          </button>
-        </div>
+        {/* REGISTER */}
+        {role === "farmer" && (
+          <div className="register-link">
+
+            <p>New farmer?</p>
+
+            <button
+              type="button"
+              onClick={() => navigate("/register")}
+            >
+              Create Farmer Account
+            </button>
+
+          </div>
+        )}
 
       </div>
+
     </div>
-  );
+
+
+    {/* FOOTER */}
+    <p className="login-footer">
+      © 2026 Smart Dairy & Farmer Farm Management System
+    </p>
+
+  </div>
+);
 }
 
 export default Login;

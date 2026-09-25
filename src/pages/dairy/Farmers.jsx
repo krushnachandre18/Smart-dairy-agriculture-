@@ -1,27 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Farmers.css";
 
 function Farmers() {
   const navigate = useNavigate();
 
-  const [farmers, setFarmers] = useState(() => {
-    const savedFarmers =
-      localStorage.getItem("farmers");
-
-    return savedFarmers
-      ? JSON.parse(savedFarmers)
-      : [];
-  });
-
-  const [milkRecords] = useState(() => {
-    const savedRecords =
-      localStorage.getItem("milkRecords");
-
-    return savedRecords
-      ? JSON.parse(savedRecords)
-      : [];
-  });
+const [farmers, setFarmers] = useState([]);
+const [milkRecords, setMilkRecords] = useState([]);
 
   const [farmerName, setFarmerName] = useState("");
   const [mobile, setMobile] = useState("");
@@ -29,7 +14,85 @@ function Farmers() {
 
   const [searchTerm, setSearchTerm] =
     useState("");
+// ==========================================
+// LOAD FARMERS FROM MYSQL
+// ==========================================
 
+useEffect(() => {
+  const loadFarmers = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/farmers"
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error(data.message);
+        return;
+      }
+
+      setFarmers(
+  Array.isArray(data.farmers)
+    ? data.farmers.map((farmer) => ({
+        ...farmer,
+        farmerId: farmer.farmer_id,
+      }))
+    : []
+);
+    } catch (error) {
+      console.error(
+        "Farmers API error:",
+        error
+      );
+    }
+  };
+
+  loadFarmers();
+}, []);
+// ==========================================
+// LOAD MILK RECORDS FROM MYSQL
+// ==========================================
+
+useEffect(() => {
+  const loadMilkRecords = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/milk-records"
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error(data.message);
+        return;
+      }
+
+      setMilkRecords(
+        Array.isArray(data.records)
+          ? data.records.map((record) => ({
+              ...record,
+              farmerId: record.farmerCode,
+              farmerMobile: record.mobile,
+              quantity: Number(
+                record.quantity || 0
+              ),
+              amount: Number(
+                record.amount || 0
+              ),
+            }))
+          : []
+      );
+    } catch (error) {
+      console.error(
+        "Milk records API error:",
+        error
+      );
+    }
+  };
+
+  loadMilkRecords();
+}, []);
   // ==========================================
   // GENERATE NEXT FARMER ID
   // ==========================================
@@ -66,106 +129,180 @@ function Farmers() {
   // ADD FARMER
   // ==========================================
 
-  const handleAddFarmer = (e) => {
-    e.preventDefault();
+ // ==========================================
+// ADD FARMER - MYSQL
+// ==========================================
 
-    if (!farmerName.trim()) {
-      alert("Please enter Farmer Name");
-      return;
-    }
+const handleAddFarmer = async (e) => {
+  e.preventDefault();
 
-    // Mobile validation
-    if (
-      mobile.trim() &&
-      mobile.trim().length !== 10
-    ) {
-      alert(
-        "Please enter a valid 10 digit mobile number."
-      );
-      return;
-    }
+  if (!farmerName.trim()) {
+    alert("Please enter Farmer Name");
+    return;
+  }
 
-    // Check duplicate mobile
-    if (mobile.trim()) {
-      const mobileExists = farmers.some(
-        (farmer) =>
-          String(farmer.mobile) ===
-          String(mobile.trim())
-      );
+  // Mobile validation
+  if (
+    mobile.trim() &&
+    mobile.trim().length !== 10
+  ) {
+    alert(
+      "Please enter a valid 10 digit mobile number."
+    );
+    return;
+  }
 
-      if (mobileExists) {
-        alert(
-          "This mobile number is already registered."
-        );
-        return;
-      }
-    }
-
-    // Generate automatic Farmer ID
-    const nextFarmerId =
-      getNextFarmerId();
-
-    const newFarmer = {
-      id: Date.now(),
-      farmerId: nextFarmerId,
-      name: farmerName.trim(),
-      mobile: mobile.trim(),
-      village: village.trim(),
-    };
-
-    const updatedFarmers = [
-      ...farmers,
-      newFarmer,
-    ];
-
-    setFarmers(updatedFarmers);
-
-    localStorage.setItem(
-      "farmers",
-      JSON.stringify(updatedFarmers)
+  // Check duplicate mobile
+  if (mobile.trim()) {
+    const mobileExists = farmers.some(
+      (farmer) =>
+        String(farmer.mobile) ===
+        String(mobile.trim())
     );
 
-    setFarmerName("");
-    setMobile("");
-    setVillage("");
+    if (mobileExists) {
+      alert(
+        "This mobile number is already registered."
+      );
+      return;
+    }
+  }
+
+  // Generate Farmer ID
+  const nextFarmerId = getNextFarmerId();
+
+  try {
+    const response = await fetch(
+      "http://localhost:5000/api/farmers",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          farmerId: nextFarmerId,
+          name: farmerName.trim(),
+          mobile: mobile.trim(),
+          village: village.trim(),
+          password: "12345678",
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(
+        data.message ||
+          "Failed to add farmer."
+      );
+      return;
+    }
 
     alert(
       `Farmer added successfully.\nFarmer ID: ${nextFarmerId}`
     );
-  };
+
+    // Reload farmers from MySQL
+    const farmersResponse = await fetch(
+      "http://localhost:5000/api/farmers"
+    );
+
+    const farmersData =
+      await farmersResponse.json();
+
+    if (farmersResponse.ok) {
+      setFarmers(
+        Array.isArray(farmersData.farmers)
+          ? farmersData.farmers.map(
+              (farmer) => ({
+                ...farmer,
+                farmerId:
+                  farmer.farmer_id,
+              })
+            )
+          : []
+      );
+    }
+
+    // Clear form
+    setFarmerName("");
+    setMobile("");
+    setVillage("");
+  } catch (error) {
+    console.error(
+      "Add farmer API error:",
+      error
+    );
+
+    alert(
+      "Server error while adding farmer."
+    );
+  }
+};
 
   // ==========================================
   // DELETE FARMER
   // ==========================================
 
-  const handleDeleteFarmer = (id) => {
-    const farmer = farmers.find(
-      (item) => item.id === id
+  // ==========================================
+// DELETE FARMER - MYSQL
+// ==========================================
+
+const handleDeleteFarmer = async (id) => {
+  const farmer = farmers.find(
+    (item) => item.id === id
+  );
+
+  if (!farmer) {
+    return;
+  }
+
+  const confirmDelete = window.confirm(
+    `Are you sure you want to delete ${farmer.name}?`
+  );
+
+  if (!confirmDelete) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/farmers/${id}`,
+      {
+        method: "DELETE",
+      }
     );
 
-    if (!farmer) {
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(
+        data.message ||
+          "Failed to delete farmer."
+      );
       return;
     }
 
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete ${farmer.name}?`
+    // Remove from React state
+    setFarmers((currentFarmers) =>
+      currentFarmers.filter(
+        (item) => item.id !== id
+      )
     );
 
-    if (!confirmDelete) {
-      return;
-    }
-
-    const updatedFarmers = farmers.filter(
-      (item) => item.id !== id
+    alert("Farmer deleted successfully.");
+  } catch (error) {
+    console.error(
+      "Delete farmer API error:",
+      error
     );
 
-    setFarmers(updatedFarmers);
-
-    localStorage.setItem(
-      "farmers",
-      JSON.stringify(updatedFarmers)
+    alert(
+      "Server error while deleting farmer."
     );
-  };
+  }
+};
 
   // ==========================================
   // SEARCH FARMERS

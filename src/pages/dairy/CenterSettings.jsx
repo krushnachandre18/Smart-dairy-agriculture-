@@ -73,12 +73,12 @@ function CenterSettings() {
     }
 
     // Password validation
-    if (password.length < 6) {
-      setMessage(
-        "Dairy login password must be at least 6 characters."
-      );
-      return;
-    }
+    if (password !== "" && password.length < 6) {
+  setMessage(
+    "Dairy login password must be at least 6 characters."
+  );
+  return;
+}
 
     // Milk rate validation
     if (
@@ -278,7 +278,7 @@ function CenterSettings() {
                   }
                   placeholder="Minimum 6 characters"
                   minLength="6"
-                  required
+                  
                 />
               </div>
 

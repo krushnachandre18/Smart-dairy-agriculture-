@@ -2,6 +2,23 @@ import { useState } from "react";
 import "./Payments.css";
 
 function Payments() {
+  const formatDate = (dateValue) => {
+  if (!dateValue) {
+    return "-";
+  }
+
+  const date = new Date(dateValue);
+
+  if (isNaN(date.getTime())) {
+    return "-";
+  }
+
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+};
   const [milkRecords, setMilkRecords] = useState(() => {
     const savedRecords =
       localStorage.getItem("milkRecords");
@@ -299,7 +316,7 @@ function Payments() {
                       </td>
 
                       <td>
-                        {record.date || "-"}
+                        {formatDate(record.date)}
                       </td>
 
                       <td>

@@ -118,7 +118,41 @@ app.post("/api/farmers", (req, res) => {
     });
   });
 });
+// ==========================================
+// DELETE FARMER
+// ==========================================
 
+app.delete("/api/farmers/:id", (req, res) => {
+  const { id } = req.params;
+
+  const sql = `
+    DELETE FROM farmers
+    WHERE id = ?
+  `;
+
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error(
+        "Delete Farmer Error:",
+        err
+      );
+
+      return res.status(500).json({
+        message: "Failed to delete farmer",
+      });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: "Farmer not found",
+      });
+    }
+
+    res.json({
+      message: "Farmer deleted successfully",
+    });
+  });
+});
 // ==========================================
 // GET ALL FARMERS
 // ==========================================
@@ -1569,6 +1603,159 @@ app.post("/api/expenses", (req, res) => {
       );
     }
   );
+});
+
+// VERIFY MILK RECORD
+app.put("/api/milk-records/:id/verify", (req, res) => {
+  const { id } = req.params;
+
+  const sql = `
+    UPDATE milk_records
+    SET status = 'Verified'
+    WHERE id = ?
+  `;
+
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error("Milk Verification Error:", err);
+
+      return res.status(500).json({
+        message: "Failed to verify milk record",
+      });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: "Milk record not found",
+      });
+    }
+
+    res.json({
+      message: "Milk record verified successfully",
+    });
+  });
+});
+app.put("/api/milk-records/:id/reject", (req, res) => {
+  const { id } = req.params;
+
+  const sql = `
+    UPDATE milk_records
+    SET status = 'Rejected'
+    WHERE id = ?
+  `;
+
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error("Milk Rejection Error:", err);
+      return res.status(500).json({
+        message: "Failed to reject milk record",
+      });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: "Milk record not found",
+      });
+    }
+
+    res.json({
+      message: "Milk record rejected successfully",
+    });
+  });
+});
+// ==========================================
+// GET ALL MILK RECORDS FOR DAIRY
+// ==========================================
+
+app.get("/api/milk-records", (req, res) => {
+  const sql = `
+    SELECT
+      m.id,
+      m.farmer_id,
+      f.farmer_id AS farmerCode,
+      f.name AS farmerName,
+      f.mobile,
+      m.collection_date,
+      m.session,
+      m.quantity,
+      m.fat,
+      m.snf,
+      m.rate,
+      m.amount,
+      m.status,
+      m.payment_status,
+      m.created_at
+    FROM milk_records m
+    INNER JOIN farmers f
+      ON m.farmer_id = f.id
+    ORDER BY m.collection_date DESC, m.id DESC
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(
+        "All Milk Records Error:",
+        err
+      );
+
+      return res.status(500).json({
+        message: "Failed to load milk records",
+      });
+    }
+
+    res.json({
+      records: results,
+    });
+  });
+});
+// ===============================
+// DAIRY DASHBOARD
+// ===============================
+app.get("/api/dairy/dashboard", (req, res) => {
+  const sql = `
+    SELECT
+      (SELECT COUNT(*) FROM farmers) AS totalFarmers,
+
+      (
+        SELECT COALESCE(SUM(quantity), 0)
+        FROM milk_records
+        WHERE status = 'Verified'
+        AND collection_date = CURDATE()
+      ) AS todayMilk,
+
+      (
+        SELECT COUNT(*)
+        FROM milk_records
+        WHERE status = 'Pending'
+      ) AS pendingVerification,
+
+      (
+        SELECT COALESCE(SUM(amount), 0)
+        FROM milk_records
+        WHERE status = 'Verified'
+      ) AS totalPayments
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Dairy Dashboard Error:", err);
+
+      return res.status(500).json({
+        message: "Failed to load dairy dashboard data",
+      });
+    }
+
+    res.json({
+      totalFarmers: Number(results[0].totalFarmers || 0),
+      todayMilk: Number(results[0].todayMilk || 0),
+      pendingVerification: Number(
+        results[0].pendingVerification || 0
+      ),
+      totalPayments: Number(
+        results[0].totalPayments || 0
+      ),
+    });
+  });
 });
 // ==========================================
 // START SERVER
