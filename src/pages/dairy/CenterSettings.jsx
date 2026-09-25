@@ -123,15 +123,54 @@ function CenterSettings() {
       // Save dairy login credentials locally
       // Login API will use these credentials
       // only until dairy user update API is added.
-      localStorage.setItem(
-        "dairyMobile",
-        mobile.trim()
-      );
+      // ==========================================
+// UPDATE DAIRY LOGIN CREDENTIALS IN MYSQL
+// ==========================================
 
-      localStorage.setItem(
-        "dairyPassword",
-        password
-      );
+const dairyId = localStorage.getItem("loggedInDairyId");
+
+if (!dairyId) {
+  setMessage("Dairy login session not found.");
+  return;
+}
+
+if (password !== "") {
+  const dairyResponse = await fetch(
+    `http://localhost:5000/api/dairy-users/${dairyId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        mobile: mobile.trim(),
+        password: password,
+      }),
+    }
+  );
+
+  const dairyData = await dairyResponse.json();
+
+  if (!dairyResponse.ok) {
+    setMessage(
+      dairyData.message ||
+        "Failed to update dairy login credentials."
+    );
+    return;
+  }
+}
+
+// Update current dairy mobile session
+localStorage.setItem(
+  "dairyMobile",
+  mobile.trim()
+);
+
+setPassword("");
+
+setMessage(
+  "Center settings and dairy login credentials saved successfully."
+);
 
       setMessage(
         "Center settings saved successfully."

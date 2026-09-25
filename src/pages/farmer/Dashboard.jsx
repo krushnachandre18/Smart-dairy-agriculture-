@@ -5,76 +5,146 @@ import "./Dashboard.css";
 function Dashboard() {
   const navigate = useNavigate();
 
-  // ================= MILK RECORDS =================
+ // ================= LOGGED-IN FARMER =================
 
- const [refreshKey, setRefreshKey] = useState(0);
-
-const [milkRecords] = useState(() => {
-  return JSON.parse(localStorage.getItem("milkRecords")) || [];
-});
-  // Logged-in Farmer Mobile
 const loggedInFarmerMobile =
   localStorage.getItem("loggedInFarmerMobile");
 
+const [loggedInFarmer, setLoggedInFarmer] =
+  useState(null);
 
-// ================= LOGGED-IN FARMER =================
+// ================= LOAD LOGGED-IN FARMER =================
 
-const farmers =
-  JSON.parse(localStorage.getItem("farmers")) || [];
+useEffect(() => {
+  const loadLoggedInFarmer = async () => {
+    try {
+      if (!loggedInFarmerMobile) {
+        setLoggedInFarmer(null);
+        return;
+      }
 
-const loggedInFarmer = farmers.find(
-  (farmer) =>
-    String(farmer.mobile) ===
-    String(loggedInFarmerMobile)
-);
+      const response = await fetch(
+        "http://localhost:5000/api/farmers"
+      );
 
-// ================= MY FARMER RECORDS =================
+      const data = await response.json();
 
-const myMilkRecords = milkRecords.filter((record) => {
-  const mobileMatch =
-    String(record.farmerMobile || "") ===
-    String(loggedInFarmerMobile);
+      if (!response.ok) {
+        console.error(data.message);
+        setLoggedInFarmer(null);
+        return;
+      }
 
-  const farmerIdMatch =
-    loggedInFarmer &&
-    String(record.farmerId || "") ===
-    String(loggedInFarmer.farmerId);
+      const farmersList = Array.isArray(data.farmers)
+        ? data.farmers
+        : [];
 
-  return mobileMatch || farmerIdMatch;
-});
+      const farmer = farmersList.find(
+        (item) =>
+          String(item.mobile) ===
+          String(loggedInFarmerMobile)
+      );
 
+      setLoggedInFarmer(farmer || null);
+
+      // Save actual MySQL farmer ID
+      if (farmer) {
+        localStorage.setItem(
+          "loggedInFarmerDbId",
+          String(farmer.id)
+        );
+
+        localStorage.setItem(
+          "loggedInFarmerId",
+          farmer.farmer_id
+        );
+      }
+    } catch (error) {
+      console.error(
+        "Dashboard farmer load error:",
+        error
+      );
+
+      setLoggedInFarmer(null);
+    }
+  };
+
+  loadLoggedInFarmer();
+}, [loggedInFarmerMobile]);
+// ================= MILK RECORDS FROM MYSQL =================
+
+const [milkRecords, setMilkRecords] = useState([]);
+
+useEffect(() => {
+  const loadMilkRecords = async () => {
+    try {
+      if (!loggedInFarmer?.id) {
+        setMilkRecords([]);
+        return;
+      }
+
+      const response = await fetch(
+        `http://localhost:5000/api/milk-records/${loggedInFarmer.id}`
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error(data.message);
+        setMilkRecords([]);
+        return;
+      }
+
+      setMilkRecords(
+        Array.isArray(data.records)
+          ? data.records
+          : []
+      );
+    } catch (error) {
+      console.error(
+        "Dashboard milk load error:",
+        error
+      );
+
+      setMilkRecords([]);
+    }
+  };
+
+  loadMilkRecords();
+}, [loggedInFarmer?.id]);
+
+const myMilkRecords = milkRecords;
 
 
 // ================= COW RECORDS =================
-
 // ================= COW RECORDS =================
-
 const [myCows, setMyCows] = useState([]);
 
 useEffect(() => {
   const loadCows = async () => {
     try {
-      if (!loggedInFarmer) {
+      if (!loggedInFarmer?.id) {
         setMyCows([]);
         return;
       }
 
       const response = await fetch(
-        `http://localhost:5000/api/cows/${loggedInFarmer.farmerId}`
+        `http://localhost:5000/api/cows/${loggedInFarmer.id}`
       );
 
       const data = await response.json();
 
-      if (response.ok) {
-        setMyCows(
-          Array.isArray(data.cows)
-            ? data.cows
-            : []
-        );
-      } else {
+      if (!response.ok) {
         console.error(data.message);
         setMyCows([]);
+        return;
       }
+
+      setMyCows(
+        Array.isArray(data.cows)
+          ? data.cows
+          : []
+      );
     } catch (error) {
       console.error(
         "Dashboard cow load error:",
@@ -86,10 +156,10 @@ useEffect(() => {
   };
 
   loadCows();
-}, [loggedInFarmer?.farmerId]);
+}, [loggedInFarmer?.id]);
 
-const totalCows = myCows.length;
-  // ================= TOTAL MILK =================
+const totalCows = myCows.length; 
+
 
 // ================= VERIFIED MILK RECORDS =================
 
@@ -165,26 +235,25 @@ const currentYear = today.getFullYear();
 
 const monthlyVerifiedMilkRecords =
   verifiedMilkRecords.filter((record) => {
-    const dateString = String(record.date || "");
+    const rawDate =
+      record.collection_date ||
+      record.date;
 
-    // M/D/YYYY or MM/DD/YYYY
-    const match = dateString.match(
-      /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
-    );
-
-    if (match) {
-      const month = Number(match[1]);
-      const year = Number(match[3]);
-
-      return (
-        month === currentMonth &&
-        year === currentYear
-      );
+    if (!rawDate) {
+      return false;
     }
 
-    return false;
-  });
+    const recordDate = new Date(rawDate);
 
+    if (isNaN(recordDate.getTime())) {
+      return false;
+    }
+
+    return (
+      recordDate.getMonth() + 1 === currentMonth &&
+      recordDate.getFullYear() === currentYear
+    );
+  });
 const monthlyMilk = monthlyVerifiedMilkRecords.reduce(
   (total, record) =>
     total + Number(record.quantity || 0),

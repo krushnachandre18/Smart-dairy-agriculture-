@@ -312,7 +312,65 @@ app.post("/api/dairy/login", (req, res) => {
     }
   );
 });
+// ==========================================
+// UPDATE DAIRY LOGIN CREDENTIALS
+// ==========================================
 
+app.put("/api/dairy-users/:id", (req, res) => {
+  const { id } = req.params;
+  const { mobile, password } = req.body;
+
+  if (!mobile || !password) {
+    return res.status(400).json({
+      message: "Mobile number and password are required",
+    });
+  }
+
+  if (!/^[0-9]{10}$/.test(mobile)) {
+    return res.status(400).json({
+      message: "Please enter a valid 10 digit mobile number",
+    });
+  }
+
+  if (password.length < 6) {
+    return res.status(400).json({
+      message: "Password must be at least 6 characters",
+    });
+  }
+
+  const sql = `
+    UPDATE dairy_users
+    SET mobile = ?, password = ?
+    WHERE id = ?
+  `;
+
+  db.query(
+    sql,
+    [mobile, password, id],
+    (err, result) => {
+      if (err) {
+        console.error(
+          "Update Dairy User Error:",
+          err
+        );
+
+        return res.status(500).json({
+          message: "Failed to update dairy login credentials",
+        });
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({
+          message: "Dairy user not found",
+        });
+      }
+
+      res.json({
+        message: "Dairy login credentials updated successfully",
+      });
+    }
+  );
+});
 // ==========================================
 // CENTER SETTINGS - GET
 // ==========================================
@@ -420,56 +478,32 @@ app.post("/api/center-settings", (req, res) => {
 app.get("/api/cows/:farmerId", (req, res) => {
   const { farmerId } = req.params;
 
-  const farmerSql = `
-    SELECT id
-    FROM farmers
+  const sql = `
+    SELECT
+      id,
+      farmer_id,
+      tag_number,
+      breed,
+      age,
+      purchase_date,
+      status,
+      created_at
+    FROM cows
     WHERE farmer_id = ?
+    ORDER BY id DESC
   `;
 
-  db.query(farmerSql, [farmerId], (farmerErr, farmerResults) => {
-    if (farmerErr) {
-      console.error("❌ Farmer lookup error:", farmerErr.message);
+  db.query(sql, [farmerId], (err, results) => {
+    if (err) {
+      console.error("❌ Fetch cows error:", err.message);
 
       return res.status(500).json({
-        message: "Failed to find farmer.",
+        message: "Failed to fetch cows.",
       });
     }
 
-    if (farmerResults.length === 0) {
-      return res.status(404).json({
-        message: "Farmer not found.",
-      });
-    }
-
-    const farmerDbId = farmerResults[0].id;
-
-    const sql = `
-      SELECT
-        id,
-        farmer_id,
-        tag_number,
-        breed,
-        age,
-        purchase_date,
-        status,
-        created_at
-      FROM cows
-      WHERE farmer_id = ?
-      ORDER BY id DESC
-    `;
-
-    db.query(sql, [farmerDbId], (err, results) => {
-      if (err) {
-        console.error("❌ Fetch cows error:", err.message);
-
-        return res.status(500).json({
-          message: "Failed to fetch cows.",
-        });
-      }
-
-      res.json({
-        cows: results,
-      });
+    res.json({
+      cows: results,
     });
   });
 });
@@ -890,7 +924,7 @@ app.get("/api/milk-records/:farmerId", (req, res) => {
     FROM milk_records mr
     JOIN farmers f
       ON mr.farmer_id = f.id
-    WHERE f.farmer_id = ?
+    WHERE mr.farmer_id = ?
     ORDER BY mr.id DESC
   `;
 
@@ -1598,6 +1632,164 @@ app.post("/api/expenses", (req, res) => {
           res.status(201).json({
             message: "Expense added successfully",
             id: result.insertId
+          });
+        }
+      );
+    }
+  );
+});
+
+app.get("/api/milk-payments", (req, res) => {
+  const sql = `
+    SELECT
+      m.id AS milk_record_id,
+      m.farmer_id,
+      f.farmer_id AS farmerCode,
+      f.name AS farmerName,
+      m.collection_date,
+      m.session,
+      m.quantity,
+      m.fat,
+      m.snf,
+      m.rate,
+      m.amount,
+      m.status,
+      m.payment_status,
+      p.id AS payment_id,
+      p.payment_date
+    FROM milk_records m
+    INNER JOIN farmers f
+      ON m.farmer_id = f.id
+    LEFT JOIN milk_payments p
+      ON p.milk_record_id = m.id
+    WHERE m.status = 'Verified'
+    ORDER BY m.collection_date DESC, m.id DESC
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Milk Payments Error:", err);
+      return res.status(500).json({
+        message: "Failed to load payment records",
+      });
+    }
+
+    res.json({
+      payments: results,
+    });
+  });
+});
+app.get("/api/daily-reports", (req, res) => {
+  const { date } = req.query;
+
+  if (!date) {
+    return res.status(400).json({
+      message: "Date is required",
+    });
+  }
+
+  const sql = `
+    SELECT
+      m.id,
+      m.farmer_id,
+      f.farmer_id AS farmerCode,
+      f.name AS farmerName,
+      m.collection_date,
+      m.session,
+      m.quantity,
+      m.fat,
+      m.snf,
+      m.rate,
+      m.amount,
+      m.status,
+      m.payment_status
+    FROM milk_records m
+    INNER JOIN farmers f
+      ON m.farmer_id = f.id
+    WHERE m.collection_date = ?
+    ORDER BY f.farmer_id, m.session, m.id
+  `;
+
+  db.query(sql, [date], (err, results) => {
+    if (err) {
+      console.error("Daily Reports Error:", err);
+      return res.status(500).json({
+        message: "Failed to load daily report",
+      });
+    }
+
+    res.json({
+      records: results,
+    });
+  });
+});
+app.post("/api/milk-payments", (req, res) => {
+  const {
+    farmerId,
+    milkRecordId,
+    amount,
+    paymentDate,
+  } = req.body;
+
+  if (
+    !farmerId ||
+    !milkRecordId ||
+    amount === undefined ||
+    !paymentDate
+  ) {
+    return res.status(400).json({
+      message: "Required payment details are missing",
+    });
+  }
+
+  const sql = `
+    INSERT INTO milk_payments
+    (
+      farmer_id,
+      milk_record_id,
+      amount,
+      payment_date,
+      payment_status
+    )
+    VALUES (?, ?, ?, ?, 'Paid')
+  `;
+
+  db.query(
+    sql,
+    [farmerId, milkRecordId, amount, paymentDate],
+    (err, result) => {
+      if (err) {
+        console.error("Add Milk Payment Error:", err);
+        return res.status(500).json({
+          message: "Failed to add milk payment",
+        });
+      }
+
+      const updateMilkSql = `
+        UPDATE milk_records
+        SET payment_status = 'Paid'
+        WHERE id = ?
+      `;
+
+      db.query(
+        updateMilkSql,
+        [milkRecordId],
+        (updateErr) => {
+          if (updateErr) {
+            console.error(
+              "Update Milk Payment Status Error:",
+              updateErr
+            );
+
+            return res.status(500).json({
+              message:
+                "Payment saved but milk payment status update failed",
+            });
+          }
+
+          res.json({
+            message: "Payment marked as paid successfully",
+            paymentId: result.insertId,
           });
         }
       );

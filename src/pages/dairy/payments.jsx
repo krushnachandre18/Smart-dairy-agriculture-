@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Payments.css";
 
 function Payments() {
@@ -19,16 +19,47 @@ function Payments() {
     year: "numeric",
   });
 };
-  const [milkRecords, setMilkRecords] = useState(() => {
-    const savedRecords =
-      localStorage.getItem("milkRecords");
-
-    return savedRecords
-      ? JSON.parse(savedRecords)
-      : [];
-  });
-
+  const [milkRecords, setMilkRecords] = useState([]);
   const [filterFarmer, setFilterFarmer] = useState("");
+  useEffect(() => {
+  const loadPayments = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/milk-payments"
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error(data.message);
+        return;
+      }
+
+      setMilkRecords(
+        Array.isArray(data.payments)
+          ? data.payments.map((payment) => ({
+              ...payment,
+              id: payment.milk_record_id,
+              farmerId: payment.farmerCode,
+              farmerName: payment.farmerName,
+              date: payment.collection_date,
+              quantity: Number(payment.quantity || 0),
+              fat: Number(payment.fat || 0),
+              snf: Number(payment.snf || 0),
+              rate: Number(payment.rate || 0),
+              amount: Number(payment.amount || 0),
+              paymentStatus: payment.payment_status,
+              paymentId: payment.id,
+            }))
+          : []
+      );
+    } catch (error) {
+      console.error("Payments API error:", error);
+    }
+  };
+
+  loadPayments();
+}, []);
 
   // ==========================================
   // ONLY VERIFIED RECORDS FOR PAYMENT
@@ -98,33 +129,69 @@ function Payments() {
   // ==========================================
   // MARK PAYMENT AS PAID
   // ==========================================
+const handleMarkAsPaid = async (record) => {
+  try {
+    const paymentDate = new Date()
+      .toISOString()
+      .split("T")[0];
 
-  const handleMarkAsPaid = (recordId) => {
-    const updatedRecords = milkRecords.map(
-      (record) => {
-        if (record.id === recordId) {
-          return {
-            ...record,
-            paymentStatus: "Paid",
-            paymentDate:
-              new Date().toLocaleDateString(),
-          };
-        }
-
-        return record;
+    const response = await fetch(
+      "http://localhost:5000/api/milk-payments",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          farmerId: record.farmer_id,
+          milkRecordId: record.milk_record_id,
+          amount: Number(record.amount || 0),
+          paymentDate: paymentDate,
+        }),
       }
     );
 
-    setMilkRecords(updatedRecords);
+    const data = await response.json();
 
-    localStorage.setItem(
-      "milkRecords",
-      JSON.stringify(updatedRecords)
-    );
+    if (!response.ok) {
+      alert(data.message || "Failed to mark payment as paid.");
+      return;
+    }
 
     alert("Payment marked as paid successfully.");
-  };
 
+    // Reload payment records from MySQL
+    const paymentsResponse = await fetch(
+      "http://localhost:5000/api/milk-payments"
+    );
+
+    const paymentsData = await paymentsResponse.json();
+
+    if (paymentsResponse.ok) {
+      setMilkRecords(
+        Array.isArray(paymentsData.payments)
+          ? paymentsData.payments.map((payment) => ({
+              ...payment,
+              id: payment.milk_record_id,
+              farmerId: payment.farmerCode,
+              farmerName: payment.farmerName,
+              date: payment.collection_date,
+              quantity: Number(payment.quantity || 0),
+              fat: Number(payment.fat || 0),
+              snf: Number(payment.snf || 0),
+              rate: Number(payment.rate || 0),
+              amount: Number(payment.amount || 0),
+              paymentStatus: payment.payment_status,
+              paymentId: payment.payment_id,
+            }))
+          : []
+      );
+    }
+  } catch (error) {
+    console.error("Mark payment error:", error);
+    alert("Server error while marking payment.");
+  }
+};
   // ==========================================
   // UI
   // ==========================================
@@ -398,11 +465,7 @@ function Payments() {
                         ) : (
 
                           <button
-                            onClick={() =>
-                              handleMarkAsPaid(
-                                record.id
-                              )
-                            }
+                            onClick={() => handleMarkAsPaid(record)}
                           >
                             💰 Mark as Paid
                           </button>

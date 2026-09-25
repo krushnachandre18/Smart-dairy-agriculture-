@@ -1,27 +1,55 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./DailyReports.css";
 
 function DailyReports() {
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toLocaleDateString()
-  );
+ const [selectedDate, setSelectedDate] = useState(
+  new Date().toISOString().split("T")[0]
+);
+const [milkRecords, setMilkRecords] = useState([]);
+useEffect(() => {
+  const loadDailyRecords = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/daily-reports?date=${selectedDate}`
+      );
 
-  const [milkRecords] = useState(() => {
-    const savedRecords =
-      localStorage.getItem("milkRecords");
+      const data = await response.json();
 
-    return savedRecords
-      ? JSON.parse(savedRecords)
-      : [];
-  });
+      if (!response.ok) {
+        console.error(data.message);
+        setMilkRecords([]);
+        return;
+      }
+
+      setMilkRecords(
+        Array.isArray(data.records)
+          ? data.records.map((record) => ({
+              ...record,
+              farmerId: record.farmerCode,
+              farmerName: record.farmerName,
+              date: record.collection_date,
+              quantity: Number(record.quantity || 0),
+              fat: Number(record.fat || 0),
+              snf: Number(record.snf || 0),
+              rate: Number(record.rate || 0),
+              amount: Number(record.amount || 0),
+            }))
+          : []
+      );
+    } catch (error) {
+      console.error("Daily reports API error:", error);
+      setMilkRecords([]);
+    }
+  };
+
+  loadDailyRecords();
+}, [selectedDate]);
 
   // ==========================================
   // SELECTED DATE RECORDS
   // ==========================================
 
-  const selectedDateRecords = milkRecords.filter(
-    (record) => record.date === selectedDate
-  );
+  const selectedDateRecords = milkRecords;
 
   // ==========================================
   // STATUS RECORDS
@@ -172,21 +200,15 @@ function DailyReports() {
   // DATE CHANGE
   // ==========================================
 
-  const handleDateChange = (event) => {
-    const value = event.target.value;
+const handleDateChange = (event) => {
+  const value = event.target.value;
 
-    if (!value) {
-      return;
-    }
+  if (!value) {
+    return;
+  }
 
-    const date = new Date(
-      `${value}T00:00:00`
-    );
-
-    setSelectedDate(
-      date.toLocaleDateString()
-    );
-  };
+  setSelectedDate(value);
+};
 
   // ==========================================
   // UI
@@ -223,9 +245,11 @@ function DailyReports() {
         />
 
         <span>
-          Report Date: {selectedDate}
-        </span>
-
+  Report Date:{" "}
+  {new Date(
+    `${selectedDate}T00:00:00`
+  ).toLocaleDateString("en-IN")}
+</span>
       </div>
 
       {/* SUMMARY CARDS */}

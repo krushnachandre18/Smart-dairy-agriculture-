@@ -8,10 +8,11 @@ function Cows() {
   // FARMER LOGIN INFORMATION
   // =====================================================
 
-  const loggedInFarmerMobile =
-    localStorage.getItem("loggedInFarmerMobile");
+const loggedInFarmerMobile =
+  localStorage.getItem("loggedInFarmerMobile");
 
-  const [farmerPublicId, setFarmerPublicId] = useState("");
+const [farmerPublicId, setFarmerPublicId] = useState("");
+const [farmerDbId, setFarmerDbId] = useState("");
 
   // =====================================================
   // MAIN SECTION
@@ -65,48 +66,36 @@ function Cows() {
   // =====================================================
   // FIND LOGGED-IN FARMER
   // =====================================================
+useEffect(() => {
+  if (!loggedInFarmerMobile) {
+    setMessage("Farmer login information not found.");
+    return;
+  }
 
-  useEffect(() => {
-    if (!loggedInFarmerMobile) {
-      setMessage("Farmer login information not found.");
-      return;
-    }
+  const farmerDbId =
+    localStorage.getItem("loggedInFarmerDbId");
 
-    const farmers =
-      JSON.parse(localStorage.getItem("farmers")) || [];
+  const farmerPublicId =
+    localStorage.getItem("loggedInFarmerId");
 
-    const farmer = farmers.find(
-      (item) =>
-        String(item.mobile) ===
-        String(loggedInFarmerMobile)
-    );
+  if (!farmerDbId) {
+    setMessage("Farmer database ID not found.");
+    return;
+  }
 
-    if (!farmer) {
-      setMessage("Farmer information not found.");
-      return;
-    }
-
-    /*
-      Backend routes use farmer_id
-      Example: F001, F002, etc.
-    */
-
-    setFarmerPublicId(
-      farmer.farmer_id || farmer.farmerId || ""
-    );
-  }, [loggedInFarmerMobile]);
-
+  setFarmerDbId(farmerDbId);
+  setFarmerPublicId(farmerPublicId || "");
+}, [loggedInFarmerMobile]);
   // =====================================================
   // LOAD ALL MYSQL DATA
   // =====================================================
+useEffect(() => {
+  if (!farmerDbId) return;
 
-  useEffect(() => {
-    if (!farmerPublicId) return;
-
-    loadCows();
-    loadHealthRecords();
-    loadPregnancyRecords();
-  }, [farmerPublicId]);
+  loadCows();
+  loadHealthRecords();
+  loadPregnancyRecords();
+}, [farmerDbId]);
 
   // =====================================================
   // LOAD COWS
@@ -115,8 +104,8 @@ function Cows() {
   const loadCows = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/cows/${farmerPublicId}`
-      );
+`${API_URL}/cows/${farmerDbId}`
+);
 
       const data = await response.json();
 
