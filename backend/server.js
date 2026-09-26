@@ -47,7 +47,43 @@ app.get("/", (req, res) => {
 // ==========================================
 
 const PORT = 5000;
+// ================= GET FARMER PROFILE BY MOBILE =================
 
+app.get("/api/farmer-profile/:mobile", (req, res) => {
+  const { mobile } = req.params;
+
+  const sql = `
+    SELECT *
+    FROM farmers
+    WHERE mobile = ?
+    LIMIT 1
+  `;
+
+  db.query(sql, [mobile], (err, results) => {
+    if (err) {
+      console.error("Farmer Profile GET Error:", err);
+
+      return res.status(500).json({
+        message: "Failed to fetch farmer profile"
+      });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({
+        message: "Farmer not found"
+      });
+    }
+
+    const farmer = results[0];
+
+    res.json({
+      farmer: {
+        ...farmer,
+        farmerId: farmer.farmer_id
+      }
+    });
+  });
+});
 // ==========================================
 // FARMER REGISTRATION
 // ==========================================
