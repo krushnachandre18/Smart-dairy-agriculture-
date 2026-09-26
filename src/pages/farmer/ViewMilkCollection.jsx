@@ -7,45 +7,46 @@ function ViewMilkCollection() {
 
   const [records, setRecords] = useState([]);
 
-  useEffect(() => {
+   useEffect(() => {
     loadMilkRecords();
   }, []);
 
-  const loadMilkRecords = () => {
-    const loggedInFarmerMobile =
-      localStorage.getItem("loggedInFarmerMobile");
+  const loadMilkRecords = async () => {
+    try {
+      const farmerDbId =
+        localStorage.getItem("loggedInFarmerDbId");
 
-    const farmers =
-      JSON.parse(localStorage.getItem("farmers")) || [];
+      if (!farmerDbId) {
+        setRecords([]);
+        return;
+      }
 
-    const loggedInFarmer = farmers.find(
-      (farmer) =>
-        String(farmer.mobile) ===
-        String(loggedInFarmerMobile)
-    );
+      const response = await fetch(
+        `http://localhost:5000/api/milk-records/${farmerDbId}`
+      );
 
-    const allRecords =
-      JSON.parse(localStorage.getItem("milkRecords")) || [];
+      const data = await response.json();
 
-    const myRecords = allRecords.filter((record) => {
-      const mobileMatch =
-        String(record.farmerMobile || "") ===
-        String(loggedInFarmerMobile);
+      if (!response.ok) {
+        console.error(data.message);
+        setRecords([]);
+        return;
+      }
 
-      const farmerIdMatch =
-        loggedInFarmer &&
-        String(record.farmerId || "") ===
-        String(loggedInFarmer.farmerId);
+      const myRecords = Array.isArray(data.records)
+        ? data.records
+        : [];
 
-      return mobileMatch || farmerIdMatch;
-    });
+      setRecords(myRecords);
+    } catch (error) {
+      console.error(
+        "View Milk Collection Error:",
+        error
+      );
 
-    // Latest records first
-    myRecords.sort((a, b) => b.id - a.id);
-
-    setRecords(myRecords);
+      setRecords([]);
+    }
   };
-
   const verifiedRecords = records.filter(
     (record) =>
       String(record.status || "").toLowerCase() ===
@@ -186,7 +187,9 @@ function ViewMilkCollection() {
                     <tr key={record.id}>
 
                       <td>
-                        {record.date || "-"}
+                        {record.collection_date
+    ? new Date(record.collection_date).toLocaleDateString("en-IN")
+    : "-"}
                       </td>
 
                       <td>
@@ -247,8 +250,7 @@ function ViewMilkCollection() {
                           <span className="payment-na">
                             —
                           </span>
-                        ) : record.paymentStatus ===
-                          "Paid" ? (
+                        ) : record.payment_status === "Paid" ? (
                           <span className="status paid">
                             💰 Paid
                           </span>

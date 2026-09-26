@@ -399,7 +399,7 @@ if (totalMilk === 0 && totalMilkEntries === 0) {
 
     <div>
       <span>🆔 Farmer ID</span>
-      <strong>{loggedInFarmer.farmerId}</strong>
+      <strong>{loggedInFarmer.farmer_id}</strong>
     </div>
 
     <div>

@@ -884,9 +884,12 @@ useEffect(() => {
                         </td>
 
                         <td>
-                          {cow.purchaseDate ||
-                            cow.purchase_date ||
-                            "-"}
+                          
+                            
+  {cow.purchase_date
+    ? new Date(cow.purchase_date).toLocaleDateString("en-IN")
+    : "-"}
+
                         </td>
 
                         <td>

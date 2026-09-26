@@ -1081,29 +1081,30 @@ app.post("/api/milk-records", (req, res) => {
 app.get("/api/feed-records/:farmerId", (req, res) => {
   const { farmerId } = req.params;
 
- 
-    const sql = `
-  SELECT 
-    fr.id,
-    fr.farmer_id,
-    fr.feed_name AS feedType,
-    fr.feed_type AS feedCategory,
-    fr.quantity,
-    fr.unit,
-    fr.cost,
-    fr.supplier,
-    fr.purchase_date AS date,
-    f.farmer_id AS farmerCode,
-    f.name AS farmerName
-  FROM feed_records fr
-  JOIN farmers f ON fr.farmer_id = f.id
-  WHERE f.farmer_id = ?
-  ORDER BY fr.id DESC
-`;
+  const sql = `
+    SELECT 
+      fr.id,
+      fr.farmer_id,
+      fr.feed_name AS feedType,
+      fr.feed_type AS feedCategory,
+      fr.quantity,
+      fr.unit,
+      fr.cost,
+      fr.supplier,
+      fr.purchase_date AS date,
+      f.farmer_id AS farmerCode,
+      f.name AS farmerName
+    FROM feed_records fr
+    JOIN farmers f
+      ON fr.farmer_id = f.id
+    WHERE fr.farmer_id = ?
+    ORDER BY fr.id DESC
+  `;
 
   db.query(sql, [farmerId], (err, results) => {
     if (err) {
       console.error("Feed GET Error:", err);
+
       return res.status(500).json({
         message: "Failed to fetch feed records"
       });
@@ -1114,7 +1115,6 @@ app.get("/api/feed-records/:farmerId", (req, res) => {
     });
   });
 });
-
 // POST Feed Record
 // POST Feed Record
 app.post("/api/feed-records", (req, res) => {
@@ -1135,70 +1135,48 @@ app.post("/api/feed-records", (req, res) => {
     });
   }
 
-  const farmerSql = `
-    SELECT id
-    FROM farmers
-    WHERE farmer_id = ?
+  const feedSql = `
+    INSERT INTO feed_records
+    (
+      farmer_id,
+      feed_name,
+      feed_type,
+      quantity,
+      unit,
+      cost,
+      supplier,
+      purchase_date
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
-  db.query(farmerSql, [farmerId], (err, farmerResults) => {
-    if (err) {
-      console.error("Farmer lookup error:", err);
-      return res.status(500).json({
-        message: "Database error"
-      });
-    }
+  db.query(
+    feedSql,
+    [
+      Number(farmerId),
+      feedName,
+      feedType || null,
+      Number(quantity),
+      unit || "Kg",
+      Number(cost) || 0,
+      supplier || null,
+      purchaseDate || null
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Feed INSERT Error:", err);
 
-    if (farmerResults.length === 0) {
-      return res.status(404).json({
-        message: "Farmer not found"
-      });
-    }
-
-    const internalFarmerId = farmerResults[0].id;
-
-    const feedSql = `
-      INSERT INTO feed_records
-      (
-        farmer_id,
-        feed_name,
-        feed_type,
-        quantity,
-        unit,
-        cost,
-        supplier,
-        purchase_date
-      )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    db.query(
-      feedSql,
-      [
-        internalFarmerId,
-        feedName,
-        feedType || null,
-        Number(quantity),
-        unit || "Kg",
-        Number(cost) || 0,
-        supplier || null,
-        purchaseDate || null
-      ],
-      (err, result) => {
-        if (err) {
-          console.error("Feed INSERT Error:", err);
-          return res.status(500).json({
-            message: "Failed to add feed record"
-          });
-        }
-
-        res.status(201).json({
-          message: "Feed record added successfully",
-          id: result.insertId
+        return res.status(500).json({
+          message: "Failed to add feed record"
         });
       }
-    );
-  });
+
+      res.status(201).json({
+        message: "Feed record added successfully",
+        id: result.insertId
+      });
+    }
+  );
 });
 // =========================
 // GET FEED USAGE
@@ -1215,6 +1193,7 @@ app.get("/api/feed-usage/:farmerId", (req, res) => {
       fu.quantity_used,
       fu.unit,
       fu.notes,
+      fr.feed_name,
       fr.feed_type AS feedCategory,
       f.farmer_id AS farmerCode,
       f.name AS farmerName
@@ -1223,11 +1202,11 @@ app.get("/api/feed-usage/:farmerId", (req, res) => {
       ON fu.farmer_id = f.id
     JOIN feed_records fr
       ON fu.feed_id = fr.id
-    WHERE f.farmer_id = ?
+    WHERE fu.farmer_id = ?
     ORDER BY fu.id DESC
   `;
 
-  db.query(sql, [farmerId], (err, results) => {
+  db.query(sql, [Number(farmerId)], (err, results) => {
     if (err) {
       console.error("Feed Usage GET Error:", err);
 
@@ -1241,8 +1220,6 @@ app.get("/api/feed-usage/:farmerId", (req, res) => {
     });
   });
 });
-
-
 // =========================
 // POST FEED USAGE
 // =========================
@@ -1267,107 +1244,78 @@ app.post("/api/feed-usage", (req, res) => {
     });
   }
 
-  const farmerSql = `
+  // farmerId is MySQL farmers.id
+  const feedSql = `
     SELECT id
-    FROM farmers
-    WHERE farmer_id = ?
+    FROM feed_records
+    WHERE id = ?
+      AND farmer_id = ?
   `;
 
   db.query(
-    farmerSql,
-    [farmerId],
-    (err, farmerResults) => {
+    feedSql,
+    [Number(feedId), Number(farmerId)],
+    (err, feedResults) => {
 
       if (err) {
-        console.error("Farmer lookup error:", err);
+        console.error(
+          "Feed lookup error:",
+          err
+        );
 
         return res.status(500).json({
           message: "Database error"
         });
       }
 
-      if (farmerResults.length === 0) {
+      if (feedResults.length === 0) {
         return res.status(404).json({
-          message: "Farmer not found"
+          message: "Feed record not found"
         });
       }
 
-      const internalFarmerId =
-        farmerResults[0].id;
-
-      const feedSql = `
-        SELECT id
-        FROM feed_records
-        WHERE id = ?
-          AND farmer_id = ?
+      const usageSql = `
+        INSERT INTO feed_usage
+        (
+          farmer_id,
+          feed_id,
+          usage_date,
+          quantity_used,
+          unit,
+          notes
+        )
+        VALUES (?, ?, ?, ?, ?, ?)
       `;
 
       db.query(
-        feedSql,
-        [feedId, internalFarmerId],
-        (err, feedResults) => {
+        usageSql,
+        [
+          Number(farmerId),
+          Number(feedId),
+          usageDate,
+          Number(quantityUsed),
+          unit || "Kg",
+          notes || null
+        ],
+        (err, result) => {
 
           if (err) {
             console.error(
-              "Feed lookup error:",
+              "Feed Usage INSERT Error:",
               err
             );
 
             return res.status(500).json({
-              message: "Database error"
+              message:
+                "Failed to add feed usage"
             });
           }
 
-          if (feedResults.length === 0) {
-            return res.status(404).json({
-              message: "Feed record not found"
-            });
-          }
-
-          const usageSql = `
-            INSERT INTO feed_usage
-            (
-              farmer_id,
-              feed_id,
-              usage_date,
-              quantity_used,
-              unit,
-              notes
-            )
-            VALUES (?, ?, ?, ?, ?, ?)
-          `;
-
-          db.query(
-            usageSql,
-            [
-              internalFarmerId,
-              feedId,
-              usageDate,
-              Number(quantityUsed),
-              unit || "Kg",
-              notes || null
-            ],
-            (err, result) => {
-
-              if (err) {
-                console.error(
-                  "Feed Usage INSERT Error:",
-                  err
-                );
-
-                return res.status(500).json({
-                  message:
-                    "Failed to add feed usage"
-                });
-              }
-
-              res.status(201).json({
-                message:
-                  "Feed usage added successfully",
-                id: result.insertId
-              });
-            }
-          );
+          res.status(201).json({
+            message:
+              "Feed usage added successfully",
+            id: result.insertId
+          });
         }
       );
     }
