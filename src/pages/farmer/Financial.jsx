@@ -8,17 +8,19 @@ function Financial() {
   // LOGGED-IN FARMER
   // =====================================================
 
-  const loggedInFarmerMobile =
-    localStorage.getItem("loggedInFarmerMobile");
+ const loggedInFarmerMobile =
+  localStorage.getItem("loggedInFarmerMobile");
 
-  const farmers =
-    JSON.parse(localStorage.getItem("farmers")) || [];
+const loggedInFarmerId =
+  localStorage.getItem("loggedInFarmerId");
 
-  const loggedInFarmer = farmers.find(
-    (farmer) =>
-      String(farmer.mobile) ===
-      String(loggedInFarmerMobile)
-  );
+const loggedInFarmerDbId =
+  localStorage.getItem("loggedInFarmerDbId");
+  const loggedInFarmer = loggedInFarmerId
+  ? {
+      farmerId: loggedInFarmerId,
+    }
+  : null;
 
   // =====================================================
   // INCOME
@@ -38,13 +40,13 @@ const [incomeRecords, setIncomeRecords] = useState([]);
 useEffect(() => {
   const loadIncomeRecords = async () => {
     try {
-      if (!loggedInFarmer) {
+      if (!loggedInFarmerId) {
         setIncomeRecords([]);
         return;
       }
 
       const response = await fetch(
-        `http://localhost:5000/api/income/${loggedInFarmer.farmerId}`
+      `http://localhost:5000/api/income/${loggedInFarmerId}`
       );
 
       const data = await response.json();
@@ -91,13 +93,13 @@ const [expenseRecords, setExpenseRecords] = useState([]);
 useEffect(() => {
   const loadExpenseRecords = async () => {
     try {
-      if (!loggedInFarmer) {
+      if (!loggedInFarmerId) {
         setExpenseRecords([]);
         return;
       }
 
       const response = await fetch(
-        `http://localhost:5000/api/expenses/${loggedInFarmer.farmerId}`
+        `http://localhost:5000/api/expenses/${loggedInFarmerId}`
       );
 
       const data = await response.json();
@@ -137,49 +139,97 @@ useEffect(() => {
   // DAIRY PAYMENTS
   // =====================================================
 
-  const [milkRecords] = useState(() => {
-    const savedMilk =
-      JSON.parse(
-        localStorage.getItem("milkRecords")
-      ) || [];
+  const [milkRecords, setMilkRecords] = useState([]);
 
-    return savedMilk.filter((milk) => {
-      const mobileMatch =
-        String(milk.farmerMobile || "") ===
-        String(loggedInFarmerMobile);
+// LOAD DAIRY PAYMENTS FROM MYSQL
+useEffect(() => {
+  const loadMilkPayments = async () => {
+    try {
+      if (!loggedInFarmerId) {
+        setMilkRecords([]);
+        return;
+      }
 
-      const farmerIdMatch =
-        loggedInFarmer &&
-        String(milk.farmerId || "") ===
-          String(loggedInFarmer.farmerId);
+      const response = await fetch(
+        "http://localhost:5000/api/milk-payments"
+      );
 
-      return mobileMatch || farmerIdMatch;
-    });
-  });
+      const data = await response.json();
 
+      if (response.ok) {
+        const farmerPayments = Array.isArray(data.payments)
+          ? data.payments
+              .filter(
+                (payment) =>
+                  String(payment.farmerCode) ===
+                  String(loggedInFarmerId)
+              )
+              .map((payment) => ({
+                ...payment,
+                id: payment.milk_record_id,
+                date: payment.collection_date,
+              }))
+          : [];
+
+        setMilkRecords(farmerPayments);
+      } else {
+        console.error(data.message);
+        setMilkRecords([]);
+      }
+    } catch (error) {
+      console.error(
+        "Milk payments load error:",
+        error
+      );
+      setMilkRecords([]);
+    }
+  };
+
+  loadMilkPayments();
+}, [loggedInFarmerId]);
   // =====================================================
   // FEED RECORDS
   // =====================================================
 
-  const [feedRecords] = useState(() => {
-    const savedFeed =
-      JSON.parse(
-        localStorage.getItem("feedRecords")
-      ) || [];
+const [feedRecords, setFeedRecords] = useState([]);
 
-    return savedFeed.filter((feed) => {
-      const mobileMatch =
-        String(feed.farmerMobile || "") ===
-        String(loggedInFarmerMobile);
+// LOAD FEED RECORDS FROM MYSQL
+useEffect(() => {
+  const loadFeedRecords = async () => {
+    try {
+      if (!loggedInFarmerDbId) {
+        setFeedRecords([]);
+        return;
+      }
 
-      const farmerIdMatch =
-        loggedInFarmer &&
-        String(feed.farmerId || "") ===
-          String(loggedInFarmer.farmerId);
+      const response = await fetch(
+        `http://localhost:5000/api/feed-records/${loggedInFarmerDbId}`
+      );
 
-      return mobileMatch || farmerIdMatch;
-    });
-  });
+      const data = await response.json();
+
+      if (response.ok) {
+        setFeedRecords(
+          Array.isArray(data.records)
+            ? data.records
+            : []
+        );
+      } else {
+        console.error(data.message);
+        setFeedRecords([]);
+      }
+    } catch (error) {
+      console.error(
+        "Feed records load error:",
+        error
+      );
+
+      setFeedRecords([]);
+    }
+  };
+
+  loadFeedRecords();
+}, [loggedInFarmerDbId]);
 
   // =====================================================
   // ADD INCOME
@@ -204,10 +254,10 @@ useEffect(() => {
     return;
   }
 
-  if (!loggedInFarmer) {
-    setMessage("Farmer not found");
-    return;
-  }
+ if (!loggedInFarmerId || !loggedInFarmerDbId) {
+  setMessage("Farmer login session not found");
+  return;
+}
 
   try {
     const response = await fetch(
@@ -219,7 +269,7 @@ useEffect(() => {
         },
         body: JSON.stringify({
           farmerId:
-            loggedInFarmer.farmerId,
+            loggedInFarmerId,
           incomeType: incomeType,
           amount: Number(incomeAmount),
           incomeDate: incomeDate,
@@ -242,7 +292,7 @@ useEffect(() => {
     // Reload income records from MySQL
     const incomeResponse =
       await fetch(
-        `http://localhost:5000/api/income/${loggedInFarmer.farmerId}`
+        `http://localhost:5000/api/income/${loggedInFarmerId}`
       );
 
     const incomeData =
@@ -313,8 +363,8 @@ const handleAddExpense = async () => {
     return;
   }
 
-  if (!loggedInFarmer) {
-    setMessage("Farmer not found");
+  if (!loggedInFarmerId || !loggedInFarmerDbId) {
+    setMessage("Farmer login session not found");
     return;
   }
 
@@ -328,7 +378,7 @@ const handleAddExpense = async () => {
         },
         body: JSON.stringify({
           farmerId:
-            loggedInFarmer.farmerId,
+            loggedInFarmerId,
           expenseType: expenseType,
           amount: Number(expenseAmount),
           expenseDate: expenseDate,
@@ -351,7 +401,7 @@ const handleAddExpense = async () => {
     // Reload expense records from MySQL
     const expenseResponse =
       await fetch(
-        `http://localhost:5000/api/expenses/${loggedInFarmer.farmerId}`
+        `http://localhost:5000/api/expenses/${loggedInFarmerId}`
       );
 
     const expenseData =
@@ -806,7 +856,12 @@ const handleAddExpense = async () => {
                       <tr key={income.id}>
 
                         <td>
-                          {income.date}
+                          
+                          
+  {income.date
+    ? new Date(income.date).toLocaleDateString("en-IN")
+    : "-"}
+
                         </td>
 
                         <td>
@@ -1123,7 +1178,11 @@ const handleAddExpense = async () => {
                       <tr key={expense.id}>
 
                         <td>
-                          {expense.date}
+                          
+  {expense.date
+    ? new Date(expense.date).toLocaleDateString("en-IN")
+    : "-"}
+
                         </td>
 
                         <td>
@@ -1377,8 +1436,13 @@ const handleAddExpense = async () => {
                         <tr key={milk.id}>
 
                           <td>
-                            {milk.date || "-"}
-                          </td>
+                            
+                            
+  {milk.date
+    ? new Date(milk.date).toLocaleDateString("en-IN")
+    : "-"}
+</td>
+                          
 
                           <td>
 

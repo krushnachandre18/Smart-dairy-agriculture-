@@ -802,3 +802,454 @@
 .cows-page .cow-menu-card:hover {
   background: #ffffff !important;
 }
+/* =================================================
+   FINAL COW MANAGEMENT UI POLISH
+================================================= */
+
+.cows-page {
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(220, 252, 231, 0.65),
+      transparent 28%
+    ),
+    #f8fafc;
+}
+
+/* =========================
+   MAIN HEADER POLISH
+========================= */
+
+.cows-header {
+  border-color: #bbf7d0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.cows-header:hover {
+  transform: translateY(-2px);
+  border-color: #86efac;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+}
+
+.cows-icon {
+  box-shadow: 0 7px 18px rgba(15, 23, 42, 0.10);
+  transition: transform 0.2s ease;
+}
+
+.cows-header:hover .cows-icon {
+  transform: scale(1.05);
+}
+
+.cows-header h1 {
+  letter-spacing: -0.5px;
+}
+
+/* =========================
+   MENU CARDS
+========================= */
+
+.cow-menu-card {
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease;
+}
+
+.cow-menu-card:hover {
+  transform: translateY(-5px);
+  border-color: #86efac !important;
+  background: #fafffb !important;
+  box-shadow: 0 12px 28px rgba(22, 101, 52, 0.12);
+}
+
+.cow-menu-card span {
+  filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.08));
+  transition: transform 0.2s ease;
+}
+
+.cow-menu-card:hover span {
+  transform: scale(1.07);
+}
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.cows-page > button,
+.back-button {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.cows-page > button:hover,
+.back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(15, 23, 42, 0.08);
+}
+
+.cows-page > button:focus-visible,
+.back-button:focus-visible {
+  outline: 3px solid rgba(16, 185, 129, 0.20);
+  outline-offset: 2px;
+}
+
+/* =========================
+   FORM CARD
+========================= */
+
+.cow-form-card {
+  border-color: #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+  transition:
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.cow-form-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+}
+
+.form-title {
+  border-bottom-color: #e2e8f0;
+}
+
+.form-title > span {
+  filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.08));
+}
+
+/* =========================
+   FORM INPUTS
+========================= */
+
+.form-group input,
+.form-group select {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.form-group input:hover,
+.form-group select:hover {
+  border-color: #94a3b8;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  transform: translateY(-1px);
+}
+
+/* =========================
+   ADD COW BUTTON
+========================= */
+
+.add-cow-button {
+  box-shadow: 0 6px 15px rgba(15, 23, 42, 0.14);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.add-cow-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 20px rgba(15, 23, 42, 0.20);
+}
+
+.add-cow-button:active {
+  transform: translateY(0);
+}
+
+.add-cow-button:focus-visible {
+  outline: 3px solid rgba(15, 23, 42, 0.18);
+  outline-offset: 2px;
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+.cow-message {
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.06);
+}
+
+/* =========================
+   COW LIST CARD
+========================= */
+
+.cow-list-card {
+  border-color: #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+  transition:
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.cow-list-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+}
+
+.list-header {
+  border-bottom-color: #e2e8f0;
+}
+
+.cow-table-container {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #f1f5f9;
+}
+
+/* =========================
+   TABLE POLISH
+========================= */
+
+.cow-list-card table {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cow-list-card th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.cow-list-card tbody tr {
+  transition:
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.cow-list-card tbody tr:hover {
+  background: #f0fdf4;
+  box-shadow: inset 4px 0 0 #10b981;
+}
+
+.cow-list-card td {
+  border-top-color: #e2e8f0;
+}
+
+/* =========================
+   STATUS BADGES
+========================= */
+
+.cow-status,
+.health-status,
+.pregnancy-status,
+.session-badge {
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.cow-status:hover,
+.health-status:hover,
+.pregnancy-status:hover,
+.session-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+}
+
+/* =========================
+   DELETE BUTTON
+========================= */
+
+.delete-cow-button {
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.delete-cow-button:hover {
+  background: #fecaca !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(185, 28, 28, 0.12);
+}
+
+.delete-cow-button:focus-visible {
+  outline: 3px solid rgba(185, 28, 28, 0.18);
+  outline-offset: 2px;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-cows {
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.empty-cows > div {
+  filter: drop-shadow(0 5px 8px rgba(15, 23, 42, 0.08));
+}
+
+/* =========================
+   MILK TOTAL
+========================= */
+
+.milk-total-box {
+  box-shadow: 0 5px 14px rgba(37, 99, 235, 0.06);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.milk-total-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.10);
+}
+
+.milk-total-box strong {
+  letter-spacing: -0.3px;
+}
+
+/* =========================
+   HEALTH / PREGNANCY CARDS
+========================= */
+
+.health-history-card,
+.pregnancy-history-card,
+.milk-history-card {
+  margin-top: 25px;
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+.cow-table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.cow-table-container::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.cow-table-container::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 10px;
+}
+
+.cow-table-container::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* =========================
+   MOBILE POLISH
+========================= */
+
+@media (max-width: 700px) {
+
+  .cows-page {
+    padding: 14px;
+  }
+
+  .cows-header {
+    border-radius: 16px;
+  }
+
+  .cow-menu-card {
+    min-height: 130px;
+    padding: 20px;
+  }
+
+  .cow-form-card,
+  .cow-list-card {
+    border-radius: 14px;
+  }
+
+  .section-top {
+    gap: 14px;
+  }
+
+  .form-title {
+    margin-bottom: 22px;
+  }
+
+  .cow-table-container {
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 450px) {
+
+  .cows-page {
+    padding: 10px;
+  }
+
+  .cows-header {
+    padding: 22px 14px;
+    border-radius: 14px;
+  }
+
+  .cows-header h1 {
+    font-size: 23px;
+  }
+
+  .cows-header p {
+    font-size: 14px;
+  }
+
+  .cow-menu-card {
+    padding: 18px;
+  }
+
+  .cow-form-card,
+  .cow-list-card {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .form-title h2 {
+    font-size: 18px;
+  }
+
+  .milk-total-box {
+    padding: 15px;
+  }
+}
+
+/* =========================
+   ACCESSIBILITY
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .cows-header,
+  .cows-icon,
+  .cow-menu-card,
+  .cow-menu-card span,
+  .cows-page > button,
+  .back-button,
+  .cow-form-card,
+  .form-group input,
+  .form-group select,
+  .add-cow-button,
+  .cow-list-card,
+  .cow-list-card tbody tr,
+  .cow-status,
+  .health-status,
+  .pregnancy-status,
+  .session-badge,
+  .delete-cow-button,
+  .milk-total-box {
+    transition: none !important;
+  }
+}

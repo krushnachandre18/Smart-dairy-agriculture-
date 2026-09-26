@@ -161,3 +161,245 @@
     grid-column: span 1;
   }
 }
+/* =================================================
+   FINAL CENTER SETTINGS UI POLISH
+================================================= */
+
+.center-settings-page {
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(220, 252, 231, 0.70),
+      transparent 28%
+    ),
+    #f8fafc;
+}
+
+/* ---------- NAVBAR ---------- */
+
+.center-settings-navbar {
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.10);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.center-settings-navbar h2 {
+  letter-spacing: -0.2px;
+}
+
+.center-settings-navbar button {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.center-settings-navbar button:hover {
+  background: #f0fdf4;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.18);
+}
+
+.center-settings-navbar button:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.35);
+  outline-offset: 2px;
+}
+
+/* ---------- MAIN ---------- */
+
+.center-settings-main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ---------- HEADER CARD ---------- */
+
+.center-settings-header {
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 7px 22px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.center-settings-header:hover {
+  transform: translateY(-2px);
+  border-color: #bbf7d0;
+  box-shadow: 0 11px 28px rgba(15, 23, 42, 0.09);
+}
+
+.center-settings-header span {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #dcfce7;
+}
+
+.center-settings-header h1 {
+  letter-spacing: -0.5px;
+}
+
+.settings-icon {
+  filter: drop-shadow(0 7px 10px rgba(22, 101, 52, 0.12));
+}
+
+/* ---------- SETTINGS CARD ---------- */
+
+.settings-card {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+  transition:
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.settings-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+}
+
+.settings-card h2 {
+  color: #0f172a;
+  letter-spacing: -0.2px;
+}
+
+/* ---------- FORM ---------- */
+
+.form-group label {
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea {
+  box-sizing: border-box;
+  width: 100%;
+  background: #f8fafc;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.form-group input:hover,
+.form-group textarea:hover {
+  border-color: #94a3b8;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  background: #ffffff;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+}
+
+/* ---------- SAVE BUTTON ---------- */
+
+.save-settings-btn {
+  box-shadow: 0 6px 15px rgba(22, 163, 74, 0.18);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.save-settings-btn:hover {
+  background: #15803d;
+  transform: translateY(-2px);
+  box-shadow: 0 9px 20px rgba(22, 163, 74, 0.24);
+}
+
+.save-settings-btn:active {
+  transform: translateY(0);
+}
+
+.save-settings-btn:focus-visible {
+  outline: 3px solid rgba(22, 163, 74, 0.20);
+  outline-offset: 2px;
+}
+
+/* ---------- SUCCESS MESSAGE ---------- */
+
+.success-message {
+  padding: 11px 14px;
+  border-radius: 9px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 700px) {
+
+  .center-settings-navbar {
+    padding: 16px 18px;
+  }
+
+  .center-settings-main {
+    padding: 14px;
+  }
+
+  .center-settings-header {
+    padding: 20px;
+  }
+
+  .settings-card {
+    padding: 20px;
+  }
+
+  .settings-grid {
+    gap: 16px;
+  }
+
+  .settings-icon {
+    font-size: 48px;
+  }
+}
+
+/* ---------- SMALL MOBILE ---------- */
+
+@media (max-width: 480px) {
+
+  .center-settings-navbar h2 {
+    font-size: 20px;
+  }
+
+  .center-settings-navbar button {
+    width: 100%;
+  }
+
+  .center-settings-header {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .center-settings-header h1 {
+    font-size: 23px;
+  }
+
+  .settings-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .save-settings-btn {
+    width: 100%;
+  }
+}
+
+/* ---------- REDUCED MOTION ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .center-settings-header,
+  .settings-card,
+  .center-settings-navbar button,
+  .save-settings-btn,
+  .form-group input,
+  .form-group textarea {
+    transition: none !important;
+  }
+}

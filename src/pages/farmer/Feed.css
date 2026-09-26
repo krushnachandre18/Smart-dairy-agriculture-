@@ -487,3 +487,424 @@
   background: #dbeafe;
   color: #1d4ed8;
 }
+/* =================================================
+   FINAL FEED MANAGEMENT UI POLISH
+================================================= */
+
+.feed-menu,
+.feed-section {
+  box-sizing: border-box;
+}
+
+/* =========================
+   FEED MENU HEADER
+========================= */
+
+.feed-header {
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.feed-header:hover {
+  transform: translateY(-2px);
+  border-color: #bbf7d0;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+}
+
+.feed-icon {
+  filter: drop-shadow(0 5px 8px rgba(15, 23, 42, 0.08));
+}
+
+.feed-header h1 {
+  letter-spacing: -0.5px;
+}
+
+/* =========================
+   FEED MENU CARDS
+========================= */
+
+.feed-menu-card {
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease;
+}
+
+.feed-menu-card:hover {
+  transform: translateY(-5px);
+  border-color: #6ee7b7 !important;
+  background: #fafffb !important;
+  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.12);
+}
+
+.feed-menu-card span {
+  filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.08));
+  transition: transform 0.2s ease;
+}
+
+.feed-menu-card:hover span {
+  transform: scale(1.07);
+}
+
+.feed-menu-card strong {
+  letter-spacing: -0.1px;
+}
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.back-button {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(15, 23, 42, 0.08);
+}
+
+.back-button:focus-visible {
+  outline: 3px solid rgba(16, 185, 129, 0.20);
+  outline-offset: 2px;
+}
+
+/* =========================
+   FEED FORM CARD
+========================= */
+
+.feed-form-card {
+  border-color: #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+  transition:
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.feed-form-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+}
+
+.form-title {
+  border-bottom-color: #e2e8f0;
+}
+
+.form-title > span {
+  filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.08));
+}
+
+/* =========================
+   FORM INPUTS
+========================= */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  box-sizing: border-box;
+  background: #f8fafc;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+  border-color: #94a3b8;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* =========================
+   ADD FEED BUTTON
+========================= */
+
+.add-feed-button {
+  box-shadow: 0 6px 15px rgba(16, 185, 129, 0.18);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.add-feed-button:hover {
+  background: #059669 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 9px 20px rgba(16, 185, 129, 0.24);
+}
+
+.add-feed-button:active {
+  transform: translateY(0);
+}
+
+.add-feed-button:focus-visible {
+  outline: 3px solid rgba(16, 185, 129, 0.20);
+  outline-offset: 2px;
+}
+
+/* =========================
+   FEED MESSAGE
+========================= */
+
+.feed-message {
+  border: 1px solid #a7f3d0;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.06);
+}
+
+/* =========================
+   FEED LIST CARD
+========================= */
+
+.feed-list-card {
+  border-color: #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+  transition:
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.feed-list-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+}
+
+.list-header {
+  border-bottom-color: #e2e8f0;
+}
+
+/* =========================
+   FEED TABLE
+========================= */
+
+.feed-table-container {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #f1f5f9;
+}
+
+.feed-list-card table {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.feed-list-card th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.feed-list-card tbody tr {
+  transition:
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.feed-list-card tbody tr:hover td {
+  background: #f0fdf4;
+}
+
+.feed-list-card tbody tr:hover {
+  box-shadow: inset 4px 0 0 #10b981;
+}
+
+/* =========================
+   STOCK BADGES
+========================= */
+
+.stock-badge,
+.stock-status,
+.history-action {
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.stock-badge:hover,
+.stock-status:hover,
+.history-action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+}
+
+/* =========================
+   LOW STOCK ALERT
+========================= */
+
+.low-stock-alert {
+  box-shadow: 0 6px 18px rgba(234, 88, 12, 0.07);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.low-stock-alert:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 22px rgba(234, 88, 12, 0.10);
+}
+
+.alert-icon {
+  filter: drop-shadow(0 4px 6px rgba(234, 88, 12, 0.10));
+}
+
+/* =========================
+   SAFE STOCK ALERT
+========================= */
+
+.safe-stock-alert {
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.06);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.safe-stock-alert:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 22px rgba(16, 185, 129, 0.10);
+}
+
+.safe-stock-alert > span {
+  filter: drop-shadow(0 4px 6px rgba(16, 185, 129, 0.10));
+}
+
+/* =========================
+   EMPTY FEED STATE
+========================= */
+
+.empty-feed {
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.empty-feed > div {
+  filter: drop-shadow(0 5px 8px rgba(15, 23, 42, 0.08));
+}
+
+/* =========================
+   TABLE SCROLLBAR
+========================= */
+
+.feed-table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.feed-table-container::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.feed-table-container::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 10px;
+}
+
+.feed-table-container::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* =========================
+   MOBILE POLISH
+========================= */
+
+@media (max-width: 700px) {
+
+  .feed-menu,
+  .feed-section {
+    width: 100%;
+  }
+
+  .feed-header {
+    border-radius: 15px;
+  }
+
+  .feed-menu-card {
+    min-height: 130px;
+    padding: 20px;
+  }
+
+  .feed-form-card,
+  .feed-list-card {
+    border-radius: 14px;
+  }
+
+  .feed-table-container {
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 450px) {
+
+  .feed-header {
+    padding: 22px 14px;
+    border-radius: 13px;
+  }
+
+  .feed-header h1 {
+    font-size: 23px;
+  }
+
+  .feed-menu-card {
+    padding: 18px;
+  }
+
+  .feed-form-card,
+  .feed-list-card {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .form-title h2 {
+    font-size: 19px;
+  }
+
+  .low-stock-alert {
+    padding: 15px;
+  }
+
+  .safe-stock-alert {
+    padding: 14px 15px;
+  }
+}
+
+/* =========================
+   ACCESSIBILITY
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .feed-header,
+  .feed-menu-card,
+  .feed-menu-card span,
+  .back-button,
+  .feed-form-card,
+  .form-group input,
+  .form-group select,
+  .form-group textarea,
+  .add-feed-button,
+  .feed-list-card,
+  .feed-list-card tbody tr,
+  .stock-badge,
+  .stock-status,
+  .history-action,
+  .low-stock-alert,
+  .safe-stock-alert {
+    transition: none !important;
+  }
+}

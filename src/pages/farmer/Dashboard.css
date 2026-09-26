@@ -1000,3 +1000,161 @@
     padding: 20px 10px;
   }
 }
+/* =================================================
+   FINAL SMART DAIRY DASHBOARD TOUCH
+================================================= */
+
+.dashboard-page {
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(232, 245, 233, 0.75),
+      transparent 28%
+    ),
+    #f8fafc;
+}
+
+/* Smooth cards */
+.dashboard-card,
+.overview-card,
+.module-card,
+.farmer-welcome-card,
+.milk-summary-box,
+.performance-box,
+.quick-action-card,
+.dashboard-ai-card {
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+/* Overview cards */
+.overview-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09);
+}
+
+/* Module cards */
+.module-card {
+  box-shadow: 0 5px 16px rgba(15, 23, 42, 0.05);
+}
+
+.module-card:hover {
+  transform: translateY(-5px);
+  border-color: #2e7d32 !important;
+  box-shadow: 0 12px 28px rgba(46, 125, 50, 0.14);
+}
+
+/* Farmer information */
+.farmer-welcome-card {
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 7px 22px rgba(15, 23, 42, 0.06);
+}
+
+/* Milk summary */
+.milk-summary-box {
+  background: #ffffff;
+}
+
+.milk-summary-box:hover {
+  border-color: #bbf7d0;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+/* Monthly performance */
+.performance-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.performance-box:hover {
+  border-color: #bbf7d0;
+  transform: translateY(-4px);
+}
+
+/* Quick actions */
+.quick-action-card {
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+
+.quick-action-card:hover {
+  border-color: #bbf7d0;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+/* AI card */
+.dashboard-ai-card {
+  box-shadow: 0 8px 25px rgba(91, 33, 182, 0.08);
+}
+
+.dashboard-ai-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(91, 33, 182, 0.12);
+}
+
+/* Refresh button */
+.refresh-btn {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  box-shadow: 0 5px 14px rgba(37, 99, 235, 0.20);
+}
+
+.refresh-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28);
+}
+
+/* Logout */
+.logout-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: 0 5px 14px rgba(239, 68, 68, 0.18);
+}
+
+.logout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(239, 68, 68, 0.25);
+}
+
+/* Better table */
+.milk-table tbody tr {
+  transition: background 0.18s ease;
+}
+
+.milk-table tbody tr:hover {
+  background: #f8fbf8;
+}
+
+/* Better status */
+.milk-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 75px;
+}
+
+/* Mobile final touch */
+@media (max-width: 600px) {
+
+  .dashboard-nav-links {
+    gap: 8px;
+  }
+
+  .dashboard-nav-links button {
+    min-height: 42px;
+  }
+
+  .overview-card {
+    min-height: 105px;
+  }
+
+  .module-card {
+    min-height: 125px;
+  }
+
+  .dashboard-ai-card {
+    padding: 22px;
+  }
+}

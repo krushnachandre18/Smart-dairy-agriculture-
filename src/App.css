@@ -1,396 +1,351 @@
-/* ========================================
-   GLOBAL
-======================================== */
+/* =================================================
+   FINAL GLOBAL UI POLISH
+================================================= */
 
-* {
-  box-sizing: border-box;
+/* =========================
+   GLOBAL
+========================= */
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f7f4;
-  color: #222;
+  background: #f8fafc;
+  color: #1e293b;
+  -webkit-font-smoothing: antialiased;
 }
 
 button,
 input,
 select,
 textarea {
-  font-family: inherit;
+  outline: none;
 }
 
-button {
-  cursor: pointer;
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.15);
+  outline-offset: 2px;
 }
 
-/* ========================================
-   LOGIN PAGE
-======================================== */
-
-/* ================================
+/* =========================
    LOGIN OPTIONS
-================================ */
+========================= */
 
 .login-options {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 25px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .login-option {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 18px;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  background: white;
-  color: #1e293b;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  border-color: #e2e8f0;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .login-option:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.09);
+}
+
+.farmer-option:hover {
+  border-color: #86efac;
+}
+
+.dairy-option:hover {
+  border-color: #93c5fd;
 }
 
 .login-option-icon {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  border-radius: 12px;
-  font-size: 27px;
-}
-
-.farmer-option {
-  background: #f0fdf4;
-  border-color: #bbf7d0;
-}
-
-.farmer-option .login-option-icon {
-  background: #dcfce7;
-}
-
-.dairy-option {
-  background: #eff6ff;
-  border-color: #bfdbfe;
-}
-
-.dairy-option .login-option-icon {
-  background: #dbeafe;
-}
-
-.login-option-content {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.login-option-content strong {
-  font-size: 15px;
-}
-
-.login-option-content small {
-  color: #64748b;
-  font-size: 12px;
-  line-height: 1.4;
+  box-shadow: 0 4px 9px rgba(15, 23, 42, 0.06);
 }
 
 .login-arrow {
-  color: #64748b;
-  font-size: 22px;
-  font-weight: bold;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
 }
 
-/* Mobile */
-@media (max-width: 500px) {
-  .login-option {
-    padding: 14px;
-    gap: 12px;
-  }
-
-  .login-option-icon {
-    width: 44px;
-    height: 44px;
-    font-size: 24px;
-  }
-
-  .login-option-content strong {
-    font-size: 14px;
-  }
-
-  .login-option-content small {
-    font-size: 11px;
-  }
+.login-option:hover .login-arrow {
+  transform: translateX(4px);
+  color: #2563eb;
 }
-/* ========================================
+
+/* =========================
    DASHBOARD
-======================================== */
+========================= */
 
 .dashboard-header {
-  padding: 10px 0;
+  padding-top: 5px;
 }
 
-.dashboard-header p {
-  margin-top: 0;
-  color: #666;
+.dashboard-header h1,
+.dashboard-header h2 {
+  letter-spacing: -0.4px;
 }
 
 .welcome {
-  background: white;
-  padding: 20px;
-  border-radius: 14px;
-  margin: 20px 0;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 7px 18px rgba(15, 23, 42, 0.06);
 }
 
 .welcome h2 {
-  margin-top: 0;
+  color: #1e293b;
 }
 
 .stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
+  gap: 18px;
 }
 
 .stat-card {
-  background: white;
-  padding: 20px;
-  border-radius: 14px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  border-color: #bfdbfe;
+  box-shadow: 0 12px 25px rgba(37, 99, 235, 0.09);
 }
 
 .stat-card span {
-  font-size: 28px;
-}
-
-.stat-card h3 {
-  margin-bottom: 8px;
+  display: inline-block;
+  filter: drop-shadow(0 3px 5px rgba(15, 23, 42, 0.08));
 }
 
 .stat-card strong {
-  font-size: 24px;
+  color: #0f172a;
 }
 
 .quick-actions {
-  background: white;
-  padding: 20px;
-  border-radius: 14px;
-  margin-top: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 7px 18px rgba(15, 23, 42, 0.06);
 }
 
 .quick-actions button {
-  background: #222;
-  color: white;
+  border: none;
+  border-radius: 9px;
+  padding: 10px 16px;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-/* ========================================
-   COWS
-======================================== */
-
-.cows-page {
-  min-height: 100vh;
+.quick-actions button:hover {
+  background: #334155;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.15);
 }
 
-.cows-page > h1 {
-  font-size: 30px;
+/* =========================
+   COWS / MILK / PAYMENTS
+========================= */
+
+.cows-page,
+.milk-page,
+.payments-page {
+  background: #f8fafc;
+}
+
+.cows-page > h1,
+.milk-page > h1,
+.payments-page > h1 {
+  color: #0f172a;
+  letter-spacing: -0.5px;
 }
 
 .cows-page h2,
-.cows-page h3 {
-  margin-top: 25px;
-  margin-bottom: 15px;
+.milk-page h2,
+.payments-page h2 {
+  color: #1e293b;
+  letter-spacing: -0.3px;
 }
 
-/* ========================================
-   MILK COLLECTION
-======================================== */
-
-.milk-page {
-  min-height: 100vh;
-}
-
-.milk-page h3 {
-  margin-top: 25px;
-}
+/* =========================
+   MILK CALCULATION
+========================= */
 
 .milk-calculation {
-  background: white;
-  max-width: 450px;
-  margin: 20px 0;
-  padding: 18px;
-  border-radius: 12px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
-}
-
-.milk-calculation p {
-  margin: 8px 0;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 7px 18px rgba(15, 23, 42, 0.06);
 }
 
 .milk-rate {
-  font-size: 18px;
-  font-weight: bold;
+  color: #2563eb;
 }
 
 .milk-total {
-  font-size: 22px;
-  font-weight: bold;
+  color: #16a34a;
 }
 
-/* ========================================
-   TABLES
-======================================== */
+/* =========================
+   COMMON TABLE POLISH
+========================= */
 
 .cows-page table,
 .milk-page table,
 .payments-page table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  margin-top: 15px;
-  border-radius: 10px;
-  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
 }
 
 .cows-page th,
 .milk-page th,
 .payments-page th {
-  background: #222;
-  color: white;
-  padding: 12px;
-  text-align: left;
-  font-size: 14px;
+  background: #1e293b;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .cows-page td,
 .milk-page td,
 .payments-page td {
-  padding: 12px;
-  border-bottom: 1px solid #e5e5e5;
-  font-size: 14px;
+  color: #475569;
+}
+
+.cows-page tbody tr,
+.milk-page tbody tr,
+.payments-page tbody tr {
+  transition: background 0.18s ease;
 }
 
 .cows-page tbody tr:hover,
 .milk-page tbody tr:hover,
 .payments-page tbody tr:hover {
-  background: #f8f8f8;
+  background: #f8fafc;
 }
 
-/* ========================================
-   PAYMENTS
-======================================== */
+/* =========================
+   PAYMENT CARDS
+========================= */
 
 .payment-card {
-  background: white;
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 14px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 7px 18px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.payment-card:hover {
+  transform: translateY(-3px);
+  border-color: #bfdbfe;
+  box-shadow: 0 11px 24px rgba(37, 99, 235, 0.09);
 }
 
 .payment-card h3 {
-  margin-top: 0;
+  color: #334155;
 }
 
 .payment-amount {
-  font-size: 22px;
-  font-weight: bold;
+  color: #16a34a;
 }
 
-/* ========================================
-   HR
-======================================== */
+/* =========================
+   HORIZONTAL RULE
+========================= */
 
 .cows-page hr,
 .milk-page hr,
 .payments-page hr {
-  border: none;
-  border-top: 1px solid #ddd;
-  margin: 30px 0;
+  border-top-color: #e2e8f0;
 }
 
-/* ========================================
-   MOBILE RESPONSIVE
-======================================== */
+/* =========================
+   TABLE SCROLLBAR
+========================= */
+
+.cows-page table::-webkit-scrollbar,
+.milk-page table::-webkit-scrollbar,
+.payments-page table::-webkit-scrollbar {
+  height: 8px;
+}
+
+.cows-page table::-webkit-scrollbar-track,
+.milk-page table::-webkit-scrollbar-track,
+.payments-page table::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+.cows-page table::-webkit-scrollbar-thumb,
+.milk-page table::-webkit-scrollbar-thumb,
+.payments-page table::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+/* =========================
+   MOBILE POLISH
+========================= */
 
 @media (max-width: 700px) {
-  .dashboard,
-  .cows-page,
-  .milk-page,
-  .payments-page {
-    padding: 15px;
-  }
 
   .stats-grid {
-    grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
 
-  .cows-page table,
-  .milk-page table,
-  .payments-page table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .cows-page input,
-  .cows-page select,
-  .cows-page textarea,
-  .milk-page input,
-  .milk-page select,
-  .milk-page textarea {
-    max-width: 100%;
-  }
-}
-
-/* ========================================
-   SMALL MOBILE
-======================================== */
-
-@media (max-width: 450px) {
-  .dashboard,
-  .cows-page,
-  .milk-page,
-  .payments-page {
-    padding: 12px;
-  }
-
-  .cows-page > h1,
-  .milk-page > h1,
-  .payments-page > h1 {
-    font-size: 23px;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .cows-page button,
-  .milk-page button,
-  .payments-page button {
-    width: 100%;
-    margin-right: 0;
+  .welcome,
+  .quick-actions {
+    padding: 17px;
   }
 
   .stat-card {
-    padding: 16px;
+    padding: 17px;
+    border-radius: 12px;
   }
 
-  .login-card {
-    padding: 30px 20px;
+  .milk-calculation,
+  .payment-card {
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 450px) {
+
+  .stats-grid {
+    gap: 10px;
   }
 
-  .login-card h1 {
-    font-size: 24px;
+  .stat-card strong {
+    font-size: 22px;
+  }
+
+  .quick-actions button {
+    min-height: 44px;
+  }
+}
+
+/* =========================
+   REDUCE MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .login-option,
+  .login-arrow,
+  .stat-card,
+  .quick-actions button,
+  .payment-card,
+  .cows-page tbody tr,
+  .milk-page tbody tr,
+  .payments-page tbody tr {
+    transition: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }

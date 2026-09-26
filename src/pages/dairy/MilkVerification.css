@@ -204,3 +204,203 @@
     border-radius: 10px;
   }
 }
+/* =================================================
+   FINAL MILK VERIFICATION UI POLISH
+================================================= */
+
+.milk-verification-page {
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(204, 251, 241, 0.65),
+      transparent 28%
+    ),
+    #f8fafc;
+}
+
+/* ---------- PAGE HEADING ---------- */
+
+.milk-verification-page h1 {
+  letter-spacing: -0.4px;
+}
+
+.milk-verification-page h1::after {
+  content: "";
+  display: block;
+  width: 55px;
+  height: 3px;
+  margin-top: 10px;
+  border-radius: 10px;
+  background: #0f766e;
+}
+
+/* ---------- TABLE CARD ---------- */
+
+.verification-table-container {
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+  transition:
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.verification-table-container:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+}
+
+/* ---------- TABLE ---------- */
+
+.verification-table-container {
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #f1f5f9;
+}
+
+.verification-table-container table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.verification-table-container thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.verification-table-container tbody tr {
+  transition:
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.verification-table-container tbody tr:hover {
+  box-shadow: inset 4px 0 0 #0f766e;
+}
+
+/* ---------- STATUS BADGES ---------- */
+
+.pending-status,
+.verified-status,
+.rejected-status {
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.pending-status:hover,
+.verified-status:hover,
+.rejected-status:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.09);
+}
+
+/* ---------- ACTION BUTTONS ---------- */
+
+.verification-table-container button {
+  min-width: 70px;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.10);
+}
+
+.verification-table-container button:active {
+  transform: translateY(0);
+}
+
+.verification-table-container button:focus-visible {
+  outline: 3px solid rgba(15, 118, 110, 0.20);
+  outline-offset: 2px;
+}
+
+/* ---------- EMPTY STATE ---------- */
+
+.milk-verification-page > p {
+  border: 1px dashed #cbd5e1;
+}
+
+/* ---------- TABLE SCROLLBAR ---------- */
+
+.verification-table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.verification-table-container::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.verification-table-container::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 10px;
+}
+
+.verification-table-container::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 768px) {
+
+  .milk-verification-page {
+    padding: 14px;
+  }
+
+  .milk-verification-page h1 {
+    font-size: 23px;
+  }
+
+  .verification-table-container {
+    padding: 10px;
+  }
+
+  .verification-table-container th,
+  .verification-table-container td {
+    padding: 11px 10px;
+    font-size: 13px;
+  }
+
+  .verification-table-container button {
+    padding: 7px 10px;
+    min-width: 65px;
+  }
+}
+
+/* ---------- SMALL MOBILE ---------- */
+
+@media (max-width: 480px) {
+
+  .milk-verification-page {
+    padding: 10px;
+  }
+
+  .milk-verification-page h1 {
+    font-size: 21px;
+  }
+
+  .verification-table-container {
+    padding: 8px;
+    border-radius: 9px;
+  }
+
+  .pending-status,
+  .verified-status,
+  .rejected-status {
+    min-width: 75px;
+    padding: 6px 9px;
+    font-size: 11px;
+  }
+}
+
+/* ---------- REDUCED MOTION ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .verification-table-container,
+  .verification-table-container tbody tr,
+  .verification-table-container button,
+  .pending-status,
+  .verified-status,
+  .rejected-status {
+    transition: none !important;
+  }
+}

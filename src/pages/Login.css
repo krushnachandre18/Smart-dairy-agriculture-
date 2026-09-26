@@ -332,3 +332,318 @@
     font-size: 24px;
   }
 }
+/* =================================================
+   FINAL SMART DAIRY LOGIN UI POLISH
+================================================= */
+
+/* =========================
+   LOGIN PAGE
+========================= */
+
+.login-page {
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(220, 252, 231, 0.75),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(219, 234, 254, 0.55),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #f0fdf4, #f8fafc);
+}
+
+/* =========================
+   LOGIN CARD
+========================= */
+
+.login-card {
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow:
+    0 20px 50px rgba(15, 23, 42, 0.12),
+    0 5px 15px rgba(15, 23, 42, 0.05);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.login-card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 25px 60px rgba(15, 23, 42, 0.15),
+    0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+/* =========================
+   LEFT INFORMATION
+========================= */
+
+.login-info {
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(255, 255, 255, 0.12),
+      transparent 28%
+    ),
+    linear-gradient(145deg, #166534, #15803d);
+}
+
+.brand-icon {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.login-info:hover .brand-icon {
+  transform: scale(1.06) rotate(-2deg);
+  background: rgba(255, 255, 255, 0.20);
+}
+
+.login-info h1 {
+  letter-spacing: -0.7px;
+}
+
+.brand-subtitle {
+  max-width: 390px;
+}
+
+.info-content h2 {
+  letter-spacing: -0.3px;
+}
+
+/* =========================
+   FEATURES
+========================= */
+
+.features div {
+  padding: 9px 10px;
+  border-radius: 9px;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.features div:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(3px);
+}
+
+.features span {
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.12));
+}
+
+/* =========================
+   LOGIN FORM SECTION
+========================= */
+
+.login-form-section {
+  background: #ffffff;
+}
+
+.form-header h2 {
+  letter-spacing: -0.4px;
+}
+
+.form-header p {
+  line-height: 1.5;
+}
+
+/* =========================
+   FORM INPUTS
+========================= */
+
+.form-group input,
+.form-group select {
+  border-color: #cbd5e1;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.form-group input:hover,
+.form-group select:hover {
+  border-color: #94a3b8;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  background: #ffffff;
+  border-color: #16a34a;
+  box-shadow:
+    0 0 0 3px rgba(22, 163, 74, 0.12),
+    0 4px 10px rgba(22, 163, 74, 0.05);
+}
+
+/* =========================
+   LOGIN BUTTON
+========================= */
+
+.login-button {
+  box-shadow: 0 6px 15px rgba(22, 163, 74, 0.20);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.login-button:hover {
+  background: #15803d;
+  transform: translateY(-2px);
+  box-shadow: 0 9px 20px rgba(22, 163, 74, 0.28);
+}
+
+.login-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.18);
+}
+
+.login-button:focus-visible {
+  outline: 3px solid rgba(22, 163, 74, 0.18);
+  outline-offset: 3px;
+}
+
+/* =========================
+   LOGIN MESSAGE
+========================= */
+
+.login-message {
+  border: 1px solid #fecaca;
+  box-shadow: 0 3px 8px rgba(220, 38, 38, 0.05);
+  line-height: 1.5;
+}
+
+/* =========================
+   REGISTER LINK
+========================= */
+
+.register-link {
+  border-top-color: #e2e8f0;
+}
+
+.register-link button {
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.register-link button:hover {
+  color: #166534;
+  text-decoration: underline;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.login-footer {
+  line-height: 1.5;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 768px) {
+
+  .login-card {
+    min-height: auto;
+  }
+
+  .login-info {
+    border-radius: 0;
+  }
+
+  .features div {
+    padding: 7px 8px;
+  }
+
+  .login-form-section {
+    background: #ffffff;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 450px) {
+
+  .login-page {
+    padding: 10px;
+  }
+
+  .login-card {
+    width: 100%;
+    border-radius: 16px;
+  }
+
+  .login-info {
+    padding: 26px 22px;
+  }
+
+  .brand-icon {
+    width: 58px;
+    height: 58px;
+    font-size: 30px;
+    border-radius: 15px;
+  }
+
+  .login-info h1 {
+    font-size: 26px;
+  }
+
+  .brand-subtitle {
+    font-size: 14px;
+  }
+
+  .info-content h2 {
+    font-size: 21px;
+  }
+
+  .info-content p {
+    font-size: 14px;
+  }
+
+  .login-form-section {
+    padding: 27px 22px;
+  }
+
+  .form-header {
+    margin-bottom: 24px;
+  }
+
+  .form-header h2 {
+    font-size: 23px;
+  }
+
+  .form-group {
+    margin-bottom: 17px;
+  }
+
+  .login-button {
+    height: 48px;
+  }
+}
+
+/* =========================
+   REDUCE MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .login-card,
+  .brand-icon,
+  .features div,
+  .form-group input,
+  .form-group select,
+  .login-button,
+  .register-link button {
+    transition: none !important;
+  }
+}

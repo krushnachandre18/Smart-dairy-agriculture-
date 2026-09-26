@@ -472,3 +472,217 @@
     grid-template-columns: 1fr;
   }
 }
+/* =================================================
+   FINAL DAIRY DASHBOARD UI POLISH
+================================================= */
+
+.dairy-page {
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(219, 234, 254, 0.75),
+      transparent 28%
+    ),
+    #f8fafc;
+}
+
+/* Navbar */
+.dairy-navbar {
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.07);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.dairy-nav-links button {
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dairy-nav-links button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(37, 99, 235, 0.10);
+}
+
+/* Main cards */
+.dairy-card,
+.dairy-summary-card,
+.dairy-info-card {
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.dairy-card:hover {
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.09);
+}
+
+/* Welcome */
+.dairy-welcome {
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.07);
+}
+
+.dairy-welcome-icon {
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.10);
+}
+
+/* Overview cards */
+.dairy-overview-card {
+  border-radius: 16px;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.dairy-overview-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09);
+}
+
+/* Module cards */
+.dairy-module-card {
+  background: #ffffff;
+  box-shadow: 0 5px 16px rgba(15, 23, 42, 0.05);
+}
+
+.dairy-module-card:hover {
+  transform: translateY(-5px);
+  border-color: #60a5fa;
+  background: #f8fbff;
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.13);
+}
+
+.dairy-module-card span {
+  filter: drop-shadow(0 4px 5px rgba(15, 23, 42, 0.08));
+}
+
+/* Center information */
+.dairy-center-info > div {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.dairy-center-info > div:hover {
+  transform: translateY(-2px);
+  border-color: #bfdbfe;
+  box-shadow: 0 7px 18px rgba(15, 23, 42, 0.07);
+}
+
+/* Summary cards */
+.dairy-summary-card {
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.dairy-summary-card:hover {
+  transform: translateY(-4px);
+  border-color: #bfdbfe;
+  box-shadow: 0 12px 26px rgba(37, 99, 235, 0.10);
+}
+
+.summary-icon {
+  transition: transform 0.2s ease;
+}
+
+.dairy-summary-card:hover .summary-icon {
+  transform: scale(1.06);
+}
+
+/* Info card */
+.dairy-info-card {
+  box-shadow: 0 7px 20px rgba(124, 58, 237, 0.06);
+}
+
+.dairy-info-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 11px 26px rgba(124, 58, 237, 0.10);
+}
+
+/* Logout */
+.dairy-navbar .logout-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: 0 5px 14px rgba(239, 68, 68, 0.18);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dairy-navbar .logout-btn:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(239, 68, 68, 0.25);
+}
+
+/* Better focus */
+.dairy-nav-links button:focus-visible,
+.dairy-module-card:focus-visible,
+.logout-btn:focus-visible {
+  outline: 3px solid rgba(59, 130, 246, 0.22);
+  outline-offset: 2px;
+}
+
+/* Footer */
+.dairy-footer {
+  border-top: 1px solid #e2e8f0;
+  margin-top: 20px;
+}
+
+/* =================================================
+   RESPONSIVE FINAL TOUCH
+================================================= */
+
+@media (max-width: 900px) {
+  .dairy-main {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .dairy-overview-grid,
+  .dairy-summary-section {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 650px) {
+  .dairy-main {
+    padding: 15px 12px;
+  }
+
+  .dairy-welcome {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .dairy-welcome > div {
+    width: 100%;
+  }
+
+  .dairy-badge {
+    margin-bottom: 10px;
+  }
+
+  .dairy-card {
+    border-radius: 14px;
+  }
+
+  .dairy-summary-card {
+    padding: 18px;
+  }
+
+  .dairy-module-card {
+    padding: 20px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

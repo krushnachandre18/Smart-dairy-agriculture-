@@ -1,0 +1,798 @@
+/* =========================================================
+   SMART DAIRY & FARM MANAGEMENT SYSTEM
+   FINAL UI / CSS TOUCH
+   ========================================================= */
+
+:root {
+  --sd-primary: #2e7d32;
+  --sd-primary-dark: #1b5e20;
+  --sd-primary-light: #e8f5e9;
+  --sd-accent: #66bb6a;
+  --sd-blue: #1976d2;
+  --sd-orange: #ef6c00;
+  --sd-red: #d32f2f;
+  --sd-text: #172033;
+  --sd-muted: #64748b;
+  --sd-border: #e2e8f0;
+  --sd-bg: #f5f8f6;
+  --sd-card: #ffffff;
+  --sd-radius: 18px;
+  --sd-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  --sd-shadow-hover: 0 16px 38px rgba(15, 23, 42, 0.13);
+  --sd-transition: 0.22s ease;
+}
+
+/* =========================
+   GLOBAL
+========================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at 10% 0%, rgba(232, 245, 233, 0.9), transparent 28%),
+    linear-gradient(180deg, #f8fafc 0%, var(--sd-bg) 100%);
+  color: var(--sd-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(46, 125, 50, 0.18);
+  color: var(--sd-primary-dark);
+}
+
+button,
+input,
+select,
+textarea {
+  transition:
+    border-color var(--sd-transition),
+    box-shadow var(--sd-transition),
+    background var(--sd-transition),
+    transform var(--sd-transition);
+}
+
+button {
+  border-radius: 10px;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(46, 125, 50, 0.16);
+  outline-offset: 2px;
+}
+
+input,
+select,
+textarea {
+  border-color: var(--sd-border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--sd-text);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8;
+}
+
+/* =========================
+   COMMON PAGE BACKGROUNDS
+========================= */
+
+.dashboard-page,
+.financial-page,
+.financial-section,
+.cows-page,
+.cow-page,
+.feed-page,
+.profile-page,
+.ai-page,
+.ai-chatbot-page,
+.dairy-dashboard-page,
+.farmers-page,
+.milk-collection-page,
+.milk-verification-page,
+.payments-page,
+.daily-reports-page,
+.center-settings-page,
+.view-milk-page {
+  min-height: 100vh;
+}
+
+/* =========================
+   COMMON NAVBAR
+========================= */
+
+.dashboard-navbar,
+.dairy-navbar,
+.farmer-navbar,
+.page-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
+}
+
+.dashboard-logo,
+.dairy-logo,
+.farmer-logo {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* =========================
+   COMMON CARDS
+========================= */
+
+.dashboard-card,
+.financial-list-card,
+.cow-form-card,
+.cow-menu-card,
+.cow-table-card,
+.feed-card,
+.feed-section,
+.profile-card,
+.ai-card,
+.dairy-card,
+.farmer-card,
+.report-card,
+.settings-card,
+.payment-card,
+.verification-card,
+.form-card {
+  border-radius: var(--sd-radius);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: var(--sd-shadow);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.dashboard-card:hover,
+.financial-list-card:hover,
+.cow-form-card:hover,
+.feed-card:hover,
+.profile-card:hover,
+.report-card:hover {
+  box-shadow: var(--sd-shadow-hover);
+}
+
+/* =========================
+   COMMON HEADINGS
+========================= */
+
+.dashboard-card-heading h2,
+.financial-list-header h2,
+.section-top h1,
+.financial-section-top h1 {
+  letter-spacing: -0.025em;
+}
+
+.dashboard-card-heading p,
+.financial-list-header p,
+.section-top p,
+.financial-section-top p {
+  color: var(--sd-muted);
+}
+
+/* =========================
+   COMMON FORMS
+========================= */
+
+.form-group label,
+.cow-form-group label,
+.feed-form-group label {
+  display: block;
+  margin-bottom: 7px;
+  color: #334155;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea,
+.cow-form-group input,
+.cow-form-group select,
+.cow-form-group textarea,
+.feed-form-group input,
+.feed-form-group select,
+.feed-form-group textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 13px;
+  border: 1px solid var(--sd-border);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.95rem;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus,
+.cow-form-group input:focus,
+.cow-form-group select:focus,
+.cow-form-group textarea:focus,
+.feed-form-group input:focus,
+.feed-form-group select:focus,
+.feed-form-group textarea:focus {
+  border-color: var(--sd-primary);
+  box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.09);
+  outline: none;
+}
+
+/* =========================
+   COMMON PRIMARY BUTTONS
+========================= */
+
+.primary-button,
+.add-button,
+.save-button,
+.submit-button,
+.add-cow-button,
+.add-feed-button,
+.save-feed-button,
+.save-income-button,
+.save-expense-button {
+  border: 0;
+  background: linear-gradient(135deg, var(--sd-primary), var(--sd-primary-dark));
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 7px 18px rgba(46, 125, 50, 0.2);
+}
+
+.primary-button:hover,
+.add-button:hover,
+.save-button:hover,
+.submit-button:hover,
+.add-cow-button:hover,
+.add-feed-button:hover,
+.save-feed-button:hover,
+.save-income-button:hover,
+.save-expense-button:hover {
+  box-shadow: 0 10px 22px rgba(46, 125, 50, 0.28);
+}
+
+/* =========================
+   BACK BUTTONS
+========================= */
+
+.back-button,
+.financial-back-button,
+.back-btn {
+  border: 1px solid var(--sd-border);
+  background: #fff;
+  color: #334155;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.back-button:hover,
+.financial-back-button:hover,
+.back-btn:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+/* =========================
+   TABLES
+========================= */
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+thead th {
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+th,
+td {
+  padding: 13px 14px;
+  border-bottom: 1px solid #edf2f7;
+  text-align: left;
+  vertical-align: middle;
+}
+
+tbody tr {
+  transition: background var(--sd-transition);
+}
+
+tbody tr:hover {
+  background: #f8fbf8;
+}
+
+.cow-table-container,
+.feed-table-container,
+.table-container,
+.financial-table-container,
+.payment-table-container {
+  overflow-x: auto;
+  border: 1px solid var(--sd-border);
+  border-radius: 14px;
+  background: #fff;
+}
+
+/* =========================
+   STATUS BADGES
+========================= */
+
+.cow-status,
+.pregnancy-status,
+.status-badge,
+.payment-status,
+.verification-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.cow-status.active,
+.status-badge.active,
+.verification-status.verified,
+.payment-status.paid,
+.pregnancy-status.pregnant {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.cow-status.inactive,
+.status-badge.inactive,
+.payment-status.unpaid,
+.pregnancy-status.not-pregnant {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.status-badge.pending,
+.verification-status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.rejected,
+.verification-status.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* =========================
+   DASHBOARD FINAL TOUCH
+========================= */
+
+.dashboard-main {
+  width: min(1240px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.dashboard-welcome {
+  border: 1px solid rgba(46, 125, 50, 0.12);
+  box-shadow: var(--sd-shadow);
+}
+
+.welcome-badge {
+  border: 1px solid rgba(46, 125, 50, 0.18);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.08);
+}
+
+.welcome-cow {
+  filter: drop-shadow(0 12px 18px rgba(46, 125, 50, 0.15));
+}
+
+.farmer-welcome-card {
+  border: 1px solid rgba(46, 125, 50, 0.14);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+}
+
+.module-card {
+  border: 1px solid var(--sd-border);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 7px 18px rgba(15, 23, 42, 0.06);
+  transition: all var(--sd-transition);
+}
+
+.module-card:hover {
+  border-color: rgba(46, 125, 50, 0.28);
+  box-shadow: var(--sd-shadow-hover);
+  transform: translateY(-3px);
+}
+
+.dashboard-ai-card {
+  overflow: hidden;
+  border: 1px solid rgba(46, 125, 50, 0.18);
+  border-radius: 20px;
+  box-shadow: var(--sd-shadow);
+}
+
+/* =========================
+   FINANCIAL FINAL TOUCH
+========================= */
+
+.financial-section {
+  background:
+    radial-gradient(circle at 90% 5%, rgba(232, 245, 233, 0.75), transparent 25%),
+    #f8fafc;
+}
+
+.financial-section-top {
+  margin-bottom: 24px;
+}
+
+.profit-summary-card {
+  border-radius: 18px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: var(--sd-shadow);
+  transition: all var(--sd-transition);
+}
+
+.profit-summary-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sd-shadow-hover);
+}
+
+.profit-summary-card h2,
+.expense-detail-item h3 {
+  letter-spacing: -0.025em;
+}
+
+.profit-expense-card {
+  border-radius: 20px;
+}
+
+.expense-detail-item {
+  border: 1px solid var(--sd-border);
+  border-radius: 16px;
+  background: #fff;
+  transition: all var(--sd-transition);
+}
+
+.expense-detail-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
+}
+
+.net-result-card {
+  border-radius: 22px;
+  box-shadow: var(--sd-shadow);
+  border: 1px solid rgba(46, 125, 50, 0.14);
+}
+
+.net-result-card.profit {
+  background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
+  color: #166534;
+}
+
+.net-result-card.loss {
+  background: linear-gradient(135deg, #fff7ed, #fef2f2);
+  color: #991b1b;
+}
+
+.net-result-card.no-profit-loss {
+  background: #f8fafc;
+  color: #475569;
+}
+
+/* =========================
+   COWS FINAL TOUCH
+========================= */
+
+.cows-page {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(232, 245, 233, 0.8), transparent 28%),
+    #f8fafc;
+}
+
+.cow-menu-card,
+.cow-form-card,
+.cow-table-card {
+  transition: box-shadow var(--sd-transition), transform var(--sd-transition);
+}
+
+.cow-menu-card:hover,
+.cow-form-card:hover,
+.cow-table-card:hover {
+  box-shadow: var(--sd-shadow-hover);
+}
+
+.cow-menu-button {
+  border: 1px solid var(--sd-border);
+  border-radius: 14px;
+  background: #fff;
+  transition: all var(--sd-transition);
+}
+
+.cow-menu-button:hover {
+  border-color: rgba(46, 125, 50, 0.3);
+  background: #f7fcf7;
+  transform: translateY(-2px);
+}
+
+.delete-cow-button {
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+  background: #fff5f5;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.delete-cow-button:hover {
+  background: #fee2e2;
+}
+
+/* =========================
+   FEED FINAL TOUCH
+========================= */
+
+.feed-page {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 243, 224, 0.75), transparent 28%),
+    #f8fafc;
+}
+
+.feed-card,
+.feed-section {
+  transition: box-shadow var(--sd-transition);
+}
+
+.feed-card:hover,
+.feed-section:hover {
+  box-shadow: var(--sd-shadow-hover);
+}
+
+.feed-stock-card,
+.feed-summary-card {
+  border-radius: 16px;
+  border: 1px solid var(--sd-border);
+  background: #fff;
+}
+
+/* =========================
+   DAIRY PAGES
+========================= */
+
+.dairy-dashboard-page,
+.farmers-page,
+.milk-collection-page,
+.milk-verification-page,
+.payments-page,
+.daily-reports-page,
+.center-settings-page {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(232, 245, 233, 0.75), transparent 26%),
+    #f8fafc;
+}
+
+.dairy-card,
+.verification-card,
+.payment-card,
+.report-card,
+.settings-card {
+  transition: all var(--sd-transition);
+}
+
+.dairy-card:hover,
+.verification-card:hover,
+.payment-card:hover,
+.report-card:hover,
+.settings-card:hover {
+  box-shadow: var(--sd-shadow-hover);
+}
+
+/* =========================
+   LOGIN / REGISTER
+========================= */
+
+.login-page,
+.register-page {
+  min-height: 100vh;
+}
+
+.login-container,
+.register-container {
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.14);
+}
+
+.login-card,
+.register-card {
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: var(--sd-shadow-hover);
+  border-radius: 22px;
+}
+
+.login-card input,
+.login-card select,
+.register-card input,
+.register-card select {
+  min-height: 46px;
+  border: 1px solid var(--sd-border);
+}
+
+.login-card input:focus,
+.login-card select:focus,
+.register-card input:focus,
+.register-card select:focus {
+  border-color: var(--sd-primary);
+  box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.09);
+  outline: none;
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile-card {
+  overflow: hidden;
+}
+
+.profile-card h1,
+.profile-card h2 {
+  letter-spacing: -0.025em;
+}
+
+/* =========================
+   AI CHATBOT
+========================= */
+
+.ai-chatbot-page,
+.ai-page {
+  background:
+    radial-gradient(circle at 90% 0%, rgba(232, 245, 233, 0.8), transparent 28%),
+    #f8fafc;
+}
+
+.ai-card {
+  border: 1px solid rgba(46, 125, 50, 0.12);
+  box-shadow: var(--sd-shadow);
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #b7cbb9 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #b7cbb9;
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #8fae92;
+}
+
+/* =========================
+   MOBILE / TABLET
+========================= */
+
+@media (max-width: 900px) {
+  .dashboard-main {
+    width: min(100% - 24px, 760px);
+  }
+
+  .profit-summary-section,
+  .profit-expense-grid {
+    grid-template-columns: 1fr;
+  }
+
+  th,
+  td {
+    padding: 11px 10px;
+    font-size: 0.88rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-main {
+    width: calc(100% - 18px);
+  }
+
+  .dashboard-navbar,
+  .dairy-navbar,
+  .farmer-navbar {
+    position: relative;
+  }
+
+  .dashboard-nav-links {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dashboard-nav-links button {
+    min-height: 40px;
+  }
+
+  .dashboard-welcome {
+    padding: 22px !important;
+  }
+
+  .module-card {
+    min-width: 0;
+  }
+
+  .financial-section,
+  .cows-page,
+  .feed-page,
+  .dairy-dashboard-page {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .financial-section-top,
+  .section-top {
+    gap: 14px;
+  }
+
+  .profit-summary-card,
+  .expense-detail-item {
+    padding: 18px !important;
+  }
+
+  .net-result-card {
+    padding: 22px !important;
+  }
+
+  .cow-table-container,
+  .feed-table-container,
+  .table-container,
+  .financial-table-container,
+  .payment-table-container {
+    border-radius: 12px;
+  }
+
+  table {
+    min-width: 680px;
+  }
+}
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

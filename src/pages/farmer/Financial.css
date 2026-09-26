@@ -830,3 +830,568 @@
     font-size: 35px;
   }
 }
+/* =================================================
+   FINAL FINANCIAL MANAGEMENT UI POLISH
+================================================= */
+
+.financial-page {
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(220, 252, 231, 0.65),
+      transparent 28%
+    ),
+    #f8fafc;
+}
+
+/* =========================
+   FINANCIAL MAIN HEADER
+========================= */
+
+.financial-header {
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.financial-header:hover {
+  transform: translateY(-2px);
+  border-color: #bbf7d0;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+}
+
+.financial-icon {
+  filter: drop-shadow(0 5px 8px rgba(15, 23, 42, 0.08));
+}
+
+.financial-header h1 {
+  letter-spacing: -0.5px;
+}
+
+/* =========================
+   FINANCIAL MENU CARDS
+========================= */
+
+.financial-menu-card {
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease;
+}
+
+.financial-menu-card:hover {
+  transform: translateY(-5px);
+  border-color: #6ee7b7 !important;
+  background: #fafffb !important;
+  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.12);
+}
+
+.financial-menu-card span {
+  filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.08));
+  transition: transform 0.2s ease;
+}
+
+.financial-menu-card:hover span {
+  transform: scale(1.07);
+}
+
+/* =========================
+   SECTION HEADER
+========================= */
+
+.financial-section-top h1 {
+  letter-spacing: -0.5px;
+}
+
+.financial-section-top p {
+  line-height: 1.5;
+}
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.financial-back-button {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.financial-back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(15, 23, 42, 0.08);
+}
+
+.financial-back-button:focus-visible {
+  outline: 3px solid rgba(16, 185, 129, 0.20);
+  outline-offset: 2px;
+}
+
+/* =========================
+   FORM CARD
+========================= */
+
+.financial-form-card {
+  border-color: #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+  transition:
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.financial-form-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+}
+
+.financial-form-title {
+  border-bottom-color: #e2e8f0;
+}
+
+.financial-form-title > span {
+  filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.08));
+}
+
+/* =========================
+   FORM INPUTS
+========================= */
+
+.financial-form-group input,
+.financial-form-group select {
+  box-sizing: border-box;
+  background: #f8fafc;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.financial-form-group input:hover,
+.financial-form-group select:hover {
+  border-color: #94a3b8;
+}
+
+.financial-form-group input:focus,
+.financial-form-group select:focus {
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* =========================
+   ADD BUTTONS
+========================= */
+
+.financial-add-button,
+.expense-add-button {
+  box-shadow: 0 6px 15px rgba(16, 185, 129, 0.18);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.financial-add-button:hover {
+  background: #059669 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 9px 20px rgba(16, 185, 129, 0.24);
+}
+
+.expense-add-button {
+  box-shadow: 0 6px 15px rgba(239, 68, 68, 0.16);
+}
+
+.expense-add-button:hover {
+  background: #dc2626 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 9px 20px rgba(239, 68, 68, 0.22);
+}
+
+.financial-add-button:active,
+.expense-add-button:active {
+  transform: translateY(0);
+}
+
+.financial-add-button:focus-visible,
+.expense-add-button:focus-visible {
+  outline: 3px solid rgba(16, 185, 129, 0.20);
+  outline-offset: 2px;
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+.financial-message {
+  border: 1px solid #a7f3d0;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.06);
+}
+
+/* =========================
+   LIST / HISTORY CARDS
+========================= */
+
+.financial-list-card {
+  border-color: #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+  transition:
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.financial-list-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+}
+
+.financial-list-header {
+  border-bottom-color: #e2e8f0;
+}
+
+/* =========================
+   FINANCIAL TABLE
+========================= */
+
+.financial-table-container {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #f1f5f9;
+}
+
+.financial-list-card table {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.financial-list-card th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.financial-list-card tbody tr {
+  transition:
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.financial-list-card tbody tr:hover {
+  box-shadow: inset 4px 0 0 #10b981;
+}
+
+.financial-list-card tr:hover td {
+  background: #f0fdf4;
+}
+
+/* =========================
+   TYPE / STATUS BADGES
+========================= */
+
+.income-type-badge,
+.expense-type-badge,
+.session-badge,
+.payment-status {
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.income-type-badge:hover,
+.expense-type-badge:hover,
+.session-badge:hover,
+.payment-status:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.financial-empty,
+.dairy-empty {
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.financial-empty > div {
+  filter: drop-shadow(0 5px 8px rgba(15, 23, 42, 0.08));
+}
+
+/* =========================
+   TOTAL INCOME
+========================= */
+
+.total-income-card {
+  box-shadow: 0 7px 20px rgba(16, 185, 129, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.total-income-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 11px 26px rgba(16, 185, 129, 0.12);
+}
+
+.total-income-card h2 {
+  letter-spacing: -0.4px;
+}
+
+/* =========================
+   EXPENSE SUMMARY
+========================= */
+
+.expense-summary-card {
+  box-shadow: 0 5px 16px rgba(15, 23, 42, 0.05);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.expense-summary-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09);
+}
+
+.expense-summary-card > span {
+  filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.08));
+}
+
+/* =========================
+   DAIRY PAYMENT TOTAL
+========================= */
+
+.dairy-payment-total {
+  box-shadow: 0 7px 20px rgba(37, 99, 235, 0.07);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dairy-payment-total:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 11px 26px rgba(37, 99, 235, 0.11);
+}
+
+.dairy-payment-total h2 {
+  letter-spacing: -0.4px;
+}
+
+.dairy-payment-total > span {
+  filter: drop-shadow(0 5px 8px rgba(37, 99, 235, 0.10));
+}
+
+/* =========================
+   PROFIT SUMMARY
+========================= */
+
+.profit-summary-card {
+  box-shadow: 0 5px 16px rgba(15, 23, 42, 0.05);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.profit-summary-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09);
+}
+
+.profit-summary-card > span {
+  filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.08));
+}
+
+/* =========================
+   EXPENSE DETAILS
+========================= */
+
+.profit-expense-card {
+  margin-bottom: 25px;
+}
+
+.expense-detail-item {
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.05);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.expense-detail-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(234, 88, 12, 0.09);
+}
+
+.expense-detail-item > span {
+  filter: drop-shadow(0 4px 6px rgba(234, 88, 12, 0.08));
+}
+
+/* =========================
+   NET RESULT
+========================= */
+
+.net-result-card {
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.net-result-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.10);
+}
+
+.net-result-card h2 {
+  letter-spacing: -0.5px;
+}
+
+.net-result-card > span {
+  filter: drop-shadow(0 6px 10px rgba(15, 23, 42, 0.10));
+}
+
+/* =========================
+   TABLE SCROLLBAR
+========================= */
+
+.financial-table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.financial-table-container::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.financial-table-container::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 10px;
+}
+
+.financial-table-container::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* =========================
+   MOBILE POLISH
+========================= */
+
+@media (max-width: 700px) {
+
+  .financial-page,
+  .financial-section {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .financial-header {
+    border-radius: 15px;
+  }
+
+  .financial-menu-card {
+    border-radius: 14px !important;
+  }
+
+  .financial-form-card,
+  .financial-list-card {
+    border-radius: 14px;
+  }
+
+  .financial-table-container {
+    border-radius: 10px;
+  }
+
+  .expense-summary-card,
+  .profit-summary-card {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 550px) {
+
+  .financial-header {
+    padding: 22px 14px;
+    border-radius: 13px;
+  }
+
+  .financial-header h1 {
+    font-size: 23px;
+  }
+
+  .financial-menu-card {
+    padding: 20px;
+    min-height: 135px;
+  }
+
+  .financial-form-card,
+  .financial-list-card {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .financial-form-title h2 {
+    font-size: 19px;
+  }
+
+  .total-income-card,
+  .dairy-payment-total {
+    padding: 18px;
+  }
+
+  .total-income-card h2,
+  .dairy-payment-total h2 {
+    font-size: 25px;
+  }
+
+  .net-result-card {
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .net-result-card h2 {
+    font-size: 27px;
+  }
+
+  .net-result-card > span {
+    font-size: 35px;
+  }
+}
+
+/* =========================
+   ACCESSIBILITY
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .financial-header,
+  .financial-menu-card,
+  .financial-menu-card span,
+  .financial-back-button,
+  .financial-form-card,
+  .financial-form-group input,
+  .financial-form-group select,
+  .financial-add-button,
+  .expense-add-button,
+  .financial-list-card,
+  .financial-list-card tbody tr,
+  .income-type-badge,
+  .expense-type-badge,
+  .session-badge,
+  .payment-status,
+  .total-income-card,
+  .expense-summary-card,
+  .dairy-payment-total,
+  .profit-summary-card,
+  .expense-detail-item,
+  .net-result-card {
+    transition: none !important;
+  }
+}

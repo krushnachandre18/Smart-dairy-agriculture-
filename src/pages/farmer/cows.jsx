@@ -7,7 +7,15 @@ function Cows() {
   // =====================================================
   // FARMER LOGIN INFORMATION
   // =====================================================
+const formatDate = (date) => {
+  if (!date) return "-";
 
+  return new Date(date).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+};
 const loggedInFarmerMobile =
   localStorage.getItem("loggedInFarmerMobile");
 
@@ -1254,14 +1262,12 @@ useEffect(() => {
                             </td>
 
                             <td>
-                              {record.vaccinationDate ||
-                                record.vaccination_date ||
-                                "-"}
+                              {formatDate(record.vaccinationDate)}
                             </td>
 
                             <td>
-                              {record.nextDueDate ||
-                                record.next_due_date ||
+                              {formatDate(record.nextDueDate) ||
+                                formatDate(record.next_due_date) ||
                                 "-"}
                             </td>
 
@@ -1654,20 +1660,22 @@ useEffect(() => {
                             </td>
 
                             <td>
-                              {record.pregnancyStartDate ||
-                                record.pregnancy_start_date ||
+                             
+                                {formatDate(record.pregnancyStartDate) ||
+                                formatDate(record.pregnancy_start_date) ||
                                 "-"}
                             </td>
 
                             <td>
-                              {record.expectedCalvingDate ||
-                                record.expected_calving_date ||
+                              
+                                {formatDate(record.expectedCalvingDate) ||
+                                formatDate(record.expected_calving_date) ||
                                 "-"}
                             </td>
 
                             <td>
-                              {record.calvingDate ||
-                                record.calving_date ||
+                              {formatDate(record.calvingDate) ||
+                                formatDate(record.calving_date) ||
                                 "-"}
                             </td>
 

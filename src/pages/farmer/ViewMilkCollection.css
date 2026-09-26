@@ -204,3 +204,306 @@
     font-size: 25px;
   }
 }
+/* =================================================
+   FINAL VIEW MILK COLLECTION UI POLISH
+================================================= */
+
+/* =========================
+   PAGE
+========================= */
+
+.view-milk-page {
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(219, 234, 254, 0.45),
+      transparent 30%
+    ),
+    #f8fafc;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.view-milk-header {
+  padding-bottom: 5px;
+}
+
+.view-milk-header h1 {
+  letter-spacing: -0.5px;
+}
+
+.view-milk-header p {
+  line-height: 1.5;
+}
+
+.back-dashboard-btn {
+  box-shadow: 0 5px 12px rgba(15, 23, 42, 0.12);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.back-dashboard-btn:hover {
+  background: #334155;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
+}
+
+.back-dashboard-btn:active {
+  transform: translateY(0);
+}
+
+/* =========================
+   SUMMARY CARDS
+========================= */
+
+.milk-record-card {
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 7px 20px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.milk-record-card:hover {
+  transform: translateY(-4px);
+  border-color: #bfdbfe;
+  box-shadow: 0 12px 26px rgba(37, 99, 235, 0.10);
+}
+
+.milk-record-card span {
+  display: inline-flex;
+  filter: drop-shadow(0 3px 5px rgba(15, 23, 42, 0.08));
+}
+
+.milk-record-card h3 {
+  color: #475569;
+  font-size: 14px;
+}
+
+.milk-record-card strong {
+  color: #0f172a;
+}
+
+/* =========================
+   RECORDS SECTION
+========================= */
+
+.milk-records-section {
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+}
+
+.section-heading {
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.section-heading h2 {
+  letter-spacing: -0.3px;
+}
+
+.section-heading p {
+  line-height: 1.5;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.milk-table-container {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f8fafc;
+}
+
+.milk-table-container table {
+  overflow: hidden;
+}
+
+.milk-table-container th {
+  color: #334155;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.milk-table-container td {
+  color: #475569;
+  font-size: 13px;
+}
+
+.milk-table-container tbody tr {
+  transition: background 0.18s ease;
+}
+
+.milk-table-container tbody tr:hover {
+  background: #f8fafc;
+}
+
+.milk-table-container td:first-child {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* =========================
+   STATUS BADGES
+========================= */
+
+.status {
+  border: 1px solid transparent;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+}
+
+.status.verified {
+  border-color: #bbf7d0;
+}
+
+.status.pending {
+  border-color: #fde68a;
+}
+
+.status.rejected {
+  border-color: #fecaca;
+}
+
+.status.paid {
+  border-color: #bfdbfe;
+}
+
+.status.unpaid {
+  border-color: #fde68a;
+}
+
+/* =========================
+   PAYMENT N/A
+========================= */
+
+.payment-na {
+  font-style: italic;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.no-milk-records {
+  border: 1px dashed #cbd5e1;
+}
+
+.no-milk-records span {
+  display: block;
+  margin-bottom: 5px;
+  filter: drop-shadow(0 4px 7px rgba(15, 23, 42, 0.08));
+}
+
+.no-milk-records h3 {
+  color: #334155;
+}
+
+.no-milk-records p {
+  line-height: 1.5;
+}
+
+/* =========================
+   INFORMATION NOTE
+========================= */
+
+.milk-record-note {
+  border: 1px solid #bfdbfe;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.06);
+  line-height: 1.5;
+}
+
+/* =========================
+   TABLE SCROLLBAR
+========================= */
+
+.milk-table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.milk-table-container::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+.milk-table-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.milk-table-container::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* =========================
+   MOBILE POLISH
+========================= */
+
+@media (max-width: 900px) {
+
+  .milk-record-card {
+    padding: 18px;
+  }
+
+  .milk-records-section {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .view-milk-page {
+    padding: 12px;
+  }
+
+  .view-milk-header {
+    padding-bottom: 0;
+  }
+
+  .view-milk-header h1 {
+    font-size: 24px;
+  }
+
+  .view-milk-header p {
+    font-size: 13px;
+  }
+
+  .back-dashboard-btn {
+    width: 100%;
+  }
+
+  .milk-record-card {
+    border-radius: 12px;
+  }
+
+  .milk-records-section {
+    padding: 15px;
+    border-radius: 14px;
+  }
+
+  .section-heading h2 {
+    font-size: 20px;
+  }
+
+  .milk-record-note {
+    font-size: 13px;
+  }
+}
+
+/* =========================
+   REDUCE MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .back-dashboard-btn,
+  .milk-record-card,
+  .milk-table-container tbody tr {
+    transition: none !important;
+  }
+}

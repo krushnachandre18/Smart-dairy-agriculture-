@@ -361,3 +361,458 @@
     margin-top: 30px;
   }
 }
+/* =================================================
+   FINAL FARMER REPORTS UI POLISH
+================================================= */
+
+/* =========================
+   PAGE BACKGROUND
+========================= */
+
+.reports-page {
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(219, 234, 254, 0.45),
+      transparent 28%
+    ),
+    #f8fafc;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.reports-header {
+  padding: 5px 2px;
+}
+
+.reports-header h1 {
+  letter-spacing: -0.6px;
+}
+
+.reports-header p {
+  line-height: 1.5;
+}
+
+/* =========================
+   FARMER INFO CARD
+========================= */
+
+.farmer-info-card {
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.farmer-info-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.09);
+}
+
+.farmer-info-card div {
+  padding: 5px;
+}
+
+.farmer-info-card strong {
+  color: #0f172a;
+}
+
+.farmer-info-card span {
+  font-size: 13px;
+}
+
+/* =========================
+   MONTH SELECTOR
+========================= */
+
+.month-selector-card {
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.month-selector-card:hover {
+  border-color: #bfdbfe;
+  box-shadow: 0 11px 27px rgba(15, 23, 42, 0.08);
+}
+
+.month-selector-card input {
+  background: #f8fafc;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.month-selector-card input:hover {
+  border-color: #94a3b8;
+}
+
+.month-selector-card input:focus {
+  background: white;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* =========================
+   SUMMARY REPORT CARDS
+========================= */
+
+.report-card {
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 7px 20px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.report-card:hover {
+  transform: translateY(-4px);
+  border-color: #bfdbfe;
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.09);
+}
+
+.report-card span {
+  display: inline-block;
+  filter: drop-shadow(0 4px 7px rgba(15, 23, 42, 0.08));
+  transition: transform 0.2s ease;
+}
+
+.report-card:hover span {
+  transform: scale(1.07);
+}
+
+.report-card h3 {
+  color: #334155;
+}
+
+.report-card strong {
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+
+/* =========================
+   REPORT SECTIONS
+========================= */
+
+.report-section {
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.report-section:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 11px 28px rgba(15, 23, 42, 0.08);
+}
+
+.section-title h2 {
+  color: #1e293b;
+  letter-spacing: -0.3px;
+}
+
+.section-title p {
+  line-height: 1.5;
+}
+
+/* =========================
+   MILK REPORT
+========================= */
+
+.milk-report-grid div,
+.financial-box,
+.cow-report-grid div {
+  border: 1px solid #e2e8f0;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.milk-report-grid div:hover,
+.financial-box:hover,
+.cow-report-grid div:hover {
+  transform: translateY(-2px);
+  background: #ffffff;
+  border-color: #bfdbfe;
+  box-shadow: 0 7px 16px rgba(15, 23, 42, 0.07);
+}
+
+.milk-report-grid span,
+.cow-report-grid span {
+  font-size: 13px;
+}
+
+.milk-report-grid strong,
+.financial-box strong,
+.cow-report-grid strong {
+  color: #0f172a;
+}
+
+/* =========================
+   FINANCIAL REPORT
+========================= */
+
+.financial-box {
+  position: relative;
+  overflow: hidden;
+}
+
+.financial-box::after {
+  content: "";
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  right: -25px;
+  top: -25px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.07);
+}
+
+/* =========================
+   COW REPORT
+========================= */
+
+.cow-report-grid div {
+  position: relative;
+}
+
+.cow-report-grid strong {
+  letter-spacing: -0.3px;
+}
+
+/* =========================
+   STATUS CARDS
+========================= */
+
+.status-box {
+  border: 1px solid transparent;
+  box-shadow: 0 5px 15px rgba(15, 23, 42, 0.04);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.status-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 20px rgba(15, 23, 42, 0.08);
+}
+
+.status-box span {
+  filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.08));
+}
+
+.status-box.verified {
+  border-color: #a7f3d0;
+}
+
+.status-box.pending {
+  border-color: #fde68a;
+}
+
+.status-box.rejected {
+  border-color: #fecaca;
+}
+
+/* =========================
+   PRINT BUTTON
+========================= */
+
+.print-report-btn {
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.18);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.print-report-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 9px 20px rgba(37, 99, 235, 0.24);
+}
+
+.print-report-btn:active {
+  transform: translateY(0);
+}
+
+.print-report-btn:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.18);
+  outline-offset: 2px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.reports-footer {
+  border-top: 1px solid #e2e8f0;
+}
+
+.reports-footer strong {
+  letter-spacing: 0.1px;
+}
+
+/* =========================
+   MOBILE POLISH
+========================= */
+
+@media (max-width: 900px) {
+
+  .farmer-info-card,
+  .report-grid,
+  .milk-report-grid,
+  .financial-report-grid,
+  .cow-report-grid {
+    gap: 14px;
+  }
+
+  .report-card,
+  .report-section {
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .reports-page {
+    padding: 12px;
+  }
+
+  .reports-header {
+    margin-bottom: 18px;
+  }
+
+  .reports-header h1 {
+    font-size: 24px;
+    line-height: 1.25;
+  }
+
+  .reports-header p {
+    font-size: 14px;
+  }
+
+  .farmer-info-card,
+  .month-selector-card,
+  .report-card,
+  .report-section {
+    border-radius: 13px;
+  }
+
+  .farmer-info-card {
+    padding: 16px;
+    gap: 13px;
+  }
+
+  .month-selector-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .month-selector-card input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .report-card {
+    padding: 18px;
+  }
+
+  .report-card strong {
+    font-size: 23px;
+  }
+
+  .report-section {
+    padding: 18px;
+  }
+
+  .milk-report-grid,
+  .financial-report-grid,
+  .cow-report-grid {
+    gap: 10px;
+  }
+
+  .milk-report-grid div,
+  .financial-box,
+  .cow-report-grid div {
+    padding: 16px;
+  }
+
+  .status-box {
+    padding: 18px;
+  }
+
+  .print-report-btn {
+    width: 100%;
+  }
+
+  .reports-footer {
+    padding: 20px 10px;
+  }
+}
+
+/* =========================
+   PRINT FINAL POLISH
+========================= */
+
+@media print {
+
+  .reports-page {
+    min-height: auto;
+    padding: 0;
+  }
+
+  .farmer-info-card,
+  .report-card,
+  .report-section {
+    box-shadow: none !important;
+    border: 1px solid #d1d5db;
+    break-inside: avoid;
+  }
+
+  .farmer-info-card:hover,
+  .report-card:hover,
+  .report-section:hover,
+  .milk-report-grid div:hover,
+  .financial-box:hover,
+  .cow-report-grid div:hover,
+  .status-box:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .reports-footer {
+    border-top: 1px solid #222;
+  }
+}
+
+/* =========================
+   REDUCE MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .farmer-info-card,
+  .month-selector-card,
+  .report-card,
+  .report-section,
+  .milk-report-grid div,
+  .financial-box,
+  .cow-report-grid div,
+  .status-box,
+  .print-report-btn,
+  .report-card span {
+    transition: none !important;
+  }
+}
